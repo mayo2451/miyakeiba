@@ -1,5 +1,3 @@
 Flask
 gunicorn
-jpholiday
-gspread
-oauth2client
+（他に使っているライブラリもここに記述）

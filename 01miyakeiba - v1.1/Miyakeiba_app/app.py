@@ -5,10 +5,6 @@ import datetime
 from calendar import monthrange
 import jpholiday # type: ignore
 import sqlite3
-import os
-import gspread # type: ignore
-from oauth2client.service_account import ServiceAccountCredentials # type: ignore
-import time
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -286,7 +282,6 @@ def register():
         cursor = conn.cursor()
         try:
             cursor.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", (username, hashed_pw, 'user'))
-            backup_all_tables()
             conn.commit()
         except sqlite3.IntegrityError:
             flash("ユーザー名は既に使われています")
@@ -329,7 +324,6 @@ def entry_form():
     """)
     races = cursor.fetchall()
     races = races[1:]
-    backup_all_tables()
     conn.close()
 
     return render_template('entry_form.html', races=races)
@@ -371,7 +365,6 @@ def show_entries(race_id):
                 VALUES(?,?,?)
                 ON CONFLICT(race_id, username) DO UPDATE SET honmeiba=excluded.honmeiba
             """, (race_id, session.get('username'), honmeiba))
-            backup_all_tables()
             conn.commit()
 
     # 出馬表取得
@@ -440,7 +433,6 @@ def result_input(race_id):
 
         update_scores(conn, race_id)
 
-        backup_all_tables()
         conn.commit()
         conn.close()
         flash("レース結果を登録しました")
@@ -541,7 +533,6 @@ def update_scores(conn, race_id):
             WHERE username = ?
         """, (win_rate, placing_rate, username))
 
-    backup_all_tables()
     conn.commit()
     flash("得点とユーザー情報を更新しました")
 
@@ -688,59 +679,6 @@ def filtered_users():
 
     return render_template('alluserscore.html', all_users=all_users, filtered_users=filtered_users, grades=grades, places=places)
 
-SHEET_NAME = "miyakeiba_backup"
-TABLES = ['race_entries', 'race_result', 'race_schedule', 'raise_horse', 'sqlite_sequence', 'users']
-BACKUP_INTERVAL = 600
-TIMESTAMP_FILE = "last_backup.txt"
-DB_NAME = "miyakeiba_app.db"
-
-def get_sheet_client():
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("mystical-app-464610-p2-29b4c0ae8a03.json", scope)
-    client = gspread.authorize(creds)
-    return client.open(SHEET_NAME)
-
-def get_last_backup_time():
-    if not os.path.exists(TIMESTAMP_FILE):
-        return 0
-    with open(TIMESTAMP_FILE, 'r') as f:
-        return float(f.read().strip())
-
-def update_backup_time():
-    with open(TIMESTAMP_FILE, 'w') as f:
-        f.write(str(time.time()))
-
-def backup_all_tables():
-    print("✅ バックアップ開始...")
-    sheet = get_sheet_client()
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-
-    for table in TABLES:
-        try:
-            print(f"📄 テーブル `{table}` の処理中...")
-            # スプレッドシートの該当シート（ワークシート）取得
-            worksheet = sheet.worksheet(table)
-            cursor.execute(f"SELECT * FROM {table}")
-            rows = cursor.fetchall()
-            column_names = [desc[0] for desc in cursor.description]
-
-            worksheet.clear()
-            worksheet.append_row(column_names)
-            for row in rows:
-                worksheet.append_row(list(row))
-        except Exception as e:
-            print(f"⚠️ エラー（{table}）: {e}")
-            continue
-
-    conn.close()
-    update_backup_time()
-    print("✅ 全テーブルのバックアップ完了！")
-
-def startup_backup_check():
-    if time.time() - get_last_backup_time() >= BACKUP_INTERVAL:
-        backup_all_tables()
 
 if __name__ == '__main__':
-    startup_backup_check()
     app.run(debug=True)
