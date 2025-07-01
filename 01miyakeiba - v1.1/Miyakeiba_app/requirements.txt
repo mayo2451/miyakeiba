@@ -1,3 +1,5 @@
 Flask
 gunicorn
 jpholiday
+gspread
+oauth2client
