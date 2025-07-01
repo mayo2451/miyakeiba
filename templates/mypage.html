@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>マイページ</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='mypagestyle.css') }}">
+    </head>
+    <body>
+        <header>
+            <h1>大ヴァロ予想王</h1>
+            <div class="login-status">
+                {% if session.get('username') %}
+                    <span>ようこそ、{{ session['username'] }}さん</span>
+                    <a href="{{ url_for('logout') }}" style="margin-left: 10px;">ログアウト</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">ログイン</a>
+                    <a href="{{ url_for('register') }}" style="margin-left: 10px;">新規登録</a>
+                {% endif %}
+            </div>
+        </header>
+        <div class="menu_bar">
+            <nav>
+                <ul class="menu">
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="{{url_for('allusers')}}">全体成績</a></li>
+                    <li><a href="{{url_for('mypage')}}">マイページ</a></li>
+                    {% if session.get('role') == 'admin' %}
+                        <li><a href="{{url_for('insert_race')}}">予定追加</a></li>
+                        <li><a href="{{url_for('entry_form')}}">出馬表作成</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <h2 class="username">{{ session['username'] }}</h2>
+        <h2>提出済みの本命馬</h2>
+        {% if entries %}
+            <table border="1">
+                <tr>
+                    <th class="short">日付</th>
+                    <th class="tiny">開催</th>
+                    <th>レース名</th>
+                    <th class="middle">本命馬</th>
+                    <th class="tiny">着順</th>
+                    <th class="tiny">得点</th>
+                </tr>
+                {% for entry in entries %}
+                <tr>
+                    <td class="short">{{ entry['race_date'] }}</td>
+                    <td class="tiny">{{ entry['race_place'] }}</td>
+                    <td>{{ entry['race_name'] }}</td>
+                    <td class="middle">{{ entry['honmeiba'] }}</td>
+                    <td class="tiny">{{ entry['honmeiba_rank'] }}</td>
+                    <td class="tiny">{{ entry['score'] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>まだ本命馬を提出していません。</p>
+        {% endif %}
+    </body>
+</html>

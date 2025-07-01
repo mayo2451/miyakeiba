@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>大ヴァロ予想王</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}">
+    </head>
+    <body>
+        <header>
+            <h1>大ヴァロ予想王</h1>
+            <div class="login-status">
+                {% if session.get('username') %}
+                    <span>ようこそ、{{ session['username'] }}さん</span>
+                    <a href="{{ url_for('logout') }}" style="margin-left: 10px;">ログアウト</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">ログイン</a>
+                    <a href="{{ url_for('register') }}" style="margin-left: 10px;">新規登録</a>
+                {% endif %}
+            </div>
+        </header>
+        <div class="menu_bar">
+            <nav>
+                <ul class="menu">
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="/">全体成績</a></li>
+                    <li><a href="{{url_for('mypage')}}">マイページ</a></li>
+                    {% if session.get('role') == 'admin' %}
+                        <li><a href="{{url_for('insert_race')}}">予定追加</a></li>
+                        <li><a href="{{url_for('entry_form')}}">出馬表作成</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    <form method="POST">
+        <label>レースを選択：
+            <select name="race_id" required>
+                <option value="" disabled selected>選択してください</option>
+                {% for race in races %}
+                    <option value="{{ race['id'] }}">
+                        {{ race['race_date'] }} - {{ race['race_place'] }}{{ race['race_number'] }}R - {{ race['race_name'] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </label>
+        <table>
+            <tr>
+                <th>馬番</th>
+                <th>馬名</th>
+                <th>騎手</th>
+            </tr>
+            {% for i in range(18) %}
+            <tr>
+                <td>{{ i + 1 }}</td>
+                <td><input type="text" name="horse_name[]"></td>
+                <td><input type="text" name="jockey[]"></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">出馬表を登録</button>
+    </form>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('form').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
+        });
+    });
+</script>

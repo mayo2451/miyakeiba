@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>大ヴァロ予想王</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}">
+    </head>
+    <body>
+        <header>
+            <h1>大ヴァロ予想王</h1>
+            <div class="login-status">
+                {% if session.get('username') %}
+                    <span>ようこそ、{{ session['username'] }}さん</span>
+                    <a href="{{ url_for('logout') }}" style="margin-left: 10px;">ログアウト</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">ログイン</a>
+                    <a href="{{ url_for('register') }}" style="margin-left: 10px;">新規登録</a>
+                {% endif %}
+            </div>
+        </header>
+        <div class="menu_bar">
+            <nav>
+                <ul class="menu">
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="{{url_for('allusers')}}">全体成績</a></li>
+                    <li><a href="{{url_for('mypage')}}">マイページ</a></li>
+                    {% if session.get('role') == 'admin' %}
+                        <li><a href="{{url_for('insert_race')}}">予定追加</a></li>
+                        <li><a href="{{url_for('entry_form')}}">出馬表作成</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <h2>{{ race['race_name'] }}の出馬表</h2>
+        {% if is_closed %}
+            <p>このレースの投票は締め切られました。</p>
+            {% if entries %}
+                <form action="{{ url_for('show_race_result', race_id=race['id']) }}" method="get" style="margin-top: 10px;">
+                    <button type="submit">🔍 レース結果を見る</button>
+                </form>
+            {% endif %}
+        {% else %}
+            {% if entries %}
+                <form method="post">
+                    <input type="hidden" name="race_id" value="{{ selected_race_id }}">
+                    <table border="1">
+                        <tr>
+                            <th>馬番</th>
+                            <th>馬名</th>
+                            <th>騎手</th>
+                            <th>本命馬選択</th>
+                        </tr>
+                        {% for entry in entries %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ entry['horse_name'] }}</td>
+                                <td>{{ entry['jockey'] }}</td>
+                                <td><input type="radio" name="honmeiba" value="{{ entry['horse_name'] }}" required></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <button type="submit">本命馬を登録</button>
+                </form>
+                <form action="{{ url_for('show_race_result', race_id=race['id']) }}" method="get" style="margin-top: 10px;">
+                    <button type="submit">🔍 レース結果を見る</button>
+                </form>
+            {% endif %}
+        {% endif %}
+        {% if session.get('role') == 'admin' %}
+            <form action="{{ url_for('result_input', race_id=race['id']) }}" method="get">
+                <button type="submit">📋 レース結果を入力</button>
+            </form>
+        {% endif %}
+    </body>
+</html>

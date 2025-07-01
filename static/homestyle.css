@@ -1,0 +1,85 @@
+.menu{
+    text-align: center;
+}
+.menu_bar {
+    background-color: #f0f0f0;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 30px;
+}
+.menu_bar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;  /* 横並びにする */
+}
+.menu_bar li {
+    margin: 0;
+    flex: 1;
+}
+.menu_bar a {
+    width: 100%;
+    display: block;
+    padding: 14px 20px;
+    text-decoration: none;
+    color: gray;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+.menu_bar a:hover {
+    background-color: #555;
+    color: white;
+}
+.calendar-nav {
+    width: 100%;
+    max-width: 100%;
+}
+.container {
+    display: flex;
+    gap: 30px; /* 要素間のスペース */
+    align-items: flex-start; /* 上揃え */
+}
+.calendar {
+    flex: 1;  /* できるだけ幅を取る */
+    max-width: 100%; /* お好みで調整 */
+}
+.event-list {
+    flex: 1;
+    max-width: 100%; /* お好みで調整 */
+    overflow-y: auto; /* 高さがオーバーしたらスクロール */
+    max-height: 600px;
+}
+.schedule_table{
+    border-collapse: collapse;
+    width: 100%;
+}
+.schedule_table td{
+    border: none;
+    padding: 4px 8px;
+}
+td.schedule_date{
+    width: 25%;
+}
+td.schedule_place{
+    width: 15%; 
+}
+td.schedule_name{
+    width: 50%;
+    text-align: left;
+}
+td.schedule_time{
+    width: 10%; 
+}
+td.today {
+    border: 2px solid red;
+    border-radius: 50%;
+    padding: 5px;
+    font-weight: bold;
+    color: red;
+}
+header{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px;
+}
