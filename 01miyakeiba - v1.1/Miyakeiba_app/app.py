@@ -286,6 +286,7 @@ def register():
         cursor = conn.cursor()
         try:
             cursor.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", (username, hashed_pw, 'user'))
+            backup_all_tables()
             conn.commit()
         except sqlite3.IntegrityError:
             flash("ユーザー名は既に使われています")
@@ -328,6 +329,7 @@ def entry_form():
     """)
     races = cursor.fetchall()
     races = races[1:]
+    backup_all_tables()
     conn.close()
 
     return render_template('entry_form.html', races=races)
@@ -369,6 +371,7 @@ def show_entries(race_id):
                 VALUES(?,?,?)
                 ON CONFLICT(race_id, username) DO UPDATE SET honmeiba=excluded.honmeiba
             """, (race_id, session.get('username'), honmeiba))
+            backup_all_tables()
             conn.commit()
 
     # 出馬表取得
@@ -437,6 +440,7 @@ def result_input(race_id):
 
         update_scores(conn, race_id)
 
+        backup_all_tables()
         conn.commit()
         conn.close()
         flash("レース結果を登録しました")
@@ -537,6 +541,7 @@ def update_scores(conn, race_id):
             WHERE username = ?
         """, (win_rate, placing_rate, username))
 
+    backup_all_tables()
     conn.commit()
     flash("得点とユーザー情報を更新しました")
 
@@ -732,10 +737,10 @@ def backup_all_tables():
     update_backup_time()
     print("✅ 全テーブルのバックアップ完了！")
 
-@app.before_first_request
 def startup_backup_check():
     if time.time() - get_last_backup_time() >= BACKUP_INTERVAL:
         backup_all_tables()
 
 if __name__ == '__main__':
+    startup_backup_check()
     app.run(debug=True)
