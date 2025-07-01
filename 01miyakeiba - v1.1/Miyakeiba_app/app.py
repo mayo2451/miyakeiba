@@ -698,7 +698,7 @@ DB_NAME = "miyakeiba_app.db"
 def get_sheet_client():
     creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name(creds_dict, scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
     return client.open(SHEET_NAME)
 
