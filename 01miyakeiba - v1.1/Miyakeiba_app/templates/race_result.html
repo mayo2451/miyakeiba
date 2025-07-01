@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>大ヴァロ予想王</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}">
+    </head>
+    <body>
+        <header>
+            <h1>大ヴァロ予想王</h1>
+            <div class="login-status">
+                {% if session.get('username') %}
+                    <span>ようこそ、{{ session['username'] }}さん</span>
+                    <a href="{{ url_for('logout') }}" style="margin-left: 10px;">ログアウト</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">ログイン</a>
+                    <a href="{{ url_for('register') }}" style="margin-left: 10px;">新規登録</a>
+                {% endif %}
+            </div>
+        </header>
+        <div class="menu_bar">
+            <nav>
+                <ul class="menu">
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="/">全体成績</a></li>
+                    <li><a href="{{url_for('mypage')}}">マイページ</a></li>
+                    {% if session.get('role') == 'admin' %}
+                        <li><a href="{{url_for('insert_race')}}">予定追加</a></li>
+                        <li><a href="{{url_for('entry_form')}}">出馬表作成</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <h2>レース結果</h2>
+        <table border="1">
+            <tr><th>着順</th><th>馬名</th><th>オッズ</th></tr>
+            <tr><td>1着</td><td>{{ result.first_place }}</td><td>{{ result.odds_first }}</td></tr>
+            <tr><td>2着</td><td>{{ result.second_place }}</td><td>{{ result.odds_second }}</td></tr>
+            <tr><td>3着</td><td>{{ result.third_place }}</td><td>{{ result.odds_third }}</td></tr>
+            <tr><td>4着</td><td>{{ result.fourth_place }}</td><td>—</td></tr>
+            <tr><td>5着</td><td>{{ result.fifth_place }}</td><td>—</td></tr>
+        </table>
+
+        <h2>本命馬提出と得点一覧</h2>
+        <table border="1">
+            <tr>
+                <th>順位</th>
+                <th>ユーザー</th>
+                <th>本命馬</th>
+                <th>得点</th>
+            </tr>
+            {% for row in scores %}
+            <tr>
+                <td>{{ row.rank }}</td>
+                <td>{{ row.username }}</td>
+                <td>{{ row.honmeiba }}</td>
+                <td>{{ row.score }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <p><a href="{{ url_for('show_entries', race_id=request.view_args['race_id']) }}">出馬表へ戻る</a></p>
+    </body>
+</html>
