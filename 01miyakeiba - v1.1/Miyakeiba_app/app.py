@@ -728,9 +728,11 @@ def backup_all_tables():
             column_names = [desc[0] for desc in cursor.description]
 
             worksheet.clear()
-            worksheet.append_row(column_names)
-            for row in rows:
-                worksheet.append_row(list(row))
+
+            data = [column_names] + [list(row) for row in rows]
+
+            worksheet.update('A1', data)
+            
         except Exception as e:
             print(f"⚠️ エラー（{table}）: {e}")
             continue
