@@ -690,7 +690,7 @@ def filtered_users():
     return render_template('alluserscore.html', all_users=all_users, filtered_users=filtered_users, grades=grades, places=places)
 
 SHEET_NAME = "miyakeiba_backup"
-TABLES = ['race_entries', 'race_result', 'race_schedule', 'raise_horse', 'sqlite_sequence', 'users']
+TABLES = ['race_entries', 'race_result', 'race_schedule', 'raise_horse', 'sqlite_sequence', 'users', 'timestamp']
 BACKUP_INTERVAL = 600
 TIMESTAMP_FILE = "last_backup.txt"
 DB_NAME = "miyakeiba_app.db"
@@ -703,14 +703,23 @@ def get_sheet_client():
     return client.open(SHEET_NAME)
 
 def get_last_backup_time():
-    if not os.path.exists(TIMESTAMP_FILE):
-        return 0
-    with open(TIMESTAMP_FILE, 'r') as f:
-        return float(f.read().strip())
-
+    try:
+        sheet = get_sheet_client()
+        worksheet = sheet.worksheet("timestamp")
+        value = worksheet.acell('A1').value
+        return float(value) if value else 0.0
+    except Exception as e:
+        print(f"⚠️ タイムスタンプ取得エラー: {e}")
+        return 0.0
+        
 def update_backup_time():
-    with open(TIMESTAMP_FILE, 'w') as f:
-        f.write(str(time.time()))
+    try:
+        sheet = get_sheet_client()
+        worksheet = sheet.worksheet("timestamp")
+        now = str(time.time())
+        worksheet.update('A1', now)
+    except Exception as e:
+        print(f"⚠️ タイムスタンプ更新エラー: {e}")
 
 def backup_all_tables():
     print("✅ バックアップ開始...")
