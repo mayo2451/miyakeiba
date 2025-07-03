@@ -59,6 +59,9 @@ def load_backup_from_sheet():
     conn.close()
     print("✅ 全テーブルの読み込み完了")
 load_backup_from_sheet()
+def startup_backup_check():
+    if time.time() - get_last_backup_time() >= BACKUP_INTERVAL:
+        backup_all_tables()
 startup_backup_check()
 app.secret_key = 'your_secret_key'
 
