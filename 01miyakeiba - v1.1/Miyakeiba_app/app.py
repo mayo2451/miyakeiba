@@ -1,4 +1,5 @@
 from flask import Flask,render_template,request,redirect, session, url_for, flash # type: ignore
+from flask_login import LoginManager, login_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash # type: ignore
 import calendar
 import datetime
@@ -10,6 +11,7 @@ import gspread # type: ignore
 from oauth2client.service_account import ServiceAccountCredentials # type: ignore
 import time
 import json
+import hashlib
 
 app = Flask(__name__)
 SHEET_NAME = "miyakeiba_backup"
@@ -17,6 +19,8 @@ TABLES = ['race_entries', 'race_result', 'race_schedule', 'raise_horse', 'sqlite
 BACKUP_INTERVAL = 600
 TIMESTAMP_FILE = "last_backup.txt"
 DB_NAME = "miyakeiba_app.db"
+login_manager = LoginManager()
+login_manager.init_app(app)
 def load_backup_from_sheet():
     print("📥 スプレッドシートからバックアップを読み込み中...")
 
@@ -116,11 +120,34 @@ def startup_backup_check():
         backup_all_tables()
 startup_backup_check()
 app.secret_key = 'your_secret_key'
+class User:
+    def _init_(self, id_, name, password):
+        self.id = id_
+        self.name = name
+        self.password = password
+    def is_authenticated(self): return True
+    def is_active(self): return True
+    def is_anonymous(self): return True
+    def get_id(self): return str(self.id)
+@login_manager.user_loader
+
 
 def connect_db():
     conn = sqlite3.connect('miyakeiba_app.db')
     conn.row_factory = sqlite3.Row
     return conn
+
+def hash_passward(password):
+    return hashlib.sha256(passward.encode()).hexdigest()
+
+def set_inistial_passwords(conn):
+    cursor = conn.cursor()
+    users = cursor.execute("SELECT id FROM users").fetchall()
+    for user in users:
+        user_id = user[0]
+        initial_password = hash_password(f"user{user_id}")
+        cursor.execute("UPDATE users SET password = ? WHERE id = ?", (initial_password, user_id))
+    conn.commit()
 
 class HolidayCalendar(calendar.HTMLCalendar):
     def formatday(self, day, weekday):
