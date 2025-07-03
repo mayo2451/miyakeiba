@@ -12,6 +12,8 @@ import time
 import json
 
 app = Flask(__name__)
+load_backup_from_sheet()
+startup_backup_check()
 app.secret_key = 'your_secret_key'
 
 def connect_db():
@@ -800,6 +802,4 @@ def load_backup_from_sheet():
     print("✅ 全テーブルの読み込み完了")
 
 if __name__ == '__main__':
-    load_backup_from_sheet()
-    startup_backup_check()
     app.run(debug=True)
