@@ -758,10 +758,6 @@ def startup_backup_check():
         backup_all_tables()
         
 def load_backup_from_sheet():
-    import sqlite3
-    import gspread
-    from oauth2client.service_account import ServiceAccountCredentials
-
     print("📥 スプレッドシートからバックアップを読み込み中...")
 
     # 認証とシート接続
