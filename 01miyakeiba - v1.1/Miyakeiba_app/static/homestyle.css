@@ -86,4 +86,5 @@ header{
 iframe {
     border: none;
     align-items: center;
+    justify-content: center;
 }
