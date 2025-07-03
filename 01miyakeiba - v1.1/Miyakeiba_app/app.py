@@ -59,6 +59,24 @@ def load_backup_from_sheet():
     conn.close()
     print("✅ 全テーブルの読み込み完了")
 load_backup_from_sheet()
+def get_last_backup_time():
+    try:
+        sheet = get_sheet_client()
+        worksheet = sheet.worksheet("timestamp")
+        value = worksheet.acell('A1').value
+        return float(value) if value else 0.0
+    except Exception as e:
+        print(f"⚠️ タイムスタンプ取得エラー: {e}")
+        return 0.0
+        
+def update_backup_time():
+    try:
+        sheet = get_sheet_client()
+        worksheet = sheet.worksheet("timestamp")
+        now = str(time.time())
+        worksheet.insert_row([now], 1)
+    except Exception as e:
+        print(f"⚠️ タイムスタンプ更新エラー: {e}")
 def startup_backup_check():
     if time.time() - get_last_backup_time() >= BACKUP_INTERVAL:
         backup_all_tables()
@@ -749,25 +767,6 @@ def get_sheet_client():
     client = gspread.authorize(creds)
     return client.open(SHEET_NAME)
 
-def get_last_backup_time():
-    try:
-        sheet = get_sheet_client()
-        worksheet = sheet.worksheet("timestamp")
-        value = worksheet.acell('A1').value
-        return float(value) if value else 0.0
-    except Exception as e:
-        print(f"⚠️ タイムスタンプ取得エラー: {e}")
-        return 0.0
-        
-def update_backup_time():
-    try:
-        sheet = get_sheet_client()
-        worksheet = sheet.worksheet("timestamp")
-        now = str(time.time())
-        worksheet.insert_row([now], 1)
-    except Exception as e:
-        print(f"⚠️ タイムスタンプ更新エラー: {e}")
-
 def backup_all_tables():
     print("✅ バックアップ開始...")
     sheet = get_sheet_client()
@@ -797,10 +796,6 @@ def backup_all_tables():
     update_backup_time()
     load_backup_from_sheet()
     print("✅ 全テーブルのバックアップ完了！")
-
-def startup_backup_check():
-    if time.time() - get_last_backup_time() >= BACKUP_INTERVAL:
-        backup_all_tables()
         
 if __name__ == '__main__':
     app.run(debug=True)
