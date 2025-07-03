@@ -59,6 +59,41 @@ def load_backup_from_sheet():
     conn.close()
     print("✅ 全テーブルの読み込み完了")
 load_backup_from_sheet()
+def get_sheet_client():
+    creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    client = gspread.authorize(creds)
+    return client.open(SHEET_NAME)
+def backup_all_tables():
+    print("✅ バックアップ開始...")
+    sheet = get_sheet_client()
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    for table in TABLES:
+        try:
+            print(f"📄 テーブル `{table}` の処理中...")
+            # スプレッドシートの該当シート（ワークシート）取得
+            worksheet = sheet.worksheet(table)
+            cursor.execute(f"SELECT * FROM {table}")
+            rows = cursor.fetchall()
+            column_names = [desc[0] for desc in cursor.description]
+
+            worksheet.clear()
+
+            data = [column_names] + [list(row) for row in rows]
+
+            worksheet.update('A1', data)
+            
+        except Exception as e:
+            print(f"⚠️ エラー（{table}）: {e}")
+            continue
+
+    conn.close()
+    update_backup_time()
+    load_backup_from_sheet()
+    print("✅ 全テーブルのバックアップ完了！")
 def get_last_backup_time():
     try:
         sheet = get_sheet_client()
@@ -68,7 +103,6 @@ def get_last_backup_time():
     except Exception as e:
         print(f"⚠️ タイムスタンプ取得エラー: {e}")
         return 0.0
-        
 def update_backup_time():
     try:
         sheet = get_sheet_client()
@@ -760,42 +794,5 @@ def filtered_users():
 
     return render_template('alluserscore.html', all_users=all_users, filtered_users=filtered_users, grades=grades, places=places)
 
-def get_sheet_client():
-    creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-    client = gspread.authorize(creds)
-    return client.open(SHEET_NAME)
-
-def backup_all_tables():
-    print("✅ バックアップ開始...")
-    sheet = get_sheet_client()
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
-
-    for table in TABLES:
-        try:
-            print(f"📄 テーブル `{table}` の処理中...")
-            # スプレッドシートの該当シート（ワークシート）取得
-            worksheet = sheet.worksheet(table)
-            cursor.execute(f"SELECT * FROM {table}")
-            rows = cursor.fetchall()
-            column_names = [desc[0] for desc in cursor.description]
-
-            worksheet.clear()
-
-            data = [column_names] + [list(row) for row in rows]
-
-            worksheet.update('A1', data)
-            
-        except Exception as e:
-            print(f"⚠️ エラー（{table}）: {e}")
-            continue
-
-    conn.close()
-    update_backup_time()
-    load_backup_from_sheet()
-    print("✅ 全テーブルのバックアップ完了！")
-        
 if __name__ == '__main__':
     app.run(debug=True)
