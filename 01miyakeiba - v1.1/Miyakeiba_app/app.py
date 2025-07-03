@@ -12,6 +12,11 @@ import time
 import json
 
 app = Flask(__name__)
+SHEET_NAME = "miyakeiba_backup"
+TABLES = ['race_entries', 'race_result', 'race_schedule', 'raise_horse', 'sqlite_sequence', 'users', 'timestamp']
+BACKUP_INTERVAL = 600
+TIMESTAMP_FILE = "last_backup.txt"
+DB_NAME = "miyakeiba_app.db"
 def load_backup_from_sheet():
     print("📥 スプレッドシートからバックアップを読み込み中...")
 
@@ -733,12 +738,6 @@ def filtered_users():
     conn.close()
 
     return render_template('alluserscore.html', all_users=all_users, filtered_users=filtered_users, grades=grades, places=places)
-
-SHEET_NAME = "miyakeiba_backup"
-TABLES = ['race_entries', 'race_result', 'race_schedule', 'raise_horse', 'sqlite_sequence', 'users', 'timestamp']
-BACKUP_INTERVAL = 600
-TIMESTAMP_FILE = "last_backup.txt"
-DB_NAME = "miyakeiba_app.db"
 
 def get_sheet_client():
     creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
