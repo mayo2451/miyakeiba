@@ -210,6 +210,7 @@ def insert_race():
         ORDER BY race_date DESC
     """)
     rows = cursor.fetchall()
+    backup_all_tables()
     conn.close()
 
     races = []
@@ -237,6 +238,7 @@ def delete_race():
     cursor = conn.cursor()
     cursor.execute("DELETE FROM race_schedule WHERE id = ?", (race_id,))
     conn.commit()
+    backup_all_tables()
     conn.close()
 
     return redirect('/insert_race')
