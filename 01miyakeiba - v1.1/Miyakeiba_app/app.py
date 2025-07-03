@@ -717,7 +717,7 @@ def update_backup_time():
         sheet = get_sheet_client()
         worksheet = sheet.worksheet("timestamp")
         now = str(time.time())
-        worksheet.update('A1', now)
+        worksheet.insert_row([now], 1)
     except Exception as e:
         print(f"⚠️ タイムスタンプ更新エラー: {e}")
 
@@ -753,7 +753,54 @@ def backup_all_tables():
 def startup_backup_check():
     if time.time() - get_last_backup_time() >= BACKUP_INTERVAL:
         backup_all_tables()
+        
+def load_backup_from_sheet():
+    import sqlite3
+    import gspread
+    from oauth2client.service_account import ServiceAccountCredentials
+
+    print("📥 スプレッドシートからバックアップを読み込み中...")
+
+    # 認証とシート接続
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])  # 環境変数から読み込み
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    client = gspread.authorize(creds)
+
+    sheet = client.open(SHEET_NAME)
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    for table in TABLES:
+        try:
+            print(f"📄 テーブル `{table}` を読み込み中...")
+            worksheet = sheet.worksheet(table)
+            data = worksheet.get_all_values()
+
+            if not data or len(data) < 2:
+                print(f"⚠️ `{table}` にデータがありません。スキップします。")
+                continue
+
+            columns = data[0]
+            rows = data[1:]
+
+            placeholders = ', '.join(['?'] * len(columns))
+            columns_joined = ', '.join(columns)
+
+            cursor.execute(f"DELETE FROM {table}")
+            cursor.executemany(
+                f"INSERT INTO {table} ({columns_joined}) VALUES ({placeholders})", rows
+            )
+            print(f"✅ `{table}` 読み込み完了")
+        except Exception as e:
+            print(f"❌ エラー（{table}）: {e}")
+            continue
+
+    conn.commit()
+    conn.close()
+    print("✅ 全テーブルの読み込み完了")
 
 if __name__ == '__main__':
+    load_backup_from_sheet()
     startup_backup_check()
     app.run(debug=True)
