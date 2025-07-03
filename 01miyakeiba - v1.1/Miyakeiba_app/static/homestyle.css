@@ -83,3 +83,7 @@ header{
     align-items: center; 
     padding: 10px;
 }
+iframe {
+    border: none;
+    align-items: center;
+}
