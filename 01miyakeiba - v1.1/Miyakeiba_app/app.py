@@ -748,6 +748,7 @@ def backup_all_tables():
 
     conn.close()
     update_backup_time()
+    load_backup_from_sheet()
     print("✅ 全テーブルのバックアップ完了！")
 
 def startup_backup_check():
