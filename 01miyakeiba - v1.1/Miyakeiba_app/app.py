@@ -795,4 +795,4 @@ def filtered_users():
     return render_template('alluserscore.html', all_users=all_users, filtered_users=filtered_users, grades=grades, places=places)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
