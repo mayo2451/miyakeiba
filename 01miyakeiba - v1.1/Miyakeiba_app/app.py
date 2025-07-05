@@ -232,16 +232,22 @@ def get_events_for_month(year, month):
     for row in rows:
         date_str = row['race_date']
         day = int(date_str.split("-")[2])
+
+        # 月日形式の加工（例：07/15）
+        display_date = datetime.datetime.strptime(date_str, "%Y-%m-%d").strftime("%m/%d")
+
         if day not in events:
             events[day] = []
+
         events[day].append({
-            'id':row['id'],
-            'race_date':row['race_date'],
-            'race_place':row['race_place'],
-            'race_number':row['race_number'],
-            'race_grade':row['race_grade'],
-            'race_name':row['race_name'],
-            'start_time':row['start_time']
+            'id': row['id'],
+            'race_date': row['race_date'],               # 元のYYYY-MM-DD
+            'race_date_display': display_date,           # 表示用：MM/DD
+            'race_place': row['race_place'],
+            'race_number': row['race_number'],
+            'race_grade': row['race_grade'],
+            'race_name': row['race_name'],
+            'start_time': row['start_time']
         })
 
     return events
