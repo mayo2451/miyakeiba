@@ -93,6 +93,9 @@ def backup_all_tables():
         except Exception as e:
             print(f"⚠️ エラー（{table}）: {e}")
             continue
+@app.template_filter('datetimeformat')
+def datetimeformat(value, format="%m/%d"):
+    return datetime.datetime.strptime(value, "%Y-%m-%d").strftime(format)
 
     conn.close()
     update_backup_time()
