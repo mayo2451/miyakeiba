@@ -59,7 +59,7 @@
                         {% for day, races in events.items() %}
                             {% for race in races %}
                                 <tr>
-                                    <td class="schedule_date">{{ race['race_date'] | datetimeformat('%m/%d') }}</td>
+                                    <td class="schedule_date">{{ race['race_date_display'] }}</td>
                                     <td class="schedule_place">{{ race['race_place'] }}</td>
                                     <td class="schedule_name">
                                         <a href="{{ url_for('show_entries', race_id=race['id']) }}">
