@@ -12,7 +12,7 @@ import time
 import json
 import hashlib
 import threading
-from datetime import datetime
+from datetime import datetime, date
 
 app = Flask(__name__)
 SHEET_NAME = "miyakeiba_backup"
@@ -183,7 +183,7 @@ class HolidayCalendar(calendar.HTMLCalendar):
         if day == 0:
             return '<td class="noday">&nbsp;</td>'
         
-        date = datetime.date(self.year, self.month, day)
+        date = date(self.year, self.month, day)
         is_holiday = jpholiday.is_holiday(date)
 
         classes = ['weekday']
@@ -217,8 +217,8 @@ class HolidayCalendar(calendar.HTMLCalendar):
         if day == 0:
             return '<td class="noday">&nbsp;</td>'
         
-        date = datetime.date(self.year, self.month, day)
-        today = datetime.date.today()
+        date = date(self.year, self.month, day)
+        today = date.today()
         is_holiday = jpholiday.is_holiday(date)
 
         classes = ['weekday']
@@ -238,11 +238,11 @@ def get_events_for_month(year, month):
     conn = connect_db()
     cursor = conn.cursor()
     
-    first_day = datetime.date(year, month, 1)
+    first_day = date(year, month, 1)
     if month == 12:
-        last_day = datetime.date(year + 1, 1, 1)
+        last_day = date(year + 1, 1, 1)
     else:
-        last_day = datetime.date(year, month + 1, 1)
+        last_day = date(year, month + 1, 1)
 
     first_day_str = first_day.strftime("%Y-%m-%d")
     last_day_str = last_day.strftime("%Y-%m-%d")
