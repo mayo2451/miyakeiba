@@ -13,6 +13,7 @@ import time
 import json
 import hashlib
 import threading
+from datetime import datetime
 
 app = Flask(__name__)
 SHEET_NAME = "miyakeiba_backup"
