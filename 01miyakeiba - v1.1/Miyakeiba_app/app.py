@@ -122,7 +122,7 @@ def run_backup_async():
 
 @app.template_filter('datetimeformat')
 def datetimeformat(value, format="%m/%d"):
-    return datetime.datetime.strptime(value, "%Y-%m-%d").strftime(format)
+    return datetime.strptime(value, "%Y-%m-%d").strftime(format)
 
     conn.close()
     update_backup_time()
@@ -264,7 +264,7 @@ def get_events_for_month(year, month):
         day = int(date_str.split("-")[2])
 
         # 月日形式の加工（例：07/15）
-        display_date = datetime.datetime.strptime(date_str, "%Y-%m-%d").strftime("%m/%d")
+        display_date = datetime.strptime(date_str, "%Y-%m-%d").strftime("%m/%d")
 
         if day not in events:
             events[day] = []
@@ -284,8 +284,8 @@ def get_events_for_month(year, month):
 
 @app.route('/')
 def home():
-    year = request.args.get('year', default=datetime.datetime.now().year, type=int)
-    month = request.args.get('month', default=datetime.datetime.now().month, type=int)
+    year = request.args.get('year', default=datetime.now().year, type=int)
+    month = request.args.get('month', default=datetime.now().month, type=int)
     
     events = get_events_for_month(year, month)
 
@@ -533,13 +533,13 @@ def show_entries(race_id):
 
     race_datetime_str = f"{race['race_date']} {race['start_time']}"  # "YYYY-MM-DD HH:MM"
     try:
-        race_datetime = datetime.datetime.strptime(race_datetime_str, "%Y-%m-%d %H:%M")
+        race_datetime = datetime.strptime(race_datetime_str, "%Y-%m-%d %H:%M")
     except ValueError:
         flash("レースの日時情報に誤りがあります。")
         return redirect('/', current_path=request.path)
 
     voting_deadline = race_datetime - datetime.timedelta(minutes=1)
-    now = datetime.datetime.now()
+    now = datetime.now()
 
     is_closed = now >= voting_deadline
 
