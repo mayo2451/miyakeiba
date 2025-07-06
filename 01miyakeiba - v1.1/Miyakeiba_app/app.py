@@ -451,27 +451,39 @@ def entry_form():
         horse_names = request.form.getlist('horse_name[]')
         jockeys = request.form.getlist('jockey[]')
 
-        for horse_name, jockey in zip(horse_names, jockeys):
-            if horse_name.strip() and jockey.strip():
-                cursor.execute("""
-                    INSERT INTO race_entries (race_id, horse_name, jockey)
-                    VALUES (?, ?, ?)
-                """, (race_id, horse_name.strip(), jockey.strip()))
+        try:
+            cursor.execute("DELETE FROM race_entries WHERE race_id = ?", (race_id,))
 
-        conn.commit()
-        conn.close()
-        flash("出馬表を登録しました")
-        return redirect('/entry_form')
+            for i, horse_name in enumerate(horse_names):
+                horse_name = horse_name.strip()
+                jockey = jockeys[i].strip() if i < len(jockeys) else ''
+                if horse_name and jockey:
+                    cursor.execute("""
+                        INSERT INTO race_entries (race_id, horse_number, horse_name, jockey)
+                        VALUES (?, ?, ?, ?)
+                    """, (race_id, i + 1, horse_name, jockey))
 
-    # GET時：race_scheduleからすべてのレース取得（最新順）
+            conn.commit()
+            flash("出馬表を登録しました")
+            return redirect('/entry_form')
+
+        except Exception as e:
+            conn.rollback()
+            flash(f"登録エラー: {e}")
+            return redirect('/entry_form')
+
+        finally:
+            conn.close()
+
     cursor.execute("""
         SELECT id, race_date, race_place, race_number, race_name
         FROM race_schedule
         ORDER BY race_date DESC
     """)
     races = cursor.fetchall()
-    races = races[1:]
-    backup_all_tables()
+    races = races[1:]  # 必要なら
+
+    # backup_all_tables() は必要に応じて実行してください
     conn.close()
 
     return render_template('entry_form.html', races=races)
