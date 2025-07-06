@@ -183,8 +183,8 @@ class HolidayCalendar(calendar.HTMLCalendar):
         if day == 0:
             return '<td class="noday">&nbsp;</td>'
         
-        date = date(self.year, self.month, day)
-        is_holiday = jpholiday.is_holiday(date)
+        current_date = date(self.year, self.month, day)
+        is_holiday = jpholiday.is_holiday(current_date)
 
         classes = ['weekday']
         if weekday == 5:
@@ -217,9 +217,9 @@ class HolidayCalendar(calendar.HTMLCalendar):
         if day == 0:
             return '<td class="noday">&nbsp;</td>'
         
-        date = date(self.year, self.month, day)
+        current_date = date(self.year, self.month, day)
         today = date.today()
-        is_holiday = jpholiday.is_holiday(date)
+        is_holiday = jpholiday.is_holiday(current_date)
 
         classes = ['weekday']
         if weekday == 5:
@@ -228,7 +228,7 @@ class HolidayCalendar(calendar.HTMLCalendar):
             classes.append('sun')
         if is_holiday:
             classes.append('holiday')
-        if date == today:
+        if current_date == today:
             classes.append('today')
 
         class_str = ' '.join(classes)
