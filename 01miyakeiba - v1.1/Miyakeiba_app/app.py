@@ -83,6 +83,7 @@ def backup_all_tables():
     is_backup_running = True
     print(f"✅ バックアップ開始...（{datetime.now()}）")
 
+    conn = None
     try:
         sheet = get_sheet_client()  # ← あなたのGoogle Sheets認証関数
         conn = sqlite3.connect(DB_NAME)
