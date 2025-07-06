@@ -113,7 +113,8 @@ def backup_all_tables():
 
     finally:
         is_backup_running = False
-        conn.close()
+        if conn is not None:
+            conn.close()
 def run_backup_async():
     thread = threading.Thread(target=backup_all_tables)
     thread.start()
