@@ -538,7 +538,7 @@ def show_entries(race_id):
         return redirect('/', current_path=request.path)
 
     voting_deadline = race_datetime - timedelta(minutes=1)
-    now = datetime.now(timezone(timedelta(hours=9))))
+    now = datetime.now(timezone(timedelta(hours=9)))
 
     is_closed = now >= voting_deadline
 
