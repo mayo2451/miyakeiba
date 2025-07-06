@@ -12,6 +12,7 @@ from oauth2client.service_account import ServiceAccountCredentials # type: ignor
 import time
 import json
 import hashlib
+import redis
 
 app = Flask(__name__)
 SHEET_NAME = "miyakeiba_backup"
@@ -96,6 +97,8 @@ def backup_all_tables():
 @app.template_filter('datetimeformat')
 def datetimeformat(value, format="%m/%d"):
     return datetime.datetime.strptime(value, "%Y-%m-%d").strftime(format)
+redis_url = os.environ.get('REDIS_URL')
+redis_client = redis.from_url(redis_url)
 
     conn.close()
     update_backup_time()
