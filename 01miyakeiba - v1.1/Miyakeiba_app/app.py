@@ -12,7 +12,7 @@ import time
 import json
 import hashlib
 import threading
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 app = Flask(__name__)
 SHEET_NAME = "miyakeiba_backup"
@@ -537,7 +537,7 @@ def show_entries(race_id):
         flash("レースの日時情報に誤りがあります。")
         return redirect('/', current_path=request.path)
 
-    voting_deadline = race_datetime - datetime.timedelta(minutes=1)
+    voting_deadline = race_datetime - timedelta(minutes=1)
     now = datetime.now()
 
     is_closed = now >= voting_deadline
