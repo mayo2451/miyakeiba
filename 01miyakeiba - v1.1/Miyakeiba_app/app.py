@@ -12,6 +12,7 @@ from oauth2client.service_account import ServiceAccountCredentials # type: ignor
 import time
 import json
 import hashlib
+import threading
 
 app = Flask(__name__)
 SHEET_NAME = "miyakeiba_backup"
@@ -69,30 +70,53 @@ def get_sheet_client():
     creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
     return client.open(SHEET_NAME)
+
+# バックアップ中かどうかのフラグ（グローバル）
+is_backup_running = False
 def backup_all_tables():
-    print("✅ バックアップ開始...")
-    sheet = get_sheet_client()
-    conn = sqlite3.connect(DB_NAME)
-    cursor = conn.cursor()
+    global is_backup_running
 
-    for table in TABLES:
-        try:
-            print(f"📄 テーブル `{table}` の処理中...")
-            # スプレッドシートの該当シート（ワークシート）取得
-            worksheet = sheet.worksheet(table)
-            cursor.execute(f"SELECT * FROM {table}")
-            rows = cursor.fetchall()
-            column_names = [desc[0] for desc in cursor.description]
+    if is_backup_running:
+        print("⚠️ バックアップはすでに実行中です。スキップします。")
+        return
 
-            worksheet.clear()
+    is_backup_running = True
+    print(f"✅ バックアップ開始...（{datetime.now()}）")
 
-            data = [column_names] + [list(row) for row in rows]
+    try:
+        sheet = get_sheet_client()  # ← あなたのGoogle Sheets認証関数
+        conn = sqlite3.connect(DB_NAME)
+        cursor = conn.cursor()
 
-            worksheet.update('A1', data)
-            
-        except Exception as e:
-            print(f"⚠️ エラー（{table}）: {e}")
-            continue
+        for table in TABLES:
+            try:
+                print(f"📄 テーブル `{table}` の処理中...")
+                worksheet = sheet.worksheet(table)
+
+                cursor.execute(f"SELECT * FROM {table}")
+                rows = cursor.fetchall()
+                column_names = [desc[0] for desc in cursor.description]
+
+                worksheet.clear()
+                data = [column_names] + [list(row) for row in rows]
+                worksheet.update('A1', data)
+
+            except Exception as e:
+                print(f"⚠️ エラー（{table}）: {e}")
+                continue
+
+        print(f"✅ バックアップ完了（{datetime.now()}）")
+
+    except Exception as e:
+        print(f"❌ バックアップ全体エラー: {e}")
+
+    finally:
+        is_backup_running = False
+        conn.close()
+def run_backup_async():
+    thread = threading.Thread(target=backup_all_tables)
+    thread.start()
+
 @app.template_filter('datetimeformat')
 def datetimeformat(value, format="%m/%d"):
     return datetime.datetime.strptime(value, "%Y-%m-%d").strftime(format)
@@ -120,7 +144,7 @@ def update_backup_time():
         print(f"⚠️ タイムスタンプ更新エラー: {e}")
 def startup_backup_check():
     if time.time() - get_last_backup_time() >= BACKUP_INTERVAL:
-        backup_all_tables()
+        run_backup_async()
 startup_backup_check()
 app.secret_key = 'your_secret_key'
 class User:
@@ -349,7 +373,7 @@ def insert_race():
         ORDER BY race_date DESC
     """)
     rows = cursor.fetchall()
-    backup_all_tables()
+    run_backup_async()
     conn.close()
 
     races = []
@@ -377,7 +401,7 @@ def delete_race():
     cursor = conn.cursor()
     cursor.execute("DELETE FROM race_schedule WHERE id = ?", (race_id,))
     conn.commit()
-    backup_all_tables()
+    run_backup_async()
     conn.close()
 
     return redirect('/insert_race')
@@ -428,7 +452,7 @@ def register():
         cursor = conn.cursor()
         try:
             cursor.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", (username, hashed_pw, 'user'))
-            backup_all_tables()
+            run_backup_async()
             conn.commit()
         except sqlite3.IntegrityError:
             flash("ユーザー名は既に使われています")
@@ -483,7 +507,7 @@ def entry_form():
     races = cursor.fetchall()
     races = races[1:]  # 必要なら
 
-    # backup_all_tables() は必要に応じて実行してください
+    run_backup_async()
     conn.close()
 
     return render_template('entry_form.html', races=races)
@@ -525,7 +549,7 @@ def show_entries(race_id):
                 VALUES(?,?,?)
                 ON CONFLICT(race_id, username) DO UPDATE SET honmeiba=excluded.honmeiba
             """, (race_id, session.get('username'), honmeiba))
-            backup_all_tables()
+            run_backup_async()
             conn.commit()
 
     # 出馬表取得
@@ -594,7 +618,7 @@ def result_input(race_id):
 
         update_scores(conn, race_id)
 
-        backup_all_tables()
+        run_backup_async()
         conn.commit()
         conn.close()
         flash("レース結果を登録しました")
@@ -695,7 +719,7 @@ def update_scores(conn, race_id):
             WHERE username = ?
         """, (win_rate, placing_rate, username))
 
-    backup_all_tables()
+    run_backup_async()
     conn.commit()
     flash("得点とユーザー情報を更新しました")
 
