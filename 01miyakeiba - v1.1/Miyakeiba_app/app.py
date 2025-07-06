@@ -2,7 +2,6 @@ from flask import Flask,render_template,request,redirect, session, url_for, flas
 from flask_login import LoginManager, login_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash # type: ignore
 import calendar
-import datetime
 from calendar import monthrange
 import jpholiday # type: ignore
 import sqlite3
