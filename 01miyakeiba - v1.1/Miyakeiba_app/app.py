@@ -72,6 +72,7 @@ load_backup_from_sheet()
 
 def get_last_backup_time():
     try:
+        sheet = get_sheet_client()
         worksheet = sheet.worksheet("timestamp")
         value = worksheet.acell('A1').value
         return float(value) if value else 0.0
@@ -81,6 +82,7 @@ def get_last_backup_time():
         
 def update_backup_time():
     try:
+        sheet = get_sheet_client()
         worksheet = sheet.worksheet("timestamp")
         now = str(time.time())
         worksheet.insert_row([now], 1)
