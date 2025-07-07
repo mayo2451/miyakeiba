@@ -15,23 +15,27 @@ import threading
 from datetime import datetime, date, timedelta
 
 app = Flask(__name__)
+
 SHEET_NAME = "miyakeiba_backup"
 TABLES = ['race_entries', 'race_result', 'race_schedule', 'raise_horse', 'sqlite_sequence', 'users', 'timestamp']
 BACKUP_INTERVAL = 600
-TIMESTAMP_FILE = "last_backup.txt"
 DB_NAME = "miyakeiba_app.db"
+SKIP_STARTUP_BACKUP = os.getenv("SKIP_STARTUP_BACKUP", "false").lower() == "true"
+app.secret_key = 'your_secret_key'
+
 login_manager = LoginManager()
 login_manager.init_app(app)
-def load_backup_from_sheet():
-    print("📥 スプレッドシートからバックアップを読み込み中...")
 
-    # 認証とシート接続
+def get_sheet_client():
+    creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])  # 環境変数から読み込み
     creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
+    return client.open(SHEET_NAME)
 
-    sheet = client.open(SHEET_NAME)
+def load_backup_from_sheet():
+    print("📥 スプレッドシートからバックアップを読み込み中...")
+    sheet = get_sheet_client()
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
 
@@ -63,14 +67,26 @@ def load_backup_from_sheet():
     conn.commit()
     conn.close()
     print("✅ 全テーブルの読み込み完了")
+    
 load_backup_from_sheet()
-def get_sheet_client():
-    creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-    client = gspread.authorize(creds)
-    return client.open(SHEET_NAME)
 
+def get_last_backup_time():
+    try:
+        worksheet = sheet.worksheet("timestamp")
+        value = worksheet.acell('A1').value
+        return float(value) if value else 0.0
+    except Exception as e:
+        print(f"⚠️ タイムスタンプ取得エラー: {e}")
+        return 0.0
+        
+def update_backup_time():
+    try:
+        worksheet = sheet.worksheet("timestamp")
+        now = str(time.time())
+        worksheet.insert_row([now], 1)
+    except Exception as e:
+        print(f"⚠️ タイムスタンプ更新エラー: {e}")
+        
 # バックアップ中かどうかのフラグ（グローバル）
 is_backup_running = False
 def backup_all_tables():
@@ -83,7 +99,6 @@ def backup_all_tables():
     is_backup_running = True
     print(f"✅ バックアップ開始...（{datetime.now()}）")
 
-    conn = None
     try:
         sheet = get_sheet_client()  # ← あなたのGoogle Sheets認証関数
         conn = sqlite3.connect(DB_NAME)
@@ -106,6 +121,7 @@ def backup_all_tables():
                 print(f"⚠️ エラー（{table}）: {e}")
                 continue
 
+        update_backup_time()
         print(f"✅ バックアップ完了（{datetime.now()}）")
 
     except Exception as e:
@@ -113,48 +129,26 @@ def backup_all_tables():
 
     finally:
         is_backup_running = False
-        if conn is not None:
+        if conn:
             conn.close()
             
 def run_backup_async():
     thread = threading.Thread(target=backup_all_tables)
     thread.start()
-
-@app.template_filter('datetimeformat')
-def datetimeformat(value, format="%m/%d"):
-    return datetime.strptime(value, "%Y-%m-%d").strftime(format)
-
-    conn.close()
-    update_backup_time()
-    load_backup_from_sheet()
-    print("✅ 全テーブルのバックアップ完了！")
-def get_last_backup_time():
-    try:
-        sheet = get_sheet_client()
-        worksheet = sheet.worksheet("timestamp")
-        value = worksheet.acell('A1').value
-        return float(value) if value else 0.0
-    except Exception as e:
-        print(f"⚠️ タイムスタンプ取得エラー: {e}")
-        return 0.0
-def update_backup_time():
-    try:
-        sheet = get_sheet_client()
-        worksheet = sheet.worksheet("timestamp")
-        now = str(time.time())
-        worksheet.insert_row([now], 1)
-    except Exception as e:
-        print(f"⚠️ タイムスタンプ更新エラー: {e}")
-
-SKIP_STARTUP_BACKUP = os.getenv("SKIP_STARTUP_BACKUP", "false").lower() == "true"
+    
 def startup_backup_check():
     if SKIP_STARTUP_BACKUP:
         print("🚫 起動時のバックアップはスキップされました。")
         return
     if time.time() - get_last_backup_time() >= BACKUP_INTERVAL:
         run_backup_async()
+
 startup_backup_check()
-app.secret_key = 'your_secret_key'
+
+def backup_on_post():
+    if time.time() - get_last_backup_time() >= BACKUP_INTERVAL:
+        run_backup_async()
+
 class User:
     def _init_(self, id_, name, password):
         self.id = id_
@@ -165,7 +159,6 @@ class User:
     def is_anonymous(self): return True
     def get_id(self): return str(self.id)
 @login_manager.user_loader
-
 
 def connect_db():
     conn = sqlite3.connect('miyakeiba_app.db')
@@ -381,7 +374,7 @@ def insert_race():
         ORDER BY race_date DESC
     """)
     rows = cursor.fetchall()
-    run_backup_async()
+    backup_on_post()
     conn.close()
 
     races = []
@@ -409,7 +402,7 @@ def delete_race():
     cursor = conn.cursor()
     cursor.execute("DELETE FROM race_schedule WHERE id = ?", (race_id,))
     conn.commit()
-    run_backup_async()
+    backup_on_post()
     conn.close()
 
     return redirect('/insert_race')
@@ -460,7 +453,7 @@ def register():
         cursor = conn.cursor()
         try:
             cursor.execute("INSERT INTO users (username, password, role) VALUES (?, ?, ?)", (username, hashed_pw, 'user'))
-            run_backup_async()
+            backup_on_post()
             conn.commit()
         except sqlite3.IntegrityError:
             flash("ユーザー名は既に使われています")
@@ -515,7 +508,7 @@ def entry_form():
     races = cursor.fetchall()
     races = races[1:]  # 必要なら
 
-    run_backup_async()
+    backup_on_post()
     conn.close()
 
     return render_template('entry_form.html', races=races)
@@ -557,7 +550,7 @@ def show_entries(race_id):
                 VALUES(?,?,?)
                 ON CONFLICT(race_id, username) DO UPDATE SET honmeiba=excluded.honmeiba
             """, (race_id, session.get('username'), honmeiba))
-            run_backup_async()
+            backup_on_post()
             conn.commit()
 
     # 出馬表取得
@@ -626,7 +619,7 @@ def result_input(race_id):
 
         update_scores(conn, race_id)
 
-        run_backup_async()
+        backup_on_post()
         conn.commit()
         conn.close()
         flash("レース結果を登録しました")
@@ -727,7 +720,7 @@ def update_scores(conn, race_id):
             WHERE username = ?
         """, (win_rate, placing_rate, username))
 
-    run_backup_async()
+    backup_on_post()
     conn.commit()
     flash("得点とユーザー情報を更新しました")
 
