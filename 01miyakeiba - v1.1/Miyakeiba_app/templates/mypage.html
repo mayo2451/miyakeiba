@@ -55,8 +55,8 @@
                 <td>{{ user.third }}</td>
                 <td>{{ user.bbs }}</td>
                 <td>{{ user.out_of_place }}</td>
-                <td>{{ (user.win_rate * 100) | round(1) }}%</td>
-                <td>{{ (user.placing_bets_rate * 100) | round(1) }}%</td>
+                <td>{{ (user.win_rate * 100) | round(2) }}%</td>
+                <td>{{ (user.placing_bets_rate * 100) | round(2) }}%</td>
               </tr>
             </table>
         {% else %}
