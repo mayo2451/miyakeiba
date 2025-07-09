@@ -464,6 +464,7 @@ def register():
             conn.close()
 
         flash("登録に成功しました。ログインしてください。")
+        run_backup_async()
         return redirect('/login')
 
     return render_template('register.html')
