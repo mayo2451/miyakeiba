@@ -573,6 +573,7 @@ def mypage():
     conn = connect_db()
     cursor = conn.cursor()
 
+    # 成績一覧データ（過去の参加レース）
     cursor.execute("""
         SELECT r.race_date, r.race_place, r.race_name, h.honmeiba, h.honmeiba_rank, h.score
         FROM raise_horse h
@@ -581,9 +582,41 @@ def mypage():
         ORDER BY r.race_date DESC
     """, (username,))
     entries = cursor.fetchall()
+
+    # 個人成績集計（横一列に表示する要約）
+    cursor.execute("""
+        SELECT
+            COUNT(*) AS total_races,
+            SUM(score) AS total_score,
+            SUM(CASE WHEN honmeiba_rank = 1 THEN 1 ELSE 0 END) AS first,
+            SUM(CASE WHEN honmeiba_rank = 2 THEN 1 ELSE 0 END) AS second,
+            SUM(CASE WHEN honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third,
+            SUM(CASE WHEN honmeiba_rank BETWEEN 4 AND 5 THEN 1 ELSE 0 END) AS bbs,
+            SUM(CASE WHEN honmeiba_rank = 0 THEN 1 ELSE 0 END) AS out_of_place,
+            ROUND(AVG(CASE WHEN honmeiba_rank = 1 THEN 1.00 ELSE 0 END), 4) AS win_rate,
+            ROUND(AVG(CASE WHEN honmeiba_rank BETWEEN 1 AND 3 THEN 1.00 ELSE 0 END), 4) AS placing_bets_rate
+        FROM raise_horse
+        WHERE username = ?
+    """, (username,))
+    row = cursor.fetchone()
+
     conn.close()
 
-    return render_template('mypage.html', username=username, entries=entries)
+    user_stats = None
+    if row and row[0] > 0:
+        user_stats = {
+            "total_races": row[0],
+            "total_score": row[1],
+            "first": row[2],
+            "second": row[3],
+            "third": row[4],
+            "bbs": row[5],
+            "out_of_place": row[6],
+            "win_rate": row[7],
+            "placing_bets_rate": row[8],
+        }
+
+    return render_template('mypage.html', username=username, entries=entries, user=user_stats)
 
 @app.route('/result_input/<int:race_id>', methods=['GET', 'POST'])
 def result_input(race_id):
@@ -869,51 +902,6 @@ def filtered_users():
     conn.close()
 
     return render_template('alluserscore.html', all_users=all_users, filtered_users=filtered_users, grades=grades, places=places)
-
-@app.route('/mypage')
-@login_required
-def my_record():
-    conn = connect_db()
-    cur = conn.cursor()
-
-    cur.execute("""
-        SELECT
-            username,
-            COUNT(*) AS total_races,
-            SUM(score) AS total_score,
-            SUM(CASE WHEN honmeiba_rank = 1 THEN 1 ELSE 0 END) AS first,
-            SUM(CASE WHEN honmeiba_rank = 2 THEN 1 ELSE 0 END) AS second,
-            SUM(CASE WHEN honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third,
-            SUM(CASE WHEN honmeiba_rank BETWEEN 4 AND 5 THEN 1 ELSE 0 END) AS bbs,
-            SUM(CASE WHEN honmeiba_rank = 0 THEN 1 ELSE 0 END) AS out_of_place,
-            ROUND(AVG(CASE WHEN honmeiba_rank = 1 THEN 1.00 ELSE 0 END), 4) AS win_rate,
-            ROUND(AVG(CASE WHEN honmeiba_rank BETWEEN 1 AND 3 THEN 1.00 ELSE 0 END), 4) AS placing_bets_rate
-        FROM raise_horse rh
-        JOIN race_schedule rs ON rh.race_id = rs.id
-        WHERE username = ?
-        GROUP BY username
-    """, (current_user.username,))
-    
-    row = cur.fetchone()
-    conn.close()
-
-    if row:
-        user_stats = {
-            "username": row[0],
-            "total_races": row[1],
-            "total_score": row[2],
-            "first": row[3],
-            "second": row[4],
-            "third": row[5],
-            "bbs": row[6],
-            "out_of_place": row[7],
-            "win_rate": row[8],
-            "placing_bets_rate": row[9],
-        }
-    else:
-        user_stats = None
-
-    return render_template('mypage.html', user=user_stats)
 
 if __name__ == '__main__':
     app.run(debug=False)
