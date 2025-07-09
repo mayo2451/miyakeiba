@@ -38,7 +38,7 @@
             <table border="1" cellpadding="8">
               <tr>
                 <th>出走数</th>
-                <th>合計スコア</th>
+                <th>合計</th>
                 <th>1着</th>
                 <th>2着</th>
                 <th>3着</th>
@@ -62,7 +62,7 @@
         {% else %}
             <p>成績データがありません。</p>
         {% endif %}
-        <h2>提出済みの本命馬</h2>
+        <h2>出走履歴</h2>
         {% if entries %}
             <table border="1">
                 <tr>
@@ -74,14 +74,20 @@
                     <th class="tiny">得点</th>
                 </tr>
                 {% for entry in entries %}
-                <tr>
-                    <td class="short">{{ entry['race_date'] }}</td>
-                    <td class="tiny">{{ entry['race_place'] }}</td>
-                    <td>{{ entry['race_name'] }}</td>
-                    <td class="middle">{{ entry['honmeiba'] }}</td>
-                    <td class="tiny">{{ entry['honmeiba_rank'] }}</td>
-                    <td class="tiny">{{ entry['score'] }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ entry[0] }}</td>
+                        <td>{{ entry[1] }}</td>
+                        <td>{{ entry[2] }}</td>
+                        <td>{{ entry[3] }}</td>
+                        <td>
+                            {% if entry[4] == 0 %}
+                                着外
+                            {% else %}
+                                {{ entry[4] }} 着
+                            {% endif %}
+                        </td>
+                        <td>{{ entry[5] }}</td>
+                    </tr>
                 {% endfor %}
             </table>
         {% else %}
