@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='alluserscore.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='calendar.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='schedulestyle.css') }}">
     </head>
     <body>
         <header>
@@ -34,6 +35,15 @@
                     {% endif %}
                 </ul>
             </nav>
+        </div>
+        <div class="colums">
+            <h2>今週のレース</h2>
+            <table>
+                <td>菊花賞</td>
+                <td>G1</td>
+                <td>10/26(日)</td>
+                <td>京都　芝3,000m</td>
+            </table>
         </div>
         <div class="event-list">
             <h2>{{ year }}年{{ month }}月のレース予定</h2>
