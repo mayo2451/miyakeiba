@@ -69,13 +69,15 @@ header{
     padding: 10px;
 }
 iframe {
-    display: flex;
     border: none;
     align-items: center;
     justify-content: center;
 }
-promo-video{
-    justify-content: center; 
-    align-items: center; 
+.promo-video{
+    display: flex;
+    flex-direction: column;
+    align-items: center;     /* 横中央 */
+    justify-content: center; /* 縦中央（必要なら） */
     width: 50%;
+    text-align: center;
 }
