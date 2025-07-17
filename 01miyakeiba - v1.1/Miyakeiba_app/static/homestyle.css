@@ -79,6 +79,7 @@ iframe {
     width: 50%;
     text-align: center;
 }
-.ThisWeekRace{
-    align-items: left;
+.promo-video　h2{
+    align-self: flex-start;  /* h2だけ左寄せに */
+    margin-top: 10px;        /* お好みで間隔調整 */
 }
