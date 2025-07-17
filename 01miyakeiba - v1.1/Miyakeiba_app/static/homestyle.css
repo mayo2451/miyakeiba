@@ -74,3 +74,8 @@ iframe {
     align-items: center;
     justify-content: center;
 }
+promo-video{
+    justify-content: center; 
+    align-items: center; 
+    width: 50%;
+}
