@@ -355,17 +355,17 @@ def insert_race():
 
         for i in range(len(race_dates)):
             cursor.execute("""
-                INSERT INTO race_schedule (race_date, race_place, race_ground, race_distance, race_number, race_grade, race_name, start_time)
+                INSERT INTO race_schedule (race_date, race_place, race_number, race_grade, race_name, start_time, race_ground, race_distance)
                 VALUES (?,?,?,?,?,?)
             """,(
                 race_dates[i],
                 race_places[i],
-                race_ground[i],
-                race_distance[i],
                 race_numbers[i] if race_numbers[i] else None,
                 race_grades[i],
                 race_names[i],
                 start_times[i] if start_times[i] else None
+                race_ground[i],
+                race_distance[i],
             ))
 
         conn.commit()
