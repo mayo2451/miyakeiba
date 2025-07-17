@@ -65,8 +65,10 @@
             <thead>
                 <tr>
                     <th>日付</th>
-                    <th>場所</th>
-                    <th>番号</th>
+                    <th>開催</th>
+                    <th>馬場</th>
+                    <th>距離</th>
+                    <th>レース番号</th>
                     <th>グレード</th>
                     <th>レース名</th>
                     <th>発走時刻</th>
@@ -78,6 +80,8 @@
                     <tr>
                         <td>{{ race.race_date }}</td>
                         <td>{{ race.race_place }}</td>
+                        <td>{{ race.race_ground }}</td>
+                        <td>{{ race.race_distance }}</td>
                         <td>{{ race.race_number }}</td>
                         <td>{{ race.race_grade }}</td>
                         <td>{{ race.race_name }}</td>
