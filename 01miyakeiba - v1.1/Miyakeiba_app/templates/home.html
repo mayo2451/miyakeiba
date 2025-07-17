@@ -81,8 +81,8 @@
                                 <tr>
                                     <td class="schedule_date">{{ race['race_date_display'] }}</td>
                                     <td class="schedule_place">{{ race['race_place'] }}</td>
-                                    <td class="schedule_place">{{ race['race_ground'] }}</td>
-                                    <td class="schedule_place">{{ race['race_distance'] }}</td>
+                                    <td class="schedule_ground">{{ race['race_ground'] }}</td>
+                                    <td class="schedule_distance">{{ race['race_distance'] }}</td>
                                     <td class="schedule_name">
                                         <a href="{{ url_for('show_entries', race_id=race['id']) }}">
                                             {{ race['race_name'] }}
