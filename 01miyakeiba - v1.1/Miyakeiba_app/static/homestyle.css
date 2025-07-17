@@ -37,7 +37,7 @@
 }
 .event-list {
     flex: 1;
-    max-width: 100%; /* お好みで調整 */
+    width: 50%; /* お好みで調整 */
     overflow-y: auto; /* 高さがオーバーしたらスクロール */
     max-height: 600px;
 }
