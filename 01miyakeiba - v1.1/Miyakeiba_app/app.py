@@ -284,6 +284,21 @@ def get_events_for_month(year, month):
 
     return events
 
+def get_this_week_races():
+    today = datetime.date.today()
+    start_of_week = today - datetime.timedelta(days=today.weekday())
+    end_of_week = start_of_week + datetime.timedelta(days=6)
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT * FROM race_shedule
+        WHERE race_date BETWEEN ? AND ?
+        ORDER BY race_date, start_time
+    """,(start_of_week.isoformat(), end_of_week.isdformat()))
+    races = cursor.fetchall()
+    conn.close()
+    return races
+
 @app.route('/')
 def home():
     year = request.args.get('year', default=datetime.now().year, type=int)
@@ -334,8 +349,9 @@ def home():
     users = cur.fetchall()
     conn.close()
 
+    races = get_this_week_races()
     
-    return render_template('home.html', calendar_html=calendar_html, year=year, month=month,prev_year=prev_year,prev_month=prev_month,next_year=next_year,next_month=next_month,events=events,users=users)
+    return render_template('home.html', calendar_html=calendar_html, year=year, month=month,prev_year=prev_year,prev_month=prev_month,next_year=next_year,next_month=next_month,events=events,users=users,races=races)
 
 
 @app.route('/insert_race', methods=['GET', 'POST'])
