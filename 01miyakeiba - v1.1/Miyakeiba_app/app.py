@@ -356,7 +356,7 @@ def insert_race():
         for i in range(len(race_dates)):
             cursor.execute("""
                 INSERT INTO race_schedule (race_date, race_place, race_number, race_grade, race_name, start_time, race_ground, race_distance)
-                VALUES (?,?,?,?,?,?)
+                VALUES (?,?,?,?,?,?,?,?)
             """,(
                 race_dates[i],
                 race_places[i],
