@@ -333,7 +333,7 @@ def home():
     conn.close()
 
     
-    return render_template('main.html', calendar_html=calendar_html, year=year, month=month,prev_year=prev_year,prev_month=prev_month,next_year=next_year,next_month=next_month,events=events,users=users)
+    return render_template('home.html', calendar_html=calendar_html, year=year, month=month,prev_year=prev_year,prev_month=prev_month,next_year=next_year,next_month=next_month,events=events,users=users)
 
 
 @app.route('/insert_race', methods=['GET', 'POST'])
