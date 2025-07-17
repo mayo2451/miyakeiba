@@ -249,7 +249,7 @@ def get_events_for_month(year, month):
     last_day_str = last_day.strftime("%Y-%m-%d")
 
     query = """
-        SELECT id, race_date, race_place, race_number, race_grade, race_name, start_time
+        SELECT id, race_date, race_place, race_ground, race_distance, race_number, race_grade, race_name, start_time
         FROM race_schedule
         WHERE race_date >= ? AND race_date < ?
     """
@@ -274,6 +274,8 @@ def get_events_for_month(year, month):
             'race_date': row['race_date'],               # 元のYYYY-MM-DD
             'race_date_display': display_date,           # 表示用：MM/DD
             'race_place': row['race_place'],
+            'race_ground': row['race_ground'],
+            'race_distance': row['race_distance'],
             'race_number': row['race_number'],
             'race_grade': row['race_grade'],
             'race_name': row['race_name'],
