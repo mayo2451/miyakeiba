@@ -363,9 +363,9 @@ def insert_race():
                 race_numbers[i] if race_numbers[i] else None,
                 race_grades[i],
                 race_names[i],
-                start_times[i] if start_times[i] else None
+                start_times[i] if start_times[i] else None,
                 race_ground[i],
-                race_distance[i],
+                race_distance[i]
             ))
 
         conn.commit()
