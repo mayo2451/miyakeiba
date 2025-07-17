@@ -53,7 +53,13 @@ td.schedule_date{
     width: 15%;
 }
 td.schedule_place{
-    width: 15%; 
+    width: 10%; 
+}
+td.schedule_ground{
+    width: 5%; 
+}
+td.schedule_distance{
+    width: 10%; 
 }
 td.schedule_name{
     width: 50%;
