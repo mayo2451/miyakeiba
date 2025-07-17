@@ -282,7 +282,7 @@ def get_events_for_month(year, month):
 
     return events
 
-@app.route('/')
+@app.route('/home')
 def home():
     year = request.args.get('year', default=datetime.now().year, type=int)
     month = request.args.get('month', default=datetime.now().month, type=int)
