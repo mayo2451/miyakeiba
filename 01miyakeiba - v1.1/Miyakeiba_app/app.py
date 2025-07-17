@@ -341,6 +341,8 @@ def insert_race():
     if request.method == 'POST':
         race_dates = request.form.getlist('race_date[]')
         race_places = request.form.getlist('race_place[]')
+        race_ground = request.form.getlist('race_ground[]')
+        race_distance = request.form.getlist('race_distance[]')
         race_numbers = request.form.getlist('race_number[]')
         race_grades = request.form.getlist('race_grade[]')
         race_names = request.form.getlist('race_name[]')
@@ -351,11 +353,13 @@ def insert_race():
 
         for i in range(len(race_dates)):
             cursor.execute("""
-                INSERT INTO race_schedule (race_date, race_place, race_number, race_grade, race_name, start_time)
+                INSERT INTO race_schedule (race_date, race_place, race_ground, race_distance, race_number, race_grade, race_name, start_time)
                 VALUES (?,?,?,?,?,?)
             """,(
                 race_dates[i],
                 race_places[i],
+                race_ground[i],
+                race_distance[i],
                 race_numbers[i] if race_numbers[i] else None,
                 race_grades[i],
                 race_names[i],
@@ -371,7 +375,7 @@ def insert_race():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT id, race_date, race_place, race_number, race_grade, race_name, start_time
+        SELECT id, race_date, race_place, race_ground, race_distance, race_number, race_grade, race_name, start_time
         FROM race_schedule
         ORDER BY race_date DESC
     """)
@@ -385,6 +389,8 @@ def insert_race():
             "id": row['id'],
             "race_date": row['race_date'],
             "race_place": row['race_place'],
+            "race_ground": row['race_ground'],
+            "race_distance": row['race_distance'],
             "race_number": row['race_number'],
             "race_grade": row['race_grade'],
             "race_name": row['race_name'],
