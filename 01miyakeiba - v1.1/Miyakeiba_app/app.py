@@ -304,7 +304,7 @@ def get_this_week_races():
         raw_date = row[0]
         date_obj = datetime.strptime(raw_date, "%Y-%m-%d")
         weekday_jp = JAPANESE_WEEKDAYS[date_obj.weekday()]
-        formatted_date = date_obj.strftime("%m/%d([weekday_jp})")
+        formatted_date = date_obj.strftime("%m/%d({weekday_jp})")
         formatted_races.append({
             "race_date_display": formatted_date,
             "race_name": row[1],
