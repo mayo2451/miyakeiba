@@ -47,14 +47,29 @@
                 <table>
                     <tbody>
                         {% for race in races %}
-                            <tr>
-                                <td>{{ race.race_date }}</td>
-                                <td>{{ race.race_place }}</td>
-                                <td>{{ race.race_ground }}</td>
-                                <td>{{ race.race_distance }}</td>
-                                <td>{{ race.race_name }}</td>
-                                <td>{{ race.start_time }}</td>
-                            </tr>
+                            <div class="race-card">
+                                <div class="race-header">
+                                    <strong>{{ race.race_name }}</strong>
+                                    <span class="race-grade">{{ race.race_grade }}</span>
+                                    <span class="race-date">{{ race.race_date_display }}</span>
+                                </div>
+                                <div class="race-body">
+                                    <div class="race-image">
+                                    <!-- 画像がある場合：srcを変更 -->
+                                    <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="race image">
+                                    </div>
+                                    <div class="race-info">
+                                        <div class="links">
+                                            <a href="/entry/{{ race.id }}">出馬表</a>
+                                            <span>{{ race.race_place }}</span>
+                                        </div>
+                                        <div class="links">
+                                            <a href="/note/{{ race.id }}">メモ</a>
+                                            <span>{{ race.race_ground }}・{{ race.race_distance }}m</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         {% else %}
                             <tr><td colspan="4">今週のレースはありません</td></tr>
                         {% endfor %}
