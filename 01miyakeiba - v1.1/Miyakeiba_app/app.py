@@ -308,9 +308,9 @@ def get_this_week_races():
         formatted_races.append({
             "race_date_display": formatted_date,
             "race_name": row[1],
-            "race_name": row[2],
-            "race_name": row[3],
-            "race_name": row[4]
+            "race_place": row[2],
+            "race_ground": row[3],
+            "race_distance": row[4]
         })
     return formatted_races
 
