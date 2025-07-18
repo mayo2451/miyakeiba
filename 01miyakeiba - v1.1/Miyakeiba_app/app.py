@@ -291,7 +291,7 @@ def get_this_week_races():
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT * FROM race_shedule
+        SELECT * FROM race_schedule
         WHERE race_date BETWEEN ? AND ?
         ORDER BY race_date, start_time
     """,(start_of_week.isoformat(), end_of_week.isoformat()))
