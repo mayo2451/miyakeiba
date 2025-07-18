@@ -292,7 +292,7 @@ def get_this_week_races():
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT race_date, race_name, race_place, race_ground, race_distance 
+        SELECT id, race_date, race_name, race_place, race_ground, race_distance, race_grade
         FROM race_schedule
         WHERE race_date BETWEEN ? AND ?
         ORDER BY race_date, start_time
@@ -304,13 +304,15 @@ def get_this_week_races():
         raw_date = row[0]
         date_obj = datetime.strptime(raw_date, "%Y-%m-%d")
         weekday_jp = JAPANESE_WEEKDAYS[date_obj.weekday()]
-        formatted_date = date_obj.strftime("%m/%d({weekday_jp})")
+        formatted_date = f"{date_obj.strftime('%m/%d')}（{weekday_jp}）"
         formatted_races.append({
+            "id": row[0]
             "race_date_display": formatted_date,
-            "race_name": row[1],
-            "race_place": row[2],
-            "race_ground": row[3],
-            "race_distance": row[4]
+            "race_name": row[2],
+            "race_place": row[3],
+            "race_ground": row[4],
+            "race_distance": row[5],
+            "race_grade": row[6]
         })
     return formatted_races
 
