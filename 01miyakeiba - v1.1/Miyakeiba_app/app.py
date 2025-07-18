@@ -297,7 +297,7 @@ def get_this_week_races():
         WHERE race_date BETWEEN ? AND ?
         ORDER BY race_date, start_time
     """,(start_of_week.isoformat(), end_of_week.isoformat()))
-    races = cursor.fetchall()
+    rows = cursor.fetchall()
     conn.close()
     formatted_races = []
     for row in rows:
