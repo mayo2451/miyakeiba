@@ -48,12 +48,12 @@
                     <tbody>
                         {% for race in races %}
                             <tr>
-                                <td>{{ race['race_date'] }}</td>
-                                <td>{{ race['race_place'] }}</td>
-                                <td>{{ race['race_ground'] }}</td>
-                                <td>{{ race['race_distance'] }}</td>
-                                <td>{{ race['race_name'] }}</td>
-                                <td>{{ race['start_time'] }}</td>
+                                <td>{{ race.race_date }}</td>
+                                <td>{{ race.race_place }}</td>
+                                <td>{{ race.race_ground }}</td>
+                                <td>{{ race.race_distance }}</td>
+                                <td>{{ race.race_name }}</td>
+                                <td>{{ race.start_time }}</td>
                             </tr>
                         {% else %}
                             <tr><td colspan="4">今週のレースはありません</td></tr>
