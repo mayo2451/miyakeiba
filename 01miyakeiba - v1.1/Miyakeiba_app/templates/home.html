@@ -49,8 +49,7 @@
                         <div class="race-header" style="margin-bottom: 0.5rem;">
                             <strong>{{ race.race_name }}</strong>
                             <span class="race-grade">
-                                {{ race.race_grade }}
-                                <img src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/grade/GI.jpeg" alt="race grade" style="width: 20px; height: auto;">
+                                <img src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/grade/{{ race.race_grade }}.jpeg" alt="{{ race.race_grade }}" style="width: 20px; height: auto;" onerror="this.style.display='none';">
                             </span>
                             <span class="race-date">{{ race.race_date_display }}</span>
                         </div>
