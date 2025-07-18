@@ -286,8 +286,8 @@ def get_events_for_month(year, month):
 
 def get_this_week_races():
     today = date.today()
-    start_of_week = today - datetime.timedelta(days=today.weekday())
-    end_of_week = start_of_week + datetime.timedelta(days=6)
+    start_of_week = today - timedelta(days=today.weekday())
+    end_of_week = start_of_week + timedelta(days=6)
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
