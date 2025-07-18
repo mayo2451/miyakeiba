@@ -45,25 +45,26 @@
                 </iframe>
                 <h2>今週のレース</h2>
                 {% for race in races %}
-                    <div class="race-card">
-                        <div class="race-header">
+                    <div class="race-card" style="margin-bottom: 1.5rem;">
+                        <div class="race-header" style="margin-bottom: 0.5rem;">
                             <strong>{{ race.race_name }}</strong>
                             <span class="race-grade">{{ race.race_grade }}</span>
                             <span class="race-date">{{ race.race_date_display }}</span>
                         </div>
-                        <div class="race-body">
-                            <div class="race-image">
-                            <!-- 画像がある場合：srcを変更 -->
-                            <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="race image">
+                        <div class="race-body" style="display: flex; align-items: flex-start;">
+                            <!-- 左：画像 -->
+                            <div class="race-image" style="flex-shrink: 0; margin-right: 1rem;">
+                                <img src="https://raw.githubusercontent.com/your-username/your-repo/main/images/{{ race.id }}.jpg" alt="race image" style="width: 100px; height: auto;">
                             </div>
+                            <!-- 右：情報 -->
                             <div class="race-info">
-                                <div class="links">
+                                <div class="links" style="margin-bottom: 0.5rem;">
                                     <a href="/show_entries/{{ race.id }}">出馬表</a>
-                                    <span>{{ race.race_place }}</span>
+                                    <span style="margin-left: 1rem;">{{ race.race_place }}</span>
                                 </div>
                                 <div class="links">
                                     <a href="/note/{{ race.id }}">メモ</a>
-                                    <span>{{ race.race_ground }}・{{ race.race_distance }}m</span>
+                                    <span style="margin-left: 1rem;">{{ race.race_ground }}・{{ race.race_distance }}m</span>
                                 </div>
                             </div>
                         </div>
