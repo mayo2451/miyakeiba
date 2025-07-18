@@ -81,8 +81,9 @@
                     <div class="race-schedule">
                         {% for day, races in events.items() %}
                             <div class="race-block" style="margin-bottom: 1.5rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">
+                                <!-- 日付（MM/DD（曜日）形式） -->
                                 <div class="race-date" style="font-weight: bold; margin-bottom: 0.5rem;">
-                                    {{ race['race_date_display'] }}
+                                    {{ day }}
                                 </div>
                                 {% for race in races %}
                                     <div class="race-info" style="display: flex; align-items: center; margin-bottom: 0.25rem;">
