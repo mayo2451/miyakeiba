@@ -35,3 +35,38 @@
 .carousel-control.next {
   right: 0;
 }
+.race-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.link-box, .text-box {
+  width: 160px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.link-box {
+  background-color: #f0f0f0;
+  text-decoration: none;
+  color: #333;
+}
+
+.link-box:hover {
+  background-color: #e0e0e0;
+}
+
+.text-box {
+  background-color: transparent;
+  color: #333;
+}
