@@ -102,12 +102,13 @@
                 -->
                 <div class="race-schedule">
                     {% for day, races in events.items() %}
-                        {% for race in races %}
-                            <div class="race-block" style="margin-bottom: 1.5rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">
-                                <div class="race-date" style="font-weight: bold; margin-bottom: 0.3rem;">
-                                    {{ race['race_date_display'] }}
-                                </div>
-                                <div class="race-info" style="display: flex; align-items: center;">
+                        <div class="race-block" style="margin-bottom: 1.5rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">
+                            <div class="race-date" style="font-weight: bold; margin-bottom: 0.5rem;">
+                                {{ day }}
+                            </div>
+                            {% for race in races %}
+                                <div class="race-info" style="display: flex; align-items: center; margin-bottom: 0.25rem;">
+                                    <span style="margin-right: 0.5rem;">●</span>
                                     <a href="{{ url_for('show_entries', race_id=race['id']) }}" style="font-weight: bold; margin-right: 0.5rem;">
                                         {{ race['race_name'] }}
                                     </a>
@@ -116,8 +117,8 @@
                                              alt="{{ race['race_grade'] }}" style="width: 20px; height: auto;" onerror="this.style.display='none';">
                                     {% endif %}
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     {% endfor %}
                 </div>
                 {% else %}
