@@ -48,7 +48,10 @@
                     <div class="race-card" style="margin-bottom: 1.5rem;">
                         <div class="race-header" style="margin-bottom: 0.5rem;">
                             <strong>{{ race.race_name }}</strong>
-                            <span class="race-grade">{{ race.race_grade }}</span>
+                            <span class="race-grade">
+                                {{ race.race_grade }}
+                                <img src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/grade/GI.jpeg" alt="race image" style="width: 100px; height: auto;">
+                            </span>
                             <span class="race-date">{{ race.race_date_display }}</span>
                         </div>
                         <div class="race-body" style="display: flex; align-items: flex-start;">
