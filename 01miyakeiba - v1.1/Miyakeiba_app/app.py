@@ -288,16 +288,30 @@ def get_this_week_races():
     today = date.today()
     start_of_week = today - timedelta(days=today.weekday())
     end_of_week = start_of_week + timedelta(days=6)
+    display_date = datetime.strptime(date_str, "%Y-%m-%d").strftime("%m/%d")
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT * FROM race_schedule
+        SELECT race_date, race_name, race_place, race_ground, race_distance 
+        FROM race_schedule
         WHERE race_date BETWEEN ? AND ?
         ORDER BY race_date, start_time
     """,(start_of_week.isoformat(), end_of_week.isoformat()))
     races = cursor.fetchall()
     conn.close()
-    return races
+    formatted_races = []
+    for row in rows:
+        raw_date = row[0]
+        date_obj = strptime(raw_date, "%Y-%m-%d")
+        formatted_date = date_obj.strftime("%m/%d(%a)")
+        formatted_races.append({
+            "race_date_display": formatted_date,
+            "race_name": row[1],
+            "race_name": row[2],
+            "race_name": row[3],
+            "race_name": row[4]
+        })
+    return formatted_races
 
 @app.route('/')
 def home():
