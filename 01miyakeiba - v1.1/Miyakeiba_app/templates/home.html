@@ -60,10 +60,12 @@
                                         <img src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/{{ race.id }}/1.jpeg" alt="race image" style="width: 100px; margin-right: 1rem;" onerror="this.style.display='none';">
                                         <div class="race-info">
                                             <div>
-                                                <a href="/show_entries/{{ race.id }}"　style="background: gray; ">出馬表</a> - {{ race.race_place }}
+                                                <a href="/show_entries/{{ race.id }}"　class="link-box">出馬表</a>
+                                                <div class="text-box">{{ race.race_place }}</div>
                                             </div>
                                             <div>
-                                                <a href="/note/{{ race.id }}">みやけん予想メモ</a> - {{ race.race_ground }}{{ race.race_distance }}m
+                                                <a href="/note/{{ race.id }}"　class="link-box">みやけん予想メモ</a>
+                                                <div class="text-box">{{ race.race_ground }}{{ race.race_distance }}m</div>
                                             </div>
                                         </div>
                                     </div>
