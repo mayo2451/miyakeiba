@@ -289,7 +289,6 @@ def get_this_week_races():
     today = date.today()
     start_of_week = today - timedelta(days=today.weekday())
     end_of_week = start_of_week + timedelta(days=6)
-    display_date = datetime.strptime(date_str, "%Y-%m-%d").strftime("%m/%d")
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
