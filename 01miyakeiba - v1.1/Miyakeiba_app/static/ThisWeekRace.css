@@ -36,17 +36,54 @@
   right: 0;
 }
 
-.race-info {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.25rem;
+.race-card {
+  padding: 1rem;
 }
 
-.race-info a {
+/* 上部：レース名・グレード画像・日付 */
+.race-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.race-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.race-title {
   font-weight: bold;
-  margin-right: 0.5rem;
   text-align: left;
-  flex-grow: 1;
+}
+
+.race-grade {
+  width: 20px;
+  height: auto;
+}
+
+.race-date {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* 中央：画像と情報 */
+.race-body {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+
+.race-image {
+  width: 100px;
+  margin-right: 1rem;
+}
+
+.race-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .info-row {
@@ -56,6 +93,7 @@
   gap: 1rem;
 }
 
+/* ボタン・テキスト共通の見た目 */
 .link-box, .text-box {
   width: 160px;
   height: 40px;
