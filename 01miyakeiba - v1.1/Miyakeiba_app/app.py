@@ -22,6 +22,7 @@ BACKUP_INTERVAL = 600
 DB_NAME = "miyakeiba_app.db"
 SKIP_STARTUP_BACKUP = os.getenv("SKIP_STARTUP_BACKUP", "false").lower() == "true"
 app.secret_key = 'your_secret_key'
+JAPANESE_WEEKDAYS = ["月", "火", "水", "木", "金", "土", "日"]
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -303,7 +304,8 @@ def get_this_week_races():
     for row in rows:
         raw_date = row[0]
         date_obj = strptime(raw_date, "%Y-%m-%d")
-        formatted_date = date_obj.strftime("%m/%d(%a)")
+        weekday_jp = JAPANESE_WEEKDAYS[date_obj.weekday()]
+        formatted_date = date_obj.strftime("%m/%d([weekday_jp})")
         formatted_races.append({
             "race_date_display": formatted_date,
             "race_name": row[1],
