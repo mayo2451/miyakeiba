@@ -35,10 +35,18 @@
 .carousel-control.next {
   right: 0;
 }
+
 .race-info {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.race-info a {
+  font-weight: bold;
+  margin-right: 0.5rem;
+  text-align: left;
+  flex-grow: 1;
 }
 
 .info-row {
