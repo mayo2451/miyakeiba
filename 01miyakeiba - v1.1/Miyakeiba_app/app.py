@@ -301,18 +301,17 @@ def get_this_week_races():
     conn.close()
     formatted_races = []
     for row in rows:
-        raw_date = row[1]
-        date_obj = datetime.strptime(raw_date, "%Y-%m-%d")
+        date_obj = datetime.strptime(row["race_date"], "%Y-%m-%d")
         weekday_jp = JAPANESE_WEEKDAYS[date_obj.weekday()]
         formatted_date = f"{date_obj.strftime('%m/%d')}（{weekday_jp}）"
         formatted_races.append({
-            "id": row[0],
+            "id": row["id"],
             "race_date_display": formatted_date,
-            "race_name": row[2],
-            "race_place": row[3],
-            "race_ground": row[4],
-            "race_distance": row[5],
-            "race_grade": row[6]
+            "race_name": row["race_name"],
+            "race_place": row["race_place"],
+            "race_ground": row["race_ground"],
+            "race_distance": row["race_distance"],
+            "race_grade": row["race_grade"]
         })
     return formatted_races
 
