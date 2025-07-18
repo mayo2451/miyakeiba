@@ -294,7 +294,7 @@ def get_this_week_races():
         SELECT * FROM race_shedule
         WHERE race_date BETWEEN ? AND ?
         ORDER BY race_date, start_time
-    """,(start_of_week.isoformat(), end_of_week.isdformat()))
+    """,(start_of_week.isoformat(), end_of_week.isoformat()))
     races = cursor.fetchall()
     conn.close()
     return races
