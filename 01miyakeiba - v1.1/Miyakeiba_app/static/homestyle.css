@@ -89,3 +89,7 @@ iframe {
     align-self: flex-start;  /* h2だけ左寄せに */
     margin-top: 10px;        /* お好みで間隔調整 */
 }
+a {
+    text-decoration: none;
+    color: inherit;
+}
