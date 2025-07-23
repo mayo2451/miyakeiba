@@ -89,6 +89,9 @@ iframe {
     align-self: flex-start;  /* h2だけ左寄せに */
     margin-top: 10px;        /* お好みで間隔調整 */
 }
+.promo-video.full-width {
+  width: 100%;
+}
 a {
     text-decoration: none;
 }
