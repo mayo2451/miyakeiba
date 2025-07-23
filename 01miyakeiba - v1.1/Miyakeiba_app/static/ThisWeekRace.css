@@ -116,12 +116,17 @@
 
 .lower-info {
 	text-align: left;
+	width: 100%;
+	display: block;
+	margin: 0 auto;
 }
 
 .link-box {
 	background-color: #f0f0f0;
 	text-decoration: none;
 	color: #333;
+	display: block;
+	margin: 0 auto;
 }
 
 .link-box:hover {
