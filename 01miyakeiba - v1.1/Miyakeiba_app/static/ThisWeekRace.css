@@ -49,6 +49,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	margin: 0 1rem;
 }
 
 .race-title-group {
@@ -78,6 +79,7 @@
 	display: flex;
 	align-items: flex-start;
 	margin-top: 1rem;
+	margin: 0 1rem;
 }
 
 .race-image {
