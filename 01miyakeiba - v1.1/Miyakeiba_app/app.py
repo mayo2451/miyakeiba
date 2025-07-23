@@ -414,7 +414,7 @@ def insert_race():
         ORDER BY race_date DESC
     """)
     rows = cursor.fetchall()
-    backup_on_post()
+    backup_on_post(force=Ture)
     conn.close()
 
     races = []
@@ -444,7 +444,7 @@ def delete_race():
     cursor = conn.cursor()
     cursor.execute("DELETE FROM race_schedule WHERE id = ?", (race_id,))
     conn.commit()
-    backup_on_post()
+    backup_on_post(force=Ture)
     conn.close()
 
     return redirect('/insert_race')
@@ -551,7 +551,7 @@ def entry_form():
     races = cursor.fetchall()
     races = races[1:]  # 必要なら
 
-    backup_on_post()
+    backup_on_post(force=Ture)
     conn.close()
 
     return render_template('entry_form.html', races=races)
@@ -695,7 +695,7 @@ def result_input(race_id):
 
         update_scores(conn, race_id)
 
-        backup_on_post()
+        backup_on_post(force=Ture)
         conn.commit()
         conn.close()
         flash("レース結果を登録しました")
