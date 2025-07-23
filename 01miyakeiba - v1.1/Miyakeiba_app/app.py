@@ -86,7 +86,7 @@ def update_backup_time():
         sheet = get_sheet_client()
         worksheet = sheet.worksheet("timestamp")
         now = str(time.time())
-        worksheet.insert_row([now], 1)
+        worksheet.update_acell('A1', now)
     except Exception as e:
         print(f"⚠️ タイムスタンプ更新エラー: {e}")
             
