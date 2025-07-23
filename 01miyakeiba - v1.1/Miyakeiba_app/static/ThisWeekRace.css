@@ -116,3 +116,7 @@
   background-color: transparent;
   color: #333;
 }
+
+.racename {
+	font-weight: bold;
+}
