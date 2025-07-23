@@ -148,8 +148,8 @@ def backup_all_tables():
         if conn:
             conn.close()
 
-def backup_on_post():
-    if time.time() - get_last_backup_time() >= BACKUP_INTERVAL:
+def backup_on_post(force=False):
+    if force or (time.time() - get_last_backup_time() >= BACKUP_INTERVAL):
         run_backup_async()
 
 class User:
