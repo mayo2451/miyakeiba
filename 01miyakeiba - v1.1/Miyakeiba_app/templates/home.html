@@ -62,9 +62,9 @@
                                         <div class="race-info">
                                             <div class="upper-info">
                                                 <a href="{{ url_for('show_entries', race_id=race['id']) }}" class="link-box">出馬表</a>
-                                                <div class="text-group">
-                                                    <div class="text-box">{{ race.race_place }}</div>
-                                                    <div class="text-box">{{ race.race_ground }}{{ race.race_distance }}m</div>
+                                                <div class="text-box">
+                                                    {{ race.race_place }}<br>
+                                                    {{ race.race_ground }}{{ race.race_distance }}m
                                                 </div>
                                             </div>
                                             <div class="lower-info">
