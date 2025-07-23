@@ -37,7 +37,11 @@
 }
 
 .race-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
   padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* 上部：レース名・グレード画像・日付 */
@@ -45,12 +49,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 0.5rem;
 }
 
 .race-title-group {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .race-title {
