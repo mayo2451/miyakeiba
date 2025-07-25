@@ -81,6 +81,7 @@ iframe {
 }
 .promo-video{
     display: flex;
+    width: auto;
     flex-direction: column;
     align-items: center;     /* 横中央 */
     justify-content: center; /* 縦中央（必要なら） */
