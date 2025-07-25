@@ -34,11 +34,12 @@
     display: flex;
     gap: 20px;
     align-items: flex-start;
+    justify-content: space-between; 
 }
 .event-list {
     width: 22%; /* ここを調整：16%〜22%程度で好みに応じて */
     max-width: 250px; /* 画面が広すぎるときに広がりすぎないように */
-    overflow-y: auto;
+    margin-left: auto; 
     max-height: 600px;
     padding: 0 8px; /* ちょっと内側に余白をつけても見やすくなる */
 }
