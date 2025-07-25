@@ -38,10 +38,11 @@
     padding: 0 8px; /* ちょっと内側に余白をつけても見やすくなる */
 }
 .event-list {
-    flex: 1;
-    width: 25%; /* お好みで調整 */
-    overflow-y: auto; /* 高さがオーバーしたらスクロール */
+    width: 25%; /* ここを調整：16%〜22%程度で好みに応じて */
+    max-width: 250px; /* 画面が広すぎるときに広がりすぎないように */
+    overflow-y: auto;
     max-height: 600px;
+    padding: 0 8px; /* ちょっと内側に余白をつけても見やすくなる */
 }
 .schedule_table{
     border-collapse: collapse;
