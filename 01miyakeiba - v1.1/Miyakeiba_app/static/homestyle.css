@@ -81,11 +81,13 @@ iframe {
     border: none;
 }
 .promo-video{
+    flex-grow: 1;         /* ← 残りを全部使う */
+    width: auto;          /* ← 明示的な幅を消す */
+    max-width: calc(100% - 270px); /* 右のevent-listが最大250px＋余白20px程度なら */
     display: flex;
-    width: auto;
     flex-direction: column;
-    align-items: center;     /* 横中央 */
-    justify-content: center; /* 縦中央（必要なら） */
+    align-items: center;
+    justify-content: center;
     text-align: center;
 }
 .promo-video h2{
