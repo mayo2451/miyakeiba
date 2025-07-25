@@ -37,7 +37,7 @@
 }
 
 .race-card {
-	background-color: #f9f9f9;
+	background-color: #a0a0a0;
 	border-radius: 10px;
 	padding: 1rem;
 	margin-bottom: 1.5rem;
@@ -145,7 +145,7 @@
 }
 
 .link-box:hover {
-	background-color: #787878;
+	background-color: #e0e0e0;
 }
 
 .text-box {
