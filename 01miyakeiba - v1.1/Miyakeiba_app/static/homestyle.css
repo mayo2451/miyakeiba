@@ -32,12 +32,12 @@
 }
 .container {
     display: flex;
-    gap: 30px; /* 要素間のスペース */
+    gap: 20px; /* 要素間のスペース */
     align-items: flex-start; /* 上揃え */
 }
 .event-list {
     flex: 1;
-    width: 50%; /* お好みで調整 */
+    width: 25%; /* お好みで調整 */
     overflow-y: auto; /* 高さがオーバーしたらスクロール */
     max-height: 600px;
 }
