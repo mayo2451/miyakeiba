@@ -52,12 +52,21 @@
                                     <div class="race-header">
                                         <div class="race-title-goup">
                                             <span class="race-title">{{ race.race_name }}</span>
-                                            <img src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/grade/{{ race.race_grade }}.jpeg" style="width: 20px; height: auto;" class="race-grade" alt="grade" onerror="this.style.display='none';">
+                                            <img 
+                                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/grade/{{ race.race_grade }}.jpeg" 
+                                                style="width: 20px; height: auto;" 
+                                                class="race-grade" 
+                                                alt="grade" 
+                                                onerror="this.style.display='none';">
                                         </div>
                                         <span class="race-date">{{ race.race_date_display }}</span>
                                     </div>
                                     <div class="race-body" style="display: flex; align-items: flex-start;">
-                                        <img src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/{{ race.id }}/1.jpeg" style="width: 100px; margin-right: 1rem;" alt="race image" onerror="this.style.display='none';">
+                                        <img 
+                                            src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/{{ race.id }}/1.jpeg" 
+                                            style="width: 200px; margin-right: 1rem;" 
+                                            alt="race image" 
+                                            onerror="this.style.display='none';">
                                         <div class="race-info">
                                             <div class="upper-info">
                                                 <a href="{{ url_for('show_entries', race_id=race['id']) }}" class="link-box">出馬表</a>
@@ -97,7 +106,10 @@
                                                 {{ race['race_name'] }}
                                             </a>
                                             {% if race['race_grade'] %}
-                                                <img src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/grade/{{ race['race_grade'] }}.jpeg" alt="{{ race['race_grade'] }}" style="width: 20px; height: auto;" onerror="this.style.display='none';">
+                                                <img 
+                                                    src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/grade/{{ race['race_grade'] }}.jpeg" alt="{{ race['race_grade'] }}" 
+                                                    style="width: 20px; height: auto;" 
+                                                    onerror="this.style.display='none';">
                                             {% endif %}
                                         </div>
                                     </div>
