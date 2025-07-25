@@ -31,11 +31,9 @@
     color: white;
 }
 .container {
-    width: 25%; /* ここを調整：16%〜22%程度で好みに応じて */
-    max-width: 250px; /* 画面が広すぎるときに広がりすぎないように */
-    overflow-y: auto;
-    max-height: 600px;
-    padding: 0 8px; /* ちょっと内側に余白をつけても見やすくなる */
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
 }
 .event-list {
     width: 25%; /* ここを調整：16%〜22%程度で好みに応じて */
