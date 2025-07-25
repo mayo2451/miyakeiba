@@ -125,11 +125,18 @@
 	width: 65%;
 }
 
+.upper-info .link-box {
+	height: 40px; /* 任意の高さ */
+	line-height: 40px; /* テキストを中央揃えしたいなら */
+}
+
 .lower-info .link-box {
 	width: 100%;
 	display: block;
 	margin: 0 auto;
 	text-align: center;
+	height: 60px; /* 予想メモを少し大きく */
+	line-height: 60px;
 }
 
 .link-box:hover {
