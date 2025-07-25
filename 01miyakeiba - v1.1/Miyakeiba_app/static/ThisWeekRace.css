@@ -122,12 +122,12 @@
 .link-box {
 	background-color: red;
 	text-decoration: none;
-	width: 65%;
+	width: 67%;
 }
 
 .upper-info .link-box {
-	height: 40px; /* 任意の高さ */
-	line-height: 40px; /* テキストを中央揃えしたいなら */
+	height: 60px; /* 任意の高さ */
+	line-height: 60px; /* テキストを中央揃えしたいなら */
 }
 
 .lower-info .link-box {
@@ -135,8 +135,8 @@
 	display: block;
 	margin: 0 auto;
 	text-align: center;
-	height: 60px; /* 予想メモを少し大きく */
-	line-height: 60px;
+	height: 80px; /* 予想メモを少し大きく */
+	line-height: 80px;
 }
 
 .link-box:hover {
