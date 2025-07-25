@@ -36,7 +36,7 @@
     align-items: flex-start;
 }
 .event-list {
-    width: 25%; /* ここを調整：16%〜22%程度で好みに応じて */
+    width: 22%; /* ここを調整：16%〜22%程度で好みに応じて */
     max-width: 250px; /* 画面が広すぎるときに広がりすぎないように */
     overflow-y: auto;
     max-height: 600px;
