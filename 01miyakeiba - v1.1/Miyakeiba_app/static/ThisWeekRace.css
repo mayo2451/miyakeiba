@@ -153,6 +153,10 @@
 	color: #333;
 }
 
+.upper-info a, .lower-info a {
+	font-size: 1.5rem;
+}
+
 .racename {
 	font-weight: bold;
 }
