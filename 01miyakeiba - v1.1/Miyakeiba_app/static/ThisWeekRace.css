@@ -71,7 +71,7 @@
 }
 
 .race-date {
-	font-size: 1.5rem;
+	font-size: 0.9rem;
 }
 
 /* 中央：画像と情報 */
@@ -86,6 +86,10 @@
 	width: 160px;
 	height: auto;
 	border-radius: 8px;
+}
+
+.race-hedder .race-date {
+	font-size: 1.5rem;
 }
 
 .race-info {
