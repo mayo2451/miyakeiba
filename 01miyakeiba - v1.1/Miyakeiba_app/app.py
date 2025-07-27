@@ -345,21 +345,23 @@ def home():
     cur = conn.cursor()
     query = """
         SELECT
-            username,
-            COUNT(*) AS total_races,
+            u.id AS user_id,
+            rh.username,
             SUM(score) AS total_score,
             SUM(CASE WHEN honmeiba_rank = 1 THEN 1 ELSE 0 END) AS first,
             SUM(CASE WHEN honmeiba_rank = 2 THEN 1 ELSE 0 END) AS second,
-            SUM(CASE WHEN honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third,
-            SUM(CASE WHEN honmeiba_rank BETWEEN 4 AND 5 THEN 1 ELSE 0 END) AS bbs,
-            SUM(CASE WHEN honmeiba_rank = 0 THEN 1 ELSE 0 END) AS out_of_place,
-            ROUND(AVG(CASE WHEN honmeiba_rank = 1 THEN 1.00 ELSE 0 END), 4) AS win_rate,
-            ROUND(AVG(CASE WHEN honmeiba_rank BETWEEN 1 AND 3 THEN 1.00 ELSE 0 END), 4) AS placing_bets_rate
+            SUM(CASE WHEN honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third
         FROM raise_horse rh
         JOIN race_schedule rs ON rh.race_id = rs.id
+        JOIN users u ON rh.username = u.username
         WHERE rs.race_date BETWEEN ? AND ?
         GROUP BY username
-        ORDER BY total_score DESC
+        ORDER BY 
+            total_score DESC,
+            first DESC,
+            second DESC,
+            third DESC
+        LIMIT 3
     """
     cur.execute(query, (start_date, end_date))
     users = cur.fetchall()
@@ -367,7 +369,18 @@ def home():
 
     races = get_this_week_races()
     
-    return render_template('home.html', calendar_html=calendar_html, year=year, month=month,prev_year=prev_year,prev_month=prev_month,next_year=next_year,next_month=next_month,events=events,users=users,races=races)
+    return render_template(
+        'home.html', 
+        calendar_html=calendar_html, 
+        year=year, 
+        month=month,
+        prev_year=prev_year,
+        prev_month=prev_month,
+        next_year=next_year,
+        next_month=next_month,
+        events=events,
+        users=users,
+        races=races)
 
 
 @app.route('/insert_race', methods=['GET', 'POST'])
