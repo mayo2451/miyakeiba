@@ -122,13 +122,27 @@
                 {% endif %}
             </div>
             <h1 class="sub-title">月間得点王</h1>
-            <div class="point-top3">
-                <div class="first-rank">1st</div>
-                <div class="other">
-                    <div class="second-rank">2nd</div>
-                    <div class="third-rank">3rd</div>
+            {% for user in users %}
+                <div class="point-top3">
+                    <div class="first-rank">
+                        <div class="first-title">1st</div>
+                        <div class="first-score">{{ users[0].total_score }} pt</div>
+                        <div class="first-name">{{ users[0].username }}</div>
+                    </div>
+                    <div class="other">
+                        <div class="second-rank">
+                            <div class="second-title">1st</div>
+                            <div class="second-score">{{ users[0].total_score }} pt</div>
+                            <div class="second-name">{{ users[0].username }}</div>
+                        </div>
+                        <div class="third-rank">
+                            <div class="third-title">1st</div>
+                            <div class="third-score">{{ users[0].total_score }} pt</div>
+                            <div class="third-name">{{ users[0].username }}</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
             <h1 class="sub-title">総合得点王</h1>
     </body>
     <script src="{{ url_for('static', filename='js/this_week_race.js') }}"></script>
