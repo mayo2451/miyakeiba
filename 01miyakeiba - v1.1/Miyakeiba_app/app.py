@@ -355,7 +355,7 @@ def home():
         JOIN race_schedule rs ON rh.race_id = rs.id
         JOIN users u ON rh.username = u.username
         WHERE rs.race_date BETWEEN ? AND ?
-        GROUP BY username
+        GROUP BY rh.username
         ORDER BY 
             total_score DESC,
             first DESC,
