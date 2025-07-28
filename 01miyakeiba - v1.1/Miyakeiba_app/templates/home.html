@@ -149,6 +149,31 @@
             </div>
         </div>
         <h1 class="sub-title">総合得点王</h1>
+        <div class="point-top3">
+            {% if users_total|length >= 1 %}
+                <div class="first-rank">
+                    <div class="first-title">1st</div>
+                    <div class="first-score">{{ users_total[0].total_score }} pt</div>
+                    <div class="first-name">{{ users_total[0].username }}</div>
+                </div>
+            {% endif %}
+            <div class="other">
+                {% if users_total|length >= 2 %}
+                    <div class="second-rank">
+                        <div class="second-title">2nd</div>
+                        <div class="second-score">{{ users_total[1].total_score }} pt</div>
+                        <div class="second-name">{{ users_total[1].username }}</div>
+                    </div>
+                {% endif %}
+                {% if users_total|length >= 3 %}
+                    <div class="third-rank">
+                        <div class="third-title">3rd</div>
+                        <div class="third-score">{{ users_total[2].total_score }} pt</div>
+                        <div class="third-name">{{ users_total[2].username }}</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </body>
     <script src="{{ url_for('static', filename='js/this_week_race.js') }}"></script>
 </html>
