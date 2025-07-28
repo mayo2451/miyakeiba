@@ -365,6 +365,27 @@ def home():
     """
     cur.execute(query, (start_date, end_date))
     users = cur.fetchall()
+    query_total = """
+        SELECT
+            u.id AS user_id,
+            rh.username,
+            SUM(rh.score) AS total_score,
+            SUM(CASE WHEN rh.honmeiba_rank = 1 THEN 1 ELSE 0 END) AS first,
+            SUM(CASE WHEN rh.honmeiba_rank = 2 THEN 1 ELSE 0 END) AS second,
+            SUM(CASE WHEN rh.honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third
+        FROM raise_horse rh
+        JOIN race_schedule rs ON rh.race_id = rs.id
+        JOIN users u ON rh.username = u.username
+        GROUP BY rh.username
+        ORDER BY 
+            total_score DESC,
+            first DESC,
+            second DESC,
+            third DESC
+        LIMIT 3
+    """
+    cur.execute(query_total)
+    users_total = cur.fetchall()
     conn.close()
 
     races = get_this_week_races()
@@ -380,6 +401,7 @@ def home():
         next_month=next_month,
         events=events,
         users=users,
+        users_total=users_total,
         races=races)
 
 
