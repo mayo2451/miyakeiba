@@ -136,12 +136,6 @@ a {
 .third-rank {
   background: #cd7f32; /* 銅色 */
 }
-.first-title,
-.second-title,
-.third-title{
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
 
 .first-score {
   font-size: 4.5rem;
