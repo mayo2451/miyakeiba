@@ -155,7 +155,7 @@
                             <div class="rank-conteiner">
                                 <img 
                                     src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/2nd.png" 
-                                    style="width: 20px; height: auto;" 
+                                    style="width: auto; height: 60px;" 
                                     class="second-title" 
                                     alt="rank" 
                                     onerror="this.style.display='none';"> 
@@ -163,6 +163,14 @@
                             </div>
                             <div class="second-name">{{ users[1].username }}</div>
                         </div>
+                        {% if users[0].user_id %}
+                            <img 
+                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{{ users[0].user_id }}/2-3th-icon.png" 
+                                style="width: auto; height: 125px;" 
+                                class="second-photo" 
+                                alt="face-photo" 
+                                onerror="this.style.display='none';"> 
+                        {% endif %}
                     </div>
                 {% endif %}
                 {% if users|length >= 3 %}
@@ -171,7 +179,7 @@
                             <div class="rank-conteiner">
                                 <img 
                                     src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/3rd.png" 
-                                    style="width: 20px; height: auto;" 
+                                    style="width: auto; height: 60px;" 
                                     class="third-title" 
                                     alt="rank" 
                                     onerror="this.style.display='none';"> 
@@ -179,6 +187,14 @@
                             </div>
                             <div class="third-name">{{ users[2].username }}</div>
                         </div>
+                        {% if users[0].user_id %}
+                            <img 
+                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{{ users[0].user_id }}/2-3th-icon.png" 
+                                style="width: auto; height: 125px;" 
+                                class="third-photo" 
+                                alt="face-photo" 
+                                onerror="this.style.display='none';"> 
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
@@ -191,7 +207,7 @@
                         <div class="rank-conteiner">
                             <img 
                                 src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/1st.png" 
-                                style="width: 20px; height: auto;" 
+                                style="width: auto; height: 120px;" 
                                 class="first-title" 
                                 alt="rank" 
                                 onerror="this.style.display='none';"> 
@@ -199,6 +215,14 @@
                         </div>
                         <div class="first-name">{{ users_total[0].username }}</div>
                     </div>
+                    {% if users_total[0].user_id %}
+                        <img 
+                            src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{{ users_total[0].user_id }}/1st-icon.png" 
+                            style="width: auto; height: 250px;" 
+                            class="first-photo" 
+                            alt="face-photo" 
+                            onerror="this.style.display='none';"> 
+                    {% endif %}
                 </div>
             {% endif %}
             <div class="other">
@@ -208,7 +232,7 @@
                             <div class="rank-conteiner">
                                 <img 
                                     src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/2nd.png" 
-                                    style="width: 20px; height: auto;" 
+                                    style="width: auto; height: 60px;" 
                                     class="second-title" 
                                     alt="rank" 
                                     onerror="this.style.display='none';"> 
@@ -216,6 +240,14 @@
                             </div>
                             <div class="second-name">{{ users_total[1].username }}</div>
                         </div>
+                        {% if users_total[0].user_id %}
+                            <img 
+                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{{ users_total[0].user_id }}/2-3th-icon.png" 
+                                style="width: auto; height: 125px;" 
+                                class="second-photo" 
+                                alt="face-photo" 
+                                onerror="this.style.display='none';"> 
+                        {% endif %}
                     </div>
                 {% endif %}
                 {% if users_total|length >= 3 %}
@@ -224,7 +256,7 @@
                             <div class="rank-conteiner">
                                 <img 
                                     src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/3rd.png" 
-                                    style="width: 20px; height: auto;" 
+                                    style="width: auto; height: 60px;" 
                                     class="third-title" 
                                     alt="rank" 
                                     onerror="this.style.display='none';"> 
@@ -232,6 +264,14 @@
                             </div>
                             <div class="third-name">{{ users_total[2].username }}</div>
                         </div>
+                        {% if users_total[0].user_id %}
+                            <img 
+                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{{ users_total[0].user_id }}/2-3th-icon.png" 
+                                style="width: auto; height: 125px;" 
+                                class="third-photo" 
+                                alt="face-photo" 
+                                onerror="this.style.display='none';"> 
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
