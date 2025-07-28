@@ -347,10 +347,10 @@ def home():
         SELECT
             u.id AS user_id,
             rh.username,
-            SUM(score) AS total_score,
-            SUM(CASE WHEN honmeiba_rank = 1 THEN 1 ELSE 0 END) AS first,
-            SUM(CASE WHEN honmeiba_rank = 2 THEN 1 ELSE 0 END) AS second,
-            SUM(CASE WHEN honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third
+            SUM(rh.score) AS total_score,
+            SUM(CASE WHEN rh.honmeiba_rank = 1 THEN 1 ELSE 0 END) AS first,
+            SUM(CASE WHEN rh.honmeiba_rank = 2 THEN 1 ELSE 0 END) AS second,
+            SUM(CASE WHEN rh.honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third
         FROM raise_horse rh
         JOIN race_schedule rs ON rh.race_id = rs.id
         JOIN users u ON rh.username = u.username
