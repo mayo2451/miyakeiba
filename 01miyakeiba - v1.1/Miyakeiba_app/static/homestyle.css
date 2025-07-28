@@ -155,3 +155,6 @@ a {
 .third-name {
   font-size: 1rem;
 }
+.rank-conteiner {
+    display: flex;
+}
