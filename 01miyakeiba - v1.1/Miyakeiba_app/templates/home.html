@@ -126,7 +126,12 @@
         <div class="point-top3">
             {% if users|length >= 1 %}
                 <div class="first-rank">
-                    <div class="first-title">1st</div>
+                    <img 
+                        src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/1st.png" 
+                        style="width: 20px; height: auto;" 
+                        class="first-title" 
+                        alt="rank" 
+                        onerror="this.style.display='none';"> 
                     <div class="first-score">{{ users[0].total_score }} pt</div>
                     <div class="first-name">{{ users[0].username }}</div>
                 </div>
