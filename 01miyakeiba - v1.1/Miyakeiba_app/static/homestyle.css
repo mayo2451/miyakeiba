@@ -158,4 +158,5 @@ a {
 .rank-conteiner,
 .top3-conteiner {
     display: flex;
+    width: 50%;
 }
