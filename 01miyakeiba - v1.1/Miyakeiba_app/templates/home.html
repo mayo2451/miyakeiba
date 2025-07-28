@@ -125,46 +125,60 @@
         <h1 class="sub-title">月間得点王</h1>
         <div class="point-top3">
             {% if users|length >= 1 %}
-                <div class="first-rank">
-                    <div class="rank-conteiner">
-                        <img 
-                            src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/1st.png" 
-                            style="width: 20px; height: auto;" 
-                            class="first-title" 
-                            alt="rank" 
-                            onerror="this.style.display='none';"> 
-                        <div class="first-score">{{ users[0].total_score }} pt</div>
+                <div class="top3-conteiner">
+                    <div class="first-rank">
+                        <div class="rank-conteiner">
+                            <img 
+                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/1st.png" 
+                                style="width: 20px; height: auto;" 
+                                class="first-title" 
+                                alt="rank" 
+                                onerror="this.style.display='none';"> 
+                            <div class="first-score">{{ users[0].total_score }} pt</div>
+                        </div>
+                        <div class="first-name">{{ users[0].username }}</div>
                     </div>
-                    <div class="first-name">{{ users[0].username }}</div>
+                    {% if users[0].users_id %}
+                        <img 
+                            src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/users/{{ users[0].users_id }}/face.png" 
+                            style="width: 20px; height: auto;" 
+                            class="first-photo" 
+                            alt="face-photo" 
+                            onerror="this.style.display='none';"> 
+                    {% endif %}
                 </div>
             {% endif %}
             <div class="other">
                 {% if users|length >= 2 %}
-                    <div class="second-rank">
-                        <div class="rank-conteiner">
-                            <img 
-                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/2nd.png" 
-                                style="width: 20px; height: auto;" 
-                                class="second-title" 
-                                alt="rank" 
-                                onerror="this.style.display='none';"> 
-                            <div class="second-score">{{ users[1].total_score }} pt</div>
+                    <div class="top3-conteiner">
+                        <div class="second-rank">
+                            <div class="rank-conteiner">
+                                <img 
+                                    src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/2nd.png" 
+                                    style="width: 20px; height: auto;" 
+                                    class="second-title" 
+                                    alt="rank" 
+                                    onerror="this.style.display='none';"> 
+                                <div class="second-score">{{ users[1].total_score }} pt</div>
+                            </div>
+                            <div class="second-name">{{ users[1].username }}</div>
                         </div>
-                        <div class="second-name">{{ users[1].username }}</div>
                     </div>
                 {% endif %}
                 {% if users|length >= 3 %}
-                    <div class="third-rank">
-                        <div class="rank-conteiner">
-                            <img 
-                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/3rd.png" 
-                                style="width: 20px; height: auto;" 
-                                class="third-title" 
-                                alt="rank" 
-                                onerror="this.style.display='none';"> 
-                            <div class="third-score">{{ users[2].total_score }} pt</div>
+                    <div class="top3-conteiner">
+                        <div class="third-rank">
+                            <div class="rank-conteiner">
+                                <img 
+                                    src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/3rd.png" 
+                                    style="width: 20px; height: auto;" 
+                                    class="third-title" 
+                                    alt="rank" 
+                                    onerror="this.style.display='none';"> 
+                                <div class="third-score">{{ users[2].total_score }} pt</div>
+                            </div>
+                            <div class="third-name">{{ users[2].username }}</div>
                         </div>
-                        <div class="third-name">{{ users[2].username }}</div>
                     </div>
                 {% endif %}
             </div>
@@ -172,46 +186,52 @@
         <h1 class="sub-title">総合得点王</h1>
         <div class="point-top3">
             {% if users_total|length >= 1 %}
-                <div class="first-rank">
-                    <div class="rank-conteiner">
-                        <img 
-                            src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/1st.png" 
-                            style="width: 20px; height: auto;" 
-                            class="first-title" 
-                            alt="rank" 
-                            onerror="this.style.display='none';"> 
-                        <div class="first-score">{{ users_total[0].total_score }} pt</div>
+                <div class="top3-conteiner">
+                    <div class="first-rank">
+                        <div class="rank-conteiner">
+                            <img 
+                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/1st.png" 
+                                style="width: 20px; height: auto;" 
+                                class="first-title" 
+                                alt="rank" 
+                                onerror="this.style.display='none';"> 
+                            <div class="first-score">{{ users_total[0].total_score }} pt</div>
+                        </div>
+                        <div class="first-name">{{ users_total[0].username }}</div>
                     </div>
-                    <div class="first-name">{{ users_total[0].username }}</div>
                 </div>
             {% endif %}
             <div class="other">
                 {% if users_total|length >= 2 %}
-                    <div class="second-rank">
-                        <div class="rank-conteiner">
-                            <img 
-                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/2nd.png" 
-                                style="width: 20px; height: auto;" 
-                                class="second-title" 
-                                alt="rank" 
-                                onerror="this.style.display='none';"> 
-                            <div class="second-score">{{ users_total[1].total_score }} pt</div>
+                    <div class="top3-conteiner">
+                        <div class="second-rank">
+                            <div class="rank-conteiner">
+                                <img 
+                                    src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/2nd.png" 
+                                    style="width: 20px; height: auto;" 
+                                    class="second-title" 
+                                    alt="rank" 
+                                    onerror="this.style.display='none';"> 
+                                <div class="second-score">{{ users_total[1].total_score }} pt</div>
+                            </div>
+                            <div class="second-name">{{ users_total[1].username }}</div>
                         </div>
-                        <div class="second-name">{{ users_total[1].username }}</div>
                     </div>
                 {% endif %}
                 {% if users_total|length >= 3 %}
-                    <div class="third-rank">
-                        <div class="rank-conteiner">
-                            <img 
-                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/3rd.png" 
-                                style="width: 20px; height: auto;" 
-                                class="third-title" 
-                                alt="rank" 
-                                onerror="this.style.display='none';"> 
-                            <div class="third-score">{{ users_total[2].total_score }} pt</div>
+                    <div class="top3-conteiner">
+                        <div class="third-rank">
+                            <div class="rank-conteiner">
+                                <img 
+                                    src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/icon/3rd.png" 
+                                    style="width: 20px; height: auto;" 
+                                    class="third-title" 
+                                    alt="rank" 
+                                    onerror="this.style.display='none';"> 
+                                <div class="third-score">{{ users_total[2].total_score }} pt</div>
+                            </div>
+                            <div class="third-name">{{ users_total[2].username }}</div>
                         </div>
-                        <div class="third-name">{{ users_total[2].username }}</div>
                     </div>
                 {% endif %}
             </div>
