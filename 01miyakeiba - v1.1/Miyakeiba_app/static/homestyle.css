@@ -156,9 +156,15 @@ a {
 .first-name,
 .second-name,
 .third-name {
-    font-size: 1rem;
     text-align: center;
     margin-bottom: 10px;
+}
+.first-name {
+    font-size: 3rem;
+}
+.second-name,
+.third-name {
+    font-size: 1rem;
 }
 .top3-conteiner {
     display: flex;
