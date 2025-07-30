@@ -117,11 +117,12 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: left;
+    align-items: center;
     gap: 10px;
 }
 .first-title {
     margin-bottom: 10px;
+    margin-right: auto;
 }
 .other {
     display: flex;
@@ -144,7 +145,8 @@ a {
 .first-score {
     font-size: 4.5rem;
     margin-bottom: 5px;
-    align-items: right;
+    margin-left: auto;
+    text-align: right;
 }
 .second-score,
 .third-score {
@@ -161,6 +163,7 @@ a {
 }
 .rank-conteiner {
     display: flex;
+    justify-content: space-between;
     flex-direction: row;
     align-items: center;
     gap: 5px;
