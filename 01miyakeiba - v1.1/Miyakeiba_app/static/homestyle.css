@@ -116,8 +116,11 @@ a {
     font-weight: bold;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 20px;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.first-title {
+    margin-bottom: 10px;
 }
 .other {
   display: flex;
