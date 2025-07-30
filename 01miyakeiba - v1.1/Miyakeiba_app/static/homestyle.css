@@ -116,7 +116,6 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 60%;
     padding: 20px;
 }
 .other {
@@ -156,5 +155,5 @@ a {
     display: flex;
 }
 .1st-block {
-    width: 50%;
+    width: 60%;
 }
