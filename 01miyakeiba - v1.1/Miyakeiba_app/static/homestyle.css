@@ -154,9 +154,14 @@ a {
 .third-name {
   font-size: 1rem;
 }
-.rank-conteiner,
 .top3-conteiner {
     display: flex;
+}
+.rank-conteiner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
 }
 .first-block {
     width: 60%;
