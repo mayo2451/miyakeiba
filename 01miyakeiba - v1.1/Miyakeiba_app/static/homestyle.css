@@ -110,7 +110,7 @@ a {
     height: 250px;
 }
 .first-rank {
-    flix: 1;
+    flex: 1;
     background: gold;
     text-align: center;
     font-weight: bold;
