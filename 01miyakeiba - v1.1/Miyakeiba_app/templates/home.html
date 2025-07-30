@@ -10,7 +10,12 @@
     </head>
     <body>
         <header>
-            <h1>大ヴァロ予想王</h1>
+            <img 
+                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/logo/banner.png" 
+                style="width: auto; height: 200px;" 
+                class="race-grade" 
+                alt="grade" 
+                onerror="this.style.display='none';">
             <div class="login-status">
                 {% if session.get('username') %}
                     <span>ようこそ、{{ session['username'] }}さん</span>
