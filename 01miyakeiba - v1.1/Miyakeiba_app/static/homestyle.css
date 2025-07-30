@@ -122,7 +122,7 @@ a {
 }
 .first-title {
     margin-bottom: 10px;
-    margin-right: auto;
+    align-self: flex-start;
 }
 .other {
     display: flex;
@@ -145,8 +145,8 @@ a {
 .first-score {
     font-size: 4.5rem;
     margin-bottom: 5px;
-    margin-left: auto;
     text-align: right;
+    align-self: flex-end;
 }
 .second-score,
 .third-score {
@@ -157,6 +157,7 @@ a {
 .second-name,
 .third-name {
     font-size: 1rem;
+    align-self: center;
 }
 .top3-conteiner {
     display: flex;
