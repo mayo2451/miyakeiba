@@ -95,7 +95,7 @@ iframe {
     margin-top: 10px;        /* お好みで間隔調整 */
 }
 .promo-video.full-width {
-  width: 100%;
+    width: 100%;
 }
 a {
     text-decoration: none;
@@ -124,36 +124,37 @@ a {
     margin-bottom: 10px;
 }
 .other {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 10px;
 }
 .second-rank,
 .third-rank {
-  background: silver;
-  padding: 20px;
-  text-align: center;
-  font-weight: bold;
-  flex: 1;
+    background: silver;
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
+    flex: 1;
 }
 .third-rank {
-  background: #cd7f32; /* 銅色 */
+    background: #cd7f32; /* 銅色 */
 }
 
 .first-score {
-  font-size: 4.5rem;
-  margin-bottom: 5px;
+    font-size: 4.5rem;
+    margin-bottom: 5px;
+    align-items: right;
 }
 .second-score,
 .third-score {
-  font-size: 1.2rem;
-  margin-bottom: 5px;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
 }
 .first-name,
 .second-name,
 .third-name {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 .top3-conteiner {
     display: flex;
