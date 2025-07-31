@@ -662,8 +662,6 @@ def show_entries(race_id):
     race = dict(race)
     now = datetime.now()
 
-
-    is_closed = now >= voting_deadline
     try:
         race_datetime_str = f"{race['race_date']} {race['start_time']}"  # "YYYY-MM-DD HH:MM"
         race_datetime = datetime.strptime(race_datetime_str, "%Y-%m-%d %H:%M")
