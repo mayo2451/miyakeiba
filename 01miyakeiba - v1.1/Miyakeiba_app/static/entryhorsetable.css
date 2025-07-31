@@ -10,7 +10,7 @@ td {
     text-align: center;
     width: 14.28%; 
 }
-th.tiny {
+.tiny {
     width: 20%
 }
 th {
