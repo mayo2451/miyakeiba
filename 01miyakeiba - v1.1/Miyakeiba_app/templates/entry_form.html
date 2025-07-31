@@ -33,35 +33,55 @@
                 </ul>
             </nav>
         </div>
-    <form method="POST">
-        <label>レースを選択：
-            <select name="race_id" required>
-                <option value="" disabled selected>選択してください</option>
-                {% for race in races %}
-                    <option value="{{ race['id'] }}">
-                        {{ race['race_date'] }} - {{ race['race_place'] }}{{ race['race_number'] }}R - {{ race['race_name'] }}
-                    </option>
-                {% endfor %}
-            </select>
+        <label>
+            <input type="radio" name="mode" value="before" checked> 枠順確定前（最大30頭）
         </label>
-        <table>
-            <tr>
-                <th>馬番</th>
-                <th>馬名</th>
-                <th>騎手</th>
-            </tr>
-            {% for i in range(18) %}
-            <tr>
-                <td>{{ i + 1 }}</td>
-                <td><input type="text" name="horse_name[]"></td>
-                <td><input type="text" name="jockey[]"></td>
-            </tr>
-            {% endfor %}
-        </table>
-        <button type="submit">出馬表を登録</button>
-    </form>
+        <label style="margin-left: 15px;">
+            <input type="radio" name="mode" value="after"> 枠順確定後（最大18頭）
+        </label>
+        <form method="POST">
+            <label>レースを選択：
+                <select name="race_id" required>
+                    <option value="" disabled selected>選択してください</option>
+                    {% for race in races %}
+                        <option value="{{ race['id'] }}">
+                            {{ race['race_date'] }} - {{ race['race_place'] }}{{ race['race_number'] }}R - {{ race['race_name'] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </label>
+            <table　id="horse-table">
+            </table>
+            <button type="submit">出馬表を登録</button>
+        </form>
+    </body>
 </html>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const horseTableBody = document.getElementById('horse-table-body');
+
+        function createRows(count) {
+            horseTableBody.innerHTML = '';
+            for (let i = 1; i <= count; i++) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${i}</td>
+                    <td><input type="text" name="horse_name[]"></td>
+                `;
+                horseTableBody.appendChild(row);
+            }
+        }
+
+        // 初期状態（枠順確定前 → 最大30頭）
+        createRows(30);
+
+        // モード切り替え
+        document.querySelectorAll('input[name="mode"]').forEach(radio => {
+            radio.addEventListener('change', function () {
+                const isBefore = this.value === 'before';
+                createRows(isBefore ? 30 : 18);
+            });
+        });
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('form').addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
