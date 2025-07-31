@@ -262,13 +262,12 @@ def get_events_for_month(year, month):
     events = {}
     for row in rows:
         date_str = row['race_date']
-        day = int(date_str.split("-")[2])
 
         # 月日形式の加工（例：07/15）
         display_date = datetime.strptime(date_str, "%Y-%m-%d").strftime("%m/%d")
 
         if day not in events:
-            events[day] = []
+            events[display_date] = []
 
         events[day].append({
             'id': row['id'],
@@ -317,9 +316,9 @@ def get_this_week_races():
 
 @app.route('/')
 def home():
-    now = datetime.now()
-    year = now.year
-    month = now.month
+    today = date.today()
+    year = today.year
+    month = today.month
     
     events = get_events_for_month(year, month)
 
