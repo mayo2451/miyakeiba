@@ -53,8 +53,8 @@
                         </tr>
                         {% for entry in entries %}
                             <tr>
-                                <td><input type="radio" name="honmeiba" value="{{ entry['horse_name'] }}" required></td>
-                                <td>{{ loop.index }}</td>
+                                <td class="tiny"><input type="radio" name="honmeiba" value="{{ entry['horse_name'] }}" required></td>
+                                <td class="tiny">{{ loop.index }}</td>
                                 <td>{{ entry['horse_name'] }}</td>
                             </tr>
                         {% endfor %}
