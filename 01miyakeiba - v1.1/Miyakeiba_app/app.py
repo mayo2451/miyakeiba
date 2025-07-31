@@ -566,6 +566,7 @@ def entry_form():
         race_id = request.form['race_id']
         mode = request.form.get('mode')
         horse_names = request.form.getlist('horse_name[]')
+        jockeys = request.form.getlist('jockey[]')  
 
         try:
             if mode == 'before':
