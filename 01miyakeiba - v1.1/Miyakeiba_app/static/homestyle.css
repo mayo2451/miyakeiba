@@ -130,11 +130,12 @@ a {
 }
 .second-rank,
 .third-rank {
-    background: silver;
-    padding: 20px;
     text-align: center;
     font-weight: bold;
     flex: 1;
+}
+.second-rank {
+    background: silver;
 }
 .third-rank {
     background: #cd7f32; /* 銅色 */
