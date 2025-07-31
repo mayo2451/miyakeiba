@@ -116,7 +116,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     gap: 10px;
 }
 .first-title {
@@ -173,6 +173,7 @@ a {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    width: 100%;
     gap: 5px;
 }
 .first-block {
