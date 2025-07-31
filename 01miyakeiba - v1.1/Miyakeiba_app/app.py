@@ -694,14 +694,15 @@ def show_entries(race_id):
     else:
         cursor.execute("SELECT horse_name FROM race_entries WHERE race_id = ?", (race_id,))
         rows = cursor.fetchall()
-        entries = [{"horse_name":row["horse_name"], "jokey": ""} for row in rows]
+        entries = [{"horse_name":row["horse_name"], "jockey": ""} for row in rows]
         print("📄 出馬表（確定後）: データベースから取得")
 
     cursor.execute("""
-        SELECT username, honmeiba
-        FROM raise_horse
-        WHERE race_id = ?
-    """, (race_id))
+        SELECT rh.username, rh.honmeiba, u.id AS user_id
+        FROM raise_horse rh
+        JOIN users u ON rh.username = u.username
+        WHERE rh.race_id = ?
+    """, (race_id,))
     votes = cursor.fetchall()
 
     vote_map = {}
@@ -714,7 +715,12 @@ def show_entries(race_id):
 
     for entry in entries:
         horse = entry["horse_name"]
-        entry["voted_by"] = vote_map.get(horse, [])
+        entry["voted_by"] = [
+            {
+                "username": uname,
+                "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/image/user/{row['user_id']}/face.png"
+            }
+            for uname in vote_map.get(horse, [])
         
     conn.close()
 
