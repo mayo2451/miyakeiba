@@ -691,7 +691,7 @@ def show_entries(race_id):
         entries = fetch_entriew_from_sheet(race_id)
         print("📄 出馬表（確定前）: Google Sheets から取得")
     else:
-        cursor.execute("SELECT horse_name, jockey FROM race_entries WHERE race_id = ?", (race_id,))
+        cursor.execute("SELECT horse_name FROM race_entries WHERE race_id = ?", (race_id,))
         entries = cursor.fetchall()
         print("📄 出馬表（確定後）: データベースから取得")
     conn.close()
