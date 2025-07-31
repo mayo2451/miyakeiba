@@ -707,6 +707,8 @@ def show_entries(race_id):
     for row in votes:
         uname = row['username']
         horse = row['honmeiba']
+        uid = row['user_id']
+        user_map[uname] = uid
         if horse not in vote_map:
             vote_map[horse] = []
         vote_map[horse].append(uname)
@@ -716,7 +718,7 @@ def show_entries(race_id):
         entry["voted_by"] = [
             {
                 "username": uname,
-                "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{{ row['user_id'] }}/face.png"
+                "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{ user_map.get(uname) }/face.png"
             }
             for uname in vote_map.get(horse, [])
         ]
