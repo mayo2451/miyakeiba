@@ -264,12 +264,14 @@ def get_events_for_month(year, month):
         date_str = row['race_date']
 
         # 月日形式の加工（例：07/15）
-        display_date = datetime.strptime(date_str, "%Y-%m-%d").strftime("%m/%d")
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+        weekday_jpn = JAPANESE_WEEKDAYS[date_obj.weekday()]
+        display_date = date_obj.strftime(f"%m/%d({weekday_jpn})")
 
-        if day not in events:
+        if display_date not in events:
             events[display_date] = []
 
-        events[day].append({
+        events[display_date].append({
             'id': row['id'],
             'race_date': row['race_date'],               # 元のYYYY-MM-DD
             'race_date_display': display_date,           # 表示用：MM/DD
