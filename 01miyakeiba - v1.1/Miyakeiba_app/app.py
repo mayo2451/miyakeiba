@@ -13,6 +13,7 @@ import json
 import hashlib
 import threading
 from datetime import datetime, date, timedelta
+import pytz
 
 app = Flask(__name__)
 
@@ -321,7 +322,8 @@ def get_this_week_races():
 
 @app.route('/')
 def home():
-    today = date.today()
+    JST = pytz.timezone('Asia/Tokyo')
+    today = datetime.now(JST).date()
     year = today.year
     month = today.month
     print(f"🌕 現在の年月: {year}-{month:02d}")
