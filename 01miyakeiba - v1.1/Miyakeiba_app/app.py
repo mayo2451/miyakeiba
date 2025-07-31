@@ -716,7 +716,7 @@ def show_entries(race_id):
         entry["voted_by"] = [
             {
                 "username": uname,
-                "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/image/user/{row['user_id']}/face.png"
+                "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{{ row['user_id'] }}/face.png"
             }
             for uname in vote_map.get(horse, [])
         ]
