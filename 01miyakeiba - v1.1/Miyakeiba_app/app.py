@@ -260,7 +260,10 @@ def get_events_for_month(year, month):
     conn.close()
 
     events = {}
+    print(f"🎯 {first_day_str} ～ {last_day_str} の範囲で検索")
+    print(f"🎫 該当レース数: {len(rows)}")
     for row in rows:
+        print(f" - {r['race_date']}: {r['race_name']}")
         date_str = row['race_date']
 
         # 月日形式の加工（例：07/15）
@@ -321,8 +324,10 @@ def home():
     today = date.today()
     year = today.year
     month = today.month
+    print(f"🌕 現在の年月: {year}-{month:02d}")
     
     events = get_events_for_month(year, month)
+    print(f"🗓️ イベント件数: {len(events)}")
 
     cal = HolidayCalendar(firstweekday=0)
     calendar_html = cal.formatmonth(year,month)
