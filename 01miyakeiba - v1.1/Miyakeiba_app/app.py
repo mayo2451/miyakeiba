@@ -317,8 +317,9 @@ def get_this_week_races():
 
 @app.route('/')
 def home():
-    year = request.args.get('year', default=datetime.now().year, type=int)
-    month = request.args.get('month', default=datetime.now().month, type=int)
+    now = datetime.now()
+    year = now.year
+    month = now.month
     
     events = get_events_for_month(year, month)
 
