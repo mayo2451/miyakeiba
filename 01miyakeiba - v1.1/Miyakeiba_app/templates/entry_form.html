@@ -34,10 +34,10 @@
             </nav>
         </div>
         <label>
-            <input type="radio" name="mode" value="before" checked> 枠順確定前（最大30頭）
+            <input type="radio" name="mode" value="before" checked> 枠順確定前
         </label>
         <label style="margin-left: 15px;">
-            <input type="radio" name="mode" value="after"> 枠順確定後（最大18頭）
+            <input type="radio" name="mode" value="after"> 枠順確定後
         </label>
         <form method="POST">
             <label>レースを選択：
@@ -50,7 +50,7 @@
                     {% endfor %}
                 </select>
             </label>
-            <table　id="horse-table">
+            <table id="horse-table">
                 <thead>
                     <th>馬番</th>
                     <th>馬名</th>
@@ -88,7 +88,7 @@
                 createRows(isBefore ? 30 : 18);
             });
         });
-    document.addEventListener('DOMContentLoaded', function () {
+        
         document.querySelector('form').addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
