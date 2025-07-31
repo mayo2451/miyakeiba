@@ -544,6 +544,19 @@ def register():
 
     return render_template('register.html')
 
+def save_before_to_sheet(race_id, horse_names):
+    sheet = get_sheet_client()
+    worksheet = sheet.worksheet("horseentrybefore")
+
+    rows = []
+    for i, name in enumerate(horse_names, start=1):
+        name = name.strip()
+        if name:
+            rows.append([race_id, i, name])
+
+    if rows:
+        worksheet.append_rows(rows, value_input_option="USER_ENTERED")
+
 @app.route('/entry_form', methods=['GET', 'POST'])
 def entry_form():
     conn = connect_db()
@@ -551,23 +564,26 @@ def entry_form():
 
     if request.method == 'POST':
         race_id = request.form['race_id']
+        mode = request.form.get('mode')
         horse_names = request.form.getlist('horse_name[]')
-        jockeys = request.form.getlist('jockey[]')
 
         try:
-            cursor.execute("DELETE FROM race_entries WHERE race_id = ?", (race_id,))
-
-            for i, horse_name in enumerate(horse_names):
-                horse_name = horse_name.strip()
-                jockey = jockeys[i].strip() if i < len(jockeys) else ''
-                if horse_name and jockey:
-                    cursor.execute("""
-                        INSERT INTO race_entries (race_id, horse_number, horse_name, jockey)
-                        VALUES (?, ?, ?, ?)
-                    """, (race_id, i + 1, horse_name, jockey))
-
-            conn.commit()
-            flash("出馬表を登録しました")
+            if mode == 'before':
+                save_before_to_sheet(race_id, horse_names)
+                flash("枠順確定前の出馬表をスプレッドシートに保存しました")
+            else:
+                cursor.execute("DELETE FROM race_entries WHERE race_id = ?", (race_id,))
+                for i, horse_name in enumerate(horse_names):
+                    horse_name = horse_name.strip()
+                    jockey = jockeys[i].strip() if i < len(jockeys) else ''
+                    if horse_name and jockey:
+                        cursor.execute("""
+                            INSERT INTO race_entries (race_id, horse_number, horse_name)
+                            VALUES (?, ?, ?)
+                        """, (race_id, i + 1, horse_name))
+                conn.commit()
+                flash("出馬表を登録しました")
+                
             return redirect('/entry_form')
 
         except Exception as e:
