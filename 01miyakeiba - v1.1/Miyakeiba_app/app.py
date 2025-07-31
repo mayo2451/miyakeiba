@@ -37,7 +37,7 @@ def get_sheet_client():
 def load_backup_from_sheet():
     print("📥 スプレッドシートからバックアップを読み込み中...")
     sheet = get_sheet_client()
-    conn = sqlite3.connect(Miyakeiba_app)
+    conn = sqlite3.connect(miyakeiba_app)
     cursor = conn.cursor()
 
     for table in TABLES:
