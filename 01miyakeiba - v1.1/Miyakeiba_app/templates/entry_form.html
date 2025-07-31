@@ -39,6 +39,7 @@
         <label style="margin-left: 15px;">
             <input type="radio" name="mode" value="after"> 枠順確定後
         </label>
+        <input type="hidden" name="mode" id="mode-input" value="before">
         <form method="POST">
             <label>レースを選択：
                 <select name="race_id" required>
@@ -85,6 +86,7 @@
         document.querySelectorAll('input[name="mode"]').forEach(radio => {
             radio.addEventListener('change', function () {
                 const isBefore = this.value === 'before';
+                document.getElementById('mode-input').value = this.value;
                 createRows(isBefore ? 30 : 18);
             });
         });
