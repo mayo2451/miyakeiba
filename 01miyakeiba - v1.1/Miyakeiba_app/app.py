@@ -557,7 +557,8 @@ def save_before_to_sheet(race_id, horse_names):
             rows.append([race_id, i, name])
 
     if rows:
-        worksheet.append_rows(rows, value_input_option="USER_ENTERED")
+        try:
+            worksheet.append_rows(rows, value_input_option="USER_ENTERED")
             print("✅ 書き込み成功")
         except Exception as e:
             print(f"❌ append_rows でエラー: {e}")
