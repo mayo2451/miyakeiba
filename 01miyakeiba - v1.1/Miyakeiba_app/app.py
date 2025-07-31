@@ -545,6 +545,7 @@ def register():
     return render_template('register.html')
 
 def save_before_to_sheet(race_id, horse_names):
+    print("🔍 save_before_to_sheet 実行")
     sheet = get_sheet_client()
     worksheet = sheet.worksheet("horseentrybefore")
 
@@ -552,10 +553,16 @@ def save_before_to_sheet(race_id, horse_names):
     for i, name in enumerate(horse_names, start=1):
         name = name.strip()
         if name:
+            print(f"📄 書き込み予定: race_id={race_id}, number={i}, name={name}")
             rows.append([race_id, i, name])
 
     if rows:
         worksheet.append_rows(rows, value_input_option="USER_ENTERED")
+            print("✅ 書き込み成功")
+        except Exception as e:
+            print(f"❌ append_rows でエラー: {e}")
+    else:
+        print("⚠️ 書き込む行がありません")
 
 @app.route('/entry_form', methods=['GET', 'POST'])
 def entry_form():
