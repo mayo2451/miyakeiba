@@ -122,6 +122,11 @@ a {
 .first-title {
     margin: 0 auto 0 0;
 }
+.second-title,
+.third-title {
+    width: auto; 
+    height: 70px;
+}
 .other {
     display: flex;
     flex-direction: column;
