@@ -50,12 +50,26 @@
                             <th class="tiny">選択</th>
                             <th class="tiny">馬番</th>
                             <th>馬名</th>
+                            <th>選択した人</th>
                         </tr>
                         {% for entry in entries %}
                             <tr>
                                 <td class="tiny"><input type="radio" name="honmeiba" value="{{ entry['horse_name'] }}" required></td>
                                 <td class="tiny">{{ loop.index }}</td>
                                 <td class="horse-name">{{ entry['horse_name'] }}</td>
+                                <td>
+                                    <div style="display: flex; gap: 5px; align-items: center;">
+                                        {% for voter in entry.voted_by %}
+                                            <img 
+                                                src="{{ voter.image_url }}" 
+                                                style="width: auto; height: auto; margin-right:5px;" 
+                                                class="face" 
+                                                alt="{{ voter.username }}" 
+                                                onerror="this.style.display='none';">
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                                
                             </tr>
                         {% endfor %}
                     </table>
