@@ -126,6 +126,7 @@ a {
 .third-title {
     width: auto; 
     height: 70px;
+    margin: 5px 0 0 5px;
 }
 .other {
     display: flex;
