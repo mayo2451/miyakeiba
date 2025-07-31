@@ -721,6 +721,7 @@ def show_entries(race_id):
                 "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/image/user/{row['user_id']}/face.png"
             }
             for uname in vote_map.get(horse, [])
+        ]
         
     conn.close()
 
