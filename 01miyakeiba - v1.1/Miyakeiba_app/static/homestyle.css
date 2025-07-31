@@ -162,6 +162,7 @@ a {
 .third-name {
     font-size: 1rem;
     text-align: center;
+    margin-top: 5px;
 }
 .top3-conteiner {
     display: flex;
