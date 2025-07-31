@@ -47,17 +47,15 @@
                     <input type="hidden" name="race_id" value="{{ selected_race_id }}">
                     <table border="1">
                         <tr>
+                            <th>選択</th>
                             <th>馬番</th>
                             <th>馬名</th>
-                            <th>騎手</th>
-                            <th>本命馬選択</th>
                         </tr>
                         {% for entry in entries %}
                             <tr>
+                                <td><input type="radio" name="honmeiba" value="{{ entry['horse_name'] }}" required></td>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ entry['horse_name'] }}</td>
-                                <td>{{ entry['jockey'] }}</td>
-                                <td><input type="radio" name="honmeiba" value="{{ entry['horse_name'] }}" required></td>
                             </tr>
                         {% endfor %}
                     </table>
