@@ -616,6 +616,35 @@ def entry_form():
 
     return render_template('entry_form.html', races=races)
 
+def get_friday_midnight(race_date_str):
+    # race_date_str: 'YYYY-MM-DD' を datetime に変換
+    race_date = datetime.strptime(race_date_str, "%Y-%m-%d")
+    
+    # レース日の週の月曜日を基準に取得（weekday(): 月曜0, 日曜6）
+    weekday = race_date.weekday()
+    monday = race_date - timedelta(days=weekday)
+    
+    # 金曜の24:00（= 土曜の0:00）
+    friday_midnight = monday + timedelta(days=5)  # 月曜+5日 = 土曜
+    friday_midnight = friday_midnight.replace(hour=0, minute=0, second=0, microsecond=0)
+    
+    return friday_midnight
+
+def fetch_entries_from_sheet(race_id):
+    try:
+        sheet = get_sheet_client()
+        worksheet = sheet.worksheet("horseentrybefore")
+        all_rows = worksheet.get_all_values()
+        
+        # ヘッダーを除外
+        rows = [row for row in all_rows if row[0] == str(race_id)]
+        # データ整形
+        entries = [{"horse_name": row[2], "jockey": ""} for row in rows]
+        return entries
+    except Exception as e:
+        print(f"❌ スプレッドシート取得エラー: {e}")
+        return []
+
 @app.route('/entries/<int:race_id>', methods=['GET', 'POST'])
 def show_entries(race_id):
     conn = connect_db()
@@ -657,8 +686,13 @@ def show_entries(race_id):
             conn.commit()
 
     # 出馬表取得
-    cursor.execute("SELECT horse_name, jockey FROM race_entries WHERE race_id = ?", (race_id,))
-    entries = cursor.fetchall()
+    if now < race_datetime:
+        entries = fetch_entriew_from_sheet(race_id)
+        print("📄 出馬表（確定前）: Google Sheets から取得")
+    else:
+        cursor.execute("SELECT horse_name, jockey FROM race_entries WHERE race_id = ?", (race_id,))
+        entries = cursor.fetchall()
+        print("📄 出馬表（確定後）: データベースから取得")
     conn.close()
 
     return render_template('entries.html', entries=entries, race=race, selected_race_id=race_id, is_closed=is_closed)
