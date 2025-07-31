@@ -670,6 +670,7 @@ def show_entries(race_id):
 
     voting_deadline = race_datetime - timedelta(minutes=1)
     now = datetime.now()
+    cutoff_time = get_friday_midnight(race['race_date'])
 
     is_closed = now >= voting_deadline
 
@@ -686,7 +687,7 @@ def show_entries(race_id):
             conn.commit()
 
     # 出馬表取得
-    if now < race_datetime:
+    if now < cutoff_time:
         entries = fetch_entriew_from_sheet(race_id)
         print("📄 出馬表（確定前）: Google Sheets から取得")
     else:
