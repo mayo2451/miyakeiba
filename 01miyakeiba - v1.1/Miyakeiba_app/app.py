@@ -660,17 +660,18 @@ def show_entries(race_id):
         return redirect('/')
 
     race = dict(race)
+    now = datetime.now()
 
-    race_datetime_str = f"{race['race_date']} {race['start_time']}"  # "YYYY-MM-DD HH:MM"
+
+    is_closed = now >= voting_deadline
     try:
+        race_datetime_str = f"{race['race_date']} {race['start_time']}"  # "YYYY-MM-DD HH:MM"
         race_datetime = datetime.strptime(race_datetime_str, "%Y-%m-%d %H:%M")
+        voting_deadline = race_datetime - timedelta(minutes=1)
+        cutoff_time = get_friday_midnight(race['race_date'])
     except ValueError:
         flash("レースの日時情報に誤りがあります。")
         return redirect('/', current_path=request.path)
-
-    voting_deadline = race_datetime - timedelta(minutes=1)
-    now = datetime.now()
-    cutoff_time = get_friday_midnight(race['race_date'])
 
     is_closed = now >= voting_deadline
 
@@ -692,8 +693,29 @@ def show_entries(race_id):
         print("📄 出馬表（確定前）: Google Sheets から取得")
     else:
         cursor.execute("SELECT horse_name FROM race_entries WHERE race_id = ?", (race_id,))
-        entries = cursor.fetchall()
+        rows = cursor.fetchall()
+        entries = [{"horse_name":row["horse_name"], "jokey": ""} for row in rows]
         print("📄 出馬表（確定後）: データベースから取得")
+
+    cursor.execute("""
+        SELECT username, honmeiba
+        FROM raise_horse
+        WHERE race_id = ?
+    """, (race_id))
+    votes = cursor.fetchall()
+
+    vote_map = {}
+    for row in votes:
+        uname = row['username']
+        horse = row['honmeiba']
+        if horse not in vote_map:
+            vote_map[horse] = []
+        vote_map[horse].append(uname)
+
+    for entry in entries:
+        horse = entry["horse_name"]
+        entry["voted_by"] = vote_map.get(horse, [])
+        
     conn.close()
 
     return render_template('entries.html', entries=entries, race=race, selected_race_id=race_id, is_closed=is_closed)
