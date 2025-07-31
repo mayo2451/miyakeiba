@@ -704,6 +704,7 @@ def show_entries(race_id):
     votes = cursor.fetchall()
 
     vote_map = {}
+    user_map = {}
     for row in votes:
         uname = row['username']
         horse = row['honmeiba']
