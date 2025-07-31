@@ -688,7 +688,7 @@ def show_entries(race_id):
 
     # 出馬表取得
     if now < cutoff_time:
-        entries = fetch_entriew_from_sheet(race_id)
+        entries = fetch_entries_from_sheet(race_id)
         print("📄 出馬表（確定前）: Google Sheets から取得")
     else:
         cursor.execute("SELECT horse_name FROM race_entries WHERE race_id = ?", (race_id,))
