@@ -33,14 +33,14 @@
                 </ul>
             </nav>
         </div>
-        <label>
-            <input type="radio" name="mode" value="before" checked> 枠順確定前
-        </label>
-        <label style="margin-left: 15px;">
-            <input type="radio" name="mode" value="after"> 枠順確定後
-        </label>
-        <input type="hidden" name="mode" id="mode-input" value="before">
         <form method="POST">
+            <label>
+                <input type="radio" name="mode" value="before" checked> 枠順確定前
+            </label>
+            <label style="margin-left: 15px;">
+                <input type="radio" name="mode" value="after"> 枠順確定後
+            </label>
+            <input type="hidden" name="mode" id="mode-input" value="before">
             <label>レースを選択：
                 <select name="race_id" required>
                     <option value="" disabled selected>選択してください</option>
