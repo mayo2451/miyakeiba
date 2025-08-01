@@ -583,7 +583,6 @@ def entry_form():
         race_id = request.form['race_id']
         mode = request.form.get('mode')
         horse_names = request.form.getlist('horse_name[]')
-        jockeys = request.form.getlist('jockey[]')  
 
         try:
             if mode == 'before':
@@ -594,7 +593,7 @@ def entry_form():
                 for i, horse_name in enumerate(horse_names):
                     horse_name = horse_name.strip()
                     jockey = jockeys[i].strip() if i < len(jockeys) else ''
-                    if horse_name and jockey:
+                    if horse_name:
                         cursor.execute("""
                             INSERT INTO race_entries (race_id, horse_number, horse_name)
                             VALUES (?, ?, ?)
