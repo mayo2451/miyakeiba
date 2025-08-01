@@ -664,7 +664,7 @@ def show_entries(race_id):
         return redirect('/')
 
     race = dict(race)
-    now = datetime.now()
+    now = datetime.now(JST)
 
     try:
         race_datetime_str = f"{race['race_date']} {race['start_time']}"  # "YYYY-MM-DD HH:MM"
