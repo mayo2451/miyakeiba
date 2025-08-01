@@ -123,7 +123,7 @@ document.querySelectorAll(".uma").forEach(row => {
 		if ([3].includes(num)) colorClass = "waku-3";
 		if ([4].includes(num)) colorClass = "waku-4";
 		if ([5].includes(num)) colorClass = "waku-5";
-  }
+  	}
 
 	if (colorClass) {
 		row.classList.add(colorClass);
