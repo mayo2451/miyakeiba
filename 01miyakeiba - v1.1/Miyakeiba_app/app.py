@@ -24,6 +24,7 @@ DB_NAME = "miyakeiba_app.db"
 SKIP_STARTUP_BACKUP = os.getenv("SKIP_STARTUP_BACKUP", "false").lower() == "true"
 app.secret_key = 'your_secret_key'
 JAPANESE_WEEKDAYS = ["月", "火", "水", "木", "金", "土", "日"]
+JST = pytz.timezone('Asia/Tokyo')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -622,7 +623,7 @@ def entry_form():
 def get_friday_midnight(race_date_str):
     # race_date_str: 'YYYY-MM-DD' を datetime に変換
     race_date = datetime.strptime(race_date_str, "%Y-%m-%d")
-    
+    race_date = JST.localize(race_date)
     # レース日の週の月曜日を基準に取得（weekday(): 月曜0, 日曜6）
     weekday = race_date.weekday()
     monday = race_date - timedelta(days=weekday)
