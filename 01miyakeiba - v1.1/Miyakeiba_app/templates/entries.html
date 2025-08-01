@@ -47,18 +47,18 @@
                     <input type="hidden" name="race_id" value="{{ selected_race_id }}">
                     <div class="entry_table">
                         <table border="1" style="padding: 0 auto auto 0;">
-                            <tr class="uma" data-uman="{{ loop.index }}" data-total="{{ entries|length }}">
+                            <tr>
                                 <th class="tiny">選択</th>
                                 <th class="tiny">馬番</th>
                                 <th>馬名</th>
                                 <th>みんなの予想</th>
                             </tr>
                             {% for entry in entries %}
-                                <tr>
+                                <tr class="uma" data-uman="{{ loop.index }}" data-total="{{ entries|length }}">
                                     <td class="tiny"><input type="radio" name="honmeiba" value="{{ entry['horse_name'] }}" required></td>
                                     <td class="tiny">{{ loop.index }}</td>
-                                    <td class="horse-name">{{ entry['horse_name'] }}</td>
-                                    <td>
+                                    <td class="horse-name　soft-bg">{{ entry['horse_name'] }}</td>
+                                    <td class="soft-bg">
                                         <div style="display: flex; gap: 5px; align-items: center;">
                                             {% for voter in entry.voted_by %}
                                                 <img 
