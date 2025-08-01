@@ -125,12 +125,5 @@ document.querySelectorAll(".uma").forEach(row => {
 		if ([5].includes(num)) colorClass = "waku-5";
   	}
 
-	if (colorClass) {
-		row.classList.add(colorClass);
-		const tds = row.querySelectorAll("td");
-		if (tds.length >= 4) {
-			tds[2].classList.add(colorClass, "soft-bg");
-			tds[3].classList.add(colorClass, "soft-bg");
-		}
-	}
+	if (colorClass) row.classList.add(colorClass);
 });
