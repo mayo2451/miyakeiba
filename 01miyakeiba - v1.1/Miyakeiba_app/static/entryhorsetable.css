@@ -23,3 +23,7 @@ th {
 .horse-name {
     text-align: left;
 }
+.entry-table {
+    display: flex;
+    justyfy-content: center;
+}
