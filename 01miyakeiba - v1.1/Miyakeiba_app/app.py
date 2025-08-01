@@ -645,9 +645,9 @@ def fetch_entries_from_sheet(race_id):
         all_rows = worksheet.get_all_values()
         
         # ヘッダーを除外
-        rows = [row for row in all_rows if row[0] == str(race_id)]
+        rows = [row for row in all_rows[1:] if row[1] == str(race_id)]
         # データ整形
-        entries = [{"horse_name": row[2], "jockey": ""} for row in rows]
+        entries = [{"horse_name": row[3]} for row in rows]
         return entries
     except Exception as e:
         print(f"❌ スプレッドシート取得エラー: {e}")
