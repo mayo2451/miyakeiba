@@ -608,7 +608,6 @@ def entry_form():
     races = cursor.fetchall()
     races = races[1:]  # 必要なら
 
-    backup_on_post(force=True)
     conn.close()
 
     return render_template('entry_form.html', races=races)
