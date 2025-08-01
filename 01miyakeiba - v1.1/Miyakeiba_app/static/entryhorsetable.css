@@ -30,3 +30,34 @@ th {
     height: 30px; 
     margin-right:5px;
 }
+.waku-1  { 
+    background-color: #ffffff; 
+}
+.waku-2  { 
+    background-color: #000000; 
+    color: #fff; 
+}
+.waku-3    { 
+    background-color: #ff3333;
+    color: #fff;  
+}
+.waku-4   { 
+    background-color: #3333ff; 
+    color: #fff; 
+}
+.waku-5 { 
+    background-color: #ffff66; 
+    color: #fff; 
+}
+.waku-6  { 
+    background-color: #66cc66; 
+    color: #fff; 
+}
+.waku-7 { 
+    background-color: #ff9933; 
+    color: #fff; 
+}
+.waku-8   { 
+    background-color: #ff99cc; 
+    color: #fff; 
+}
