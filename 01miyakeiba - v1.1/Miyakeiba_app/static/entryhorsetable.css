@@ -6,6 +6,7 @@ td {
     border: 1px solid #ccc;
     padding: 8px;
     text-align: center;
+    height: 30px;
 }
 .tiny {
     width: 3%
