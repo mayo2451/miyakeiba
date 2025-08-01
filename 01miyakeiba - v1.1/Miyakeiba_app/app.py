@@ -589,15 +589,13 @@ def entry_form():
                 save_before_to_sheet(race_id, horse_names)
                 flash("枠順確定前の出馬表をスプレッドシートに保存しました")
             else:
-                cursor.execute("DELETE FROM race_entries WHERE race_id = ?", (race_id,))
                 for i, horse_name in enumerate(horse_names):
                     horse_name = horse_name.strip()
-                    jockey = jockeys[i].strip() if i < len(jockeys) else ''
                     if horse_name:
                         cursor.execute("""
-                            INSERT INTO race_entries (race_id, horse_number, horse_name)
-                            VALUES (?, ?, ?)
-                        """, (race_id, i + 1, horse_name))
+                            INSERT INTO race_entries (race_id, horse_name)
+                            VALUES (?, ?)
+                        """, (race_id, horse_name))
                 conn.commit()
                 flash("出馬表を登録しました")
                 
