@@ -668,7 +668,7 @@ def show_entries(race_id):
 
     try:
         race_datetime_str = f"{race['race_date']} {race['start_time']}"  # "YYYY-MM-DD HH:MM"
-        race_datetime = datetime.strptime(race_datetime_str, "%Y-%m-%d %H:%M")
+        race_datetime = JST.localize(datetime.strptime(race_datetime_str, "%Y-%m-%d %H:%M"))
         voting_deadline = race_datetime - timedelta(minutes=1)
         cutoff_time = get_friday_midnight(race['race_date'])
     except ValueError:
