@@ -554,7 +554,7 @@ def register():
     return render_template('register.html')
 
 def save_to_sheet(sheet_name, race_id, horse_names):
-    print("🔍 save_to_sheet 実行: sheet_name={sheet_name}")
+    print(f"🔍 save_to_sheet 実行: {sheet_name}")
     sheet = get_sheet_client()
     worksheet = sheet.worksheet(sheet_name)
 
@@ -580,8 +580,6 @@ def entry_form():
         race_id = request.form['race_id']
         mode = request.form.get('mode')
         horse_names = request.form.getlist('horse_name[]')
-        before = "horseentrybefore"
-        after = "race_entries"
 
         try:
             sheet_name = "horseentrybefore" if mode == "before" else "race_entries"
@@ -594,7 +592,6 @@ def entry_form():
             return redirect('/entry_form')
 
         except Exception as e:
-            conn.rollback()
             flash(f"登録エラー: {e}")
             return redirect('/entry_form')
 
