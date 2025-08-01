@@ -52,13 +52,13 @@ th {
 }
 .waku-4 { 
     background-color: #3333ff; 
+    color: #fff; 
 }
 .waku-4.soft-bg { 
     background-color: rgba(51, 51, 255, 0.3);
 }
 .waku-5 { 
     background-color: #ffff66; 
-    color: #fff; 
 }
 .waku-5.soft-bg { 
     background-color: rgba(255, 255, 102, 0.3); 
