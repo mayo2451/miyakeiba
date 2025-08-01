@@ -129,6 +129,8 @@ document.querySelectorAll(".uma").forEach(row => {
 		row.classList.add(colorClass);
 		const tds = row.querySelectorAll("td");
 		if (tds.length >= 4) {
+			tds[0].classList.add(colorClass, "soft-bg");
+			tds[1].classList.add(colorClass, "soft-bg");
 			tds[2].classList.add(colorClass, "soft-bg");
 			tds[3].classList.add(colorClass, "soft-bg");
 		}
