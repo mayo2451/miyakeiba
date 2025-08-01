@@ -558,12 +558,27 @@ def save_to_sheet(sheet_name, race_id, horse_names):
     sheet = get_sheet_client()
     worksheet = sheet.worksheet(sheet_name)
 
+    try:
+        existing_data = worksheet.get_all_values()
+        current_max_id = 0
+        if len(existing_data) > 1:
+            try:
+                current_max_id = max(int(row[0]) for row in existing_data[1:] if row and row[0].isdigit())
+            except Exception as e:
+                print(f"⚠️ IDの取得に失敗: {e}")
+                current_max_id = 0
+    except Exception as e:
+        print(f"❌ スプレッドシートの取得エラー: {e}")
+        return
+
+    
     rows = []
     for i, name in enumerate(horse_names, start=1):
         name = name.strip()
         if name:
-            print(f"📄 書き込み予定: race_id={race_id}, number={i}, name={name}")
-            rows.append([race_id, i, name])
+            current_max_id += 1
+            print(f"📄 書き込み予定: id={current_max_id}, race_id={race_id}, number={i}, name={name}")
+            rows.append([current_max_id, race_id, i, name])
 
     if rows:
         try:
