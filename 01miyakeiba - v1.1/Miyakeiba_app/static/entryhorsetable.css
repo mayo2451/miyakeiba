@@ -9,7 +9,7 @@ td {
     width: 14.28%; 
 }
 .tiny {
-    width: 4%
+    width: 3%
 }
 th {
     border: 1px solid #ccc;
@@ -19,7 +19,7 @@ th {
     background-color: #f0f0f0;
 }
 .horse-name {
-    width: 10%;
+    width: 7%;
     text-align: left;
 }
 .entry_table {
