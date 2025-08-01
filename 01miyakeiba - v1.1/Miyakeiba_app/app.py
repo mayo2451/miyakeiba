@@ -18,7 +18,7 @@ import pytz
 app = Flask(__name__)
 
 SHEET_NAME = "miyakeiba_backup"
-TABLES = ['race_entries', 'race_result', 'race_schedule', 'raise_horse', 'sqlite_sequence', 'users', 'timestamp']
+TABLES = ['race_entries', 'race_result', 'race_schedule', 'raise_horse', 'sqlite_sequence', 'users']
 BACKUP_INTERVAL = 600
 DB_NAME = "miyakeiba_app.db"
 SKIP_STARTUP_BACKUP = os.getenv("SKIP_STARTUP_BACKUP", "false").lower() == "true"
