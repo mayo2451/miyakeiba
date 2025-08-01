@@ -553,10 +553,10 @@ def register():
 
     return render_template('register.html')
 
-def save_before_to_sheet(race_id, horse_names):
-    print("🔍 save_before_to_sheet 実行")
+def save_to_sheet(sheet_name, race_id, horse_names):
+    print("🔍 save_to_sheet 実行: sheet_name={sheet_name}")
     sheet = get_sheet_client()
-    worksheet = sheet.worksheet("horseentrybefore")
+    worksheet = sheet.worksheet(sheet_name)
 
     rows = []
     for i, name in enumerate(horse_names, start=1):
@@ -576,28 +576,20 @@ def save_before_to_sheet(race_id, horse_names):
 
 @app.route('/entry_form', methods=['GET', 'POST'])
 def entry_form():
-    conn = connect_db()
-    cursor = conn.cursor()
-
     if request.method == 'POST':
         race_id = request.form['race_id']
         mode = request.form.get('mode')
         horse_names = request.form.getlist('horse_name[]')
+        before = "horseentrybefore"
+        after = "race_entries"
 
         try:
+            sheet_name = "horseentrybefore" if mode == "before" else "race_entries"
+            save_to_sheet(sheet_name, race_id, horse_names)
             if mode == 'before':
-                save_before_to_sheet(race_id, horse_names)
                 flash("枠順確定前の出馬表をスプレッドシートに保存しました")
             else:
-                for i, horse_name in enumerate(horse_names):
-                    horse_name = horse_name.strip()
-                    if horse_name:
-                        cursor.execute("""
-                            INSERT INTO race_entries (race_id, horse_name)
-                            VALUES (?, ?)
-                        """, (race_id, horse_name))
-                conn.commit()
-                flash("出馬表を登録しました")
+                flash("枠順確定後の出馬表をスプレッドシートに保存しました")
                 
             return redirect('/entry_form')
 
@@ -606,9 +598,8 @@ def entry_form():
             flash(f"登録エラー: {e}")
             return redirect('/entry_form')
 
-        finally:
-            conn.close()
-
+    conn = connect_db()
+    cursor = conn.cursor()
     cursor.execute("""
         SELECT id, race_date, race_place, race_number, race_name
         FROM race_schedule
