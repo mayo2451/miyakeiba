@@ -146,11 +146,6 @@ a {
 .third-rank {
     background: #cd7f32; /* 銅色 */
 }
-.first-score,
-.second-score,
-.third-score {
-    color: white;
-}
 .first-score {
     font-size: 4.5rem;
     margin-bottom: 5px;
@@ -159,9 +154,11 @@ a {
     margin-left: auto;
     margin-right: 10px;
     line-height: 1;
+    color: red;
 }
 .second-score,
 .third-score {
+    color: white;
     margin-top: 15px;
     font-size: 2.5rem;
 }
