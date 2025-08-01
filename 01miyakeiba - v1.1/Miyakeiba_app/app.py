@@ -262,7 +262,6 @@ def get_events_for_month(year, month):
 
     events = {}
     for row in rows:
-        print(f" - {row['race_date']}: {row['race_name']}")
         date_str = row['race_date']
 
         # 月日形式の加工（例：07/15）
