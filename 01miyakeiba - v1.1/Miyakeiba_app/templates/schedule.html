@@ -85,9 +85,9 @@
             </div>
             <div class="event-list">
                 <h2>今月のレース</h2>
-                {% if events %}
+                {% if month_events %}
                     <div class="race-schedule">
-                        {% for day, races in events.items() %}
+                        {% for day, races in month_events.items() %}
                             <div class="race-block" style="margin-bottom: 1.5rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">
                                 <!-- 日付（MM/DD（曜日）形式） -->
                                 <div class="race-date" style="font-weight: bold; margin-bottom: 0.5rem;">
@@ -119,18 +119,18 @@
         <div class="container">
             <div class="calendar">
                 <div class="calendar-nav">
-                    <a href="/?year={{ prev_year }}&month={{ prev_month }}">◀ 前月</a>
+                    <a href="/schedule?year={{ prev_year }}&month={{ prev_month }}">◀ 前月</a>
                     <a href="{{ url_for('schedule') }}">今月</a>
-                    <a href="/?year={{ next_year }}&month={{ next_month }}">次月 ▶</a>
+                    <a href="/schedule?year={{ next_year }}&month={{ next_month }}">次月 ▶</a>
                 </div>
                 {{ calendar_html|safe }}
             </div>
             <div class="event-list">
                 <h2>{{ year }}年{{ month }}月のレース予定</h2>
-                {% if events %}
+                {% if calender_events %}
                 <table class="schedule_table">
                     <tbody>
-                        {% for day, races in events.items() %}
+                        {% for day, races in calender_events.items() %}
                             {% for race in races %}
                                 <tr>
                                     <td class="schedule_date">{{ race['race_date_display'] }}</td>
