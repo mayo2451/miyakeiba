@@ -1086,15 +1086,17 @@ def schedule():
     calendar_events = get_events_for_month(cal_year, cal_month)
     cal = HolidayCalendar(firstweekday=0)
     calendar_html = cal.formatmonth(cal_year, cal_month)
+    calendar_events_sorted = sorted(calendar_events.items(), key=lambda x: x[0])
+    month_events_sorted = sorted(this_month_events.items(), key=lambda x: x[0])
 
-    prev_month = month_today - 1
-    prev_year = year_today
+    prev_month = cal_month - 1
+    prev_year = cal_year
     if prev_month == 0:
         prev_month = 12
         prev_year -= 1
 
-    next_month = month_today + 1
-    next_year = year_today
+    next_month = cal_month + 1
+    next_year = cal_year
     if next_month == 13:
         next_month = 1
         next_year += 1
@@ -1102,8 +1104,8 @@ def schedule():
     return render_template(
         'schedule.html',
         races = races,
-        this_month_events = this_month_events,
-        calendar_events = calendar_events,
+        this_month_events = this_month_events_sorted,
+        calendar_events = calendar_events_sorted,
         calendar_html = calendar_html,
         year = cal_year,
         month = cal_month,
@@ -1115,6 +1117,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
