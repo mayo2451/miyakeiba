@@ -160,7 +160,7 @@ a {
 .second-score,
 .third-score {
     color: white;
-    margin-top: 15px;
+    margin-top: 20px;
     margin-right: 5px;
     font-size: 2rem;
     -webkit-text-stroke: 1.5px black;
@@ -193,3 +193,4 @@ a {
 .first-block {
     width: 60%;
 }
+
