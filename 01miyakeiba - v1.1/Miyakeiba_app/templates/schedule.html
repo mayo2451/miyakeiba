@@ -36,45 +36,86 @@
                 </ul>
             </nav>
         </div>
-        <div class="colums">
-            <div class="left">
+        <div class="container">
+            <div class="promo-video {% if not races %}full-width{% endif %}">
                 <h2>今週のレース</h2>
-                <table>
-                    <td>菊花賞</td>
-                    <td>G1</td>
-                    <td>10/26(日)</td>
-                    <td>京都　芝3,000m</td>
-                </table>
-                <p>今週のみやけん予想メモ</p>
-            </div>
-            <div class="right">
-                <h2>今月のレース</h2>
-            </div>
-        </div>
-        <div class="event-list">
-            <h2>{{ year }}年{{ month }}月のレース予定</h2>
-            {% if events %}
-            <table class="schedule_table">
-                <tbody>
-                    {% for day, races in events.items() %}
+                <div class="carousel">
+                    <div class="carousel-inner">
                         {% for race in races %}
-                            <tr>
-                                <td class="schedule_date">{{ race['race_date_display'] }}</td>
-                                <td class="schedule_place">{{ race['race_place'] }}</td>
-                                <td class="schedule_name">
-                                    <a href="{{ url_for('show_entries', race_id=race['id']) }}">
-                                        {{ race['race_name'] }}
-                                    </a>
-                                </td>
-                                <td class="schedule_time">{{ race['start_time'] }}</td>
-                            </tr>
+                            <div class="carousel-item">
+                                <div class="race-card">
+                                    <div class="race-header">
+                                        <div class="race-title-goup">
+                                            <span class="race-title">{{ race.race_name }}</span>
+                                            <img 
+                                                src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/grade/{{ race.race_grade }}.jpeg" 
+                                                style="width: 20px; height: auto;" 
+                                                class="race-grade" 
+                                                alt="grade" 
+                                                onerror="this.style.display='none';">
+                                        </div>
+                                        <span class="race-date">{{ race.race_date_display }}</span>
+                                    </div>
+                                    <div class="race-body" style="display: flex; align-items: flex-start;">
+                                        <img 
+                                            src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/{{ race.id }}/1.jpeg" 
+                                            style="width: 200px; margin-right: 1rem;" 
+                                            alt="race image" 
+                                            onerror="this.style.display='none';">
+                                        <div class="race-info">
+                                            <div class="upper-info">
+                                                <a href="{{ url_for('show_entries', race_id=race['id']) }}" class="link-box">出馬表</a>
+                                                <div class="text-box">
+                                                    {{ race.race_place }}<br>
+                                                    {{ race.race_ground }}{{ race.race_distance }}m
+                                                </div>
+                                            </div>
+                                            <div class="lower-info">
+                                                <a href="/note/{{ race.id }}" class="link-box">みやけん予想メモ</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         {% endfor %}
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-                <p>予定はありません</p>
-            {% endif %}
+                    </div>
+                <!-- ナビゲーションボタン -->
+                    <button class="carousel-control prev" onclick="moveSlide(-1)">←</button>
+                    <button class="carousel-control next" onclick="moveSlide(1)">→</button>
+                </div>
+            </div>
+            <div class="event-list">
+                <h2>今月のレース</h2>
+                {% if events %}
+                    <div class="race-schedule">
+                        {% for day, races in events.items() %}
+                            <div class="race-block" style="margin-bottom: 1.5rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">
+                                <!-- 日付（MM/DD（曜日）形式） -->
+                                <div class="race-date" style="font-weight: bold; margin-bottom: 0.5rem;">
+                                    {{ day }}
+                                </div>
+                                {% for race in races %}
+                                    <div class="race-info">
+                                        <div style="display: flex; align-items: center;">
+                                            <a href="{{ url_for('show_entries', race_id=race['id']) }}">
+                                                {{ race['race_name'] }}
+                                            </a>
+                                            {% if race['race_grade'] %}
+                                                <img 
+                                                    src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/grade/{{ race['race_grade'] }}.jpeg" alt="{{ race['race_grade'] }}" 
+                                                    style="width: 20px; height: auto;" 
+                                                    onerror="this.style.display='none';">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>予定はありません</p>
+                {% endif %}
+            </div>
         </div>
     </body>
 </html>
