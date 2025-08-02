@@ -1072,5 +1072,40 @@ def filtered_users():
 
     return render_template('alluserscore.html', all_users=all_users, filtered_users=filtered_users, grades=grades, places=places)
 
+@app.route('/schedule')
+def schedule():
+    JST = pytz.timezone('Asia/Tokyo')
+    today = datetime.now(JST).date()
+    year = today.year
+    month = today.month
+    
+    this_month_events = get_events_for_month(year, month)
+
+    cal = HolidayCalendar(firstweekday=0)
+    calendar_html = cal.formatmonth(year,month)
+
+    prev_month = month - 1
+    prev_year = year
+    if prev_month == 0:
+        prev_month = 12
+        prev_year -= 1
+
+    next_month = month + 1
+    next_year = year
+    if next_month == 13:
+        next_month = 1
+        next_year += 1
+
+    start_date = f"{year}-{month:02d}-01"
+    end_day = monthrange(year, month)[1]
+    end_date = f"{year}-{month:02d}-{end_day}"
+
+    conn = connect_db()
+    cur = conn.cursor()
+    races = get_this_week_races()
+    monn_events = 
+    return render_template('schedule.html')
+
 if __name__ == '__main__':
     app.run(debug=False)
+
