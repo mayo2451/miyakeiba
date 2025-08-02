@@ -128,10 +128,10 @@
             </div>
             <div class="event-list">
                 <h2>{{ year }}年{{ month }}月のレース予定</h2>
-                {% if calender_events %}
+                {% if calendar_events %}
                 <table class="schedule_table">
                     <tbody>
-                        {% for day, races in calender_events.items() %}
+                        {% for day, races in calendar_events.items() %}
                             {% for race in races %}
                                 <tr>
                                     <td class="schedule_date">{{ race['race_date_display'] }}</td>
