@@ -122,11 +122,15 @@ a {
 .first-title {
     margin: 0 auto 0 0;
 }
-.second-title,
-.third-title {
+.second-title {
     width: auto; 
     height: 70px;
     margin: 5px 0 0 5px;
+}
+.third-title {
+    width: auto; 
+    height: 70px;
+    margin: 0 0 0 5px;
 }
 .other {
     display: flex;
@@ -193,4 +197,5 @@ a {
 .first-block {
     width: 60%;
 }
+
 
