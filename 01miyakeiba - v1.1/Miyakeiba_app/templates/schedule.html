@@ -26,6 +26,7 @@
             <nav>
                 <ul class="menu">
                     <li><a href="/">HOME</a></li>
+                    <li><a href="{{url_for('schedule')}}">レース</a></li>
                     <li><a href="{{url_for('allusers')}}">全体成績</a></li>
                     <li><a href="{{url_for('mypage')}}">マイページ</a></li>
                     {% if session.get('role') == 'admin' %}
