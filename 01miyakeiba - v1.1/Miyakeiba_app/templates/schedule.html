@@ -74,9 +74,9 @@
             </div>
             <div class="event-list">
                 <h2>今月のレース</h2>
-                {% if month_events %}
+                {% if this_month_events %}
                     <div class="race-schedule">
-                        {% for day, races in month_events.items() %}
+                        {% for day, races in this_month_events.items() %}
                             <div class="race-block" style="margin-bottom: 1.5rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">
                                 <!-- 日付（MM/DD（曜日）形式） -->
                                 <div class="race-date" style="font-weight: bold; margin-bottom: 0.5rem;">
