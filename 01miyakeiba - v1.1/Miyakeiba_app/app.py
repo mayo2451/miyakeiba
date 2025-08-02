@@ -1080,7 +1080,10 @@ def schedule():
     month = today.month
     
     this_month_events = get_events_for_month(year, month)
-
+    races = get_this_week_races()
+    cal_year = request.args.get('year', default=year_today, type=int)
+    cal_month = request.args.get('month', default=month_today, type=int)
+    calendar_events = get_events_for_month(cal_year, cal_month)
     cal = HolidayCalendar(firstweekday=0)
     calendar_html = cal.formatmonth(year,month)
 
@@ -1096,16 +1099,21 @@ def schedule():
         next_month = 1
         next_year += 1
 
-    start_date = f"{year}-{month:02d}-01"
-    end_day = monthrange(year, month)[1]
-    end_date = f"{year}-{month:02d}-{end_day}"
-
-    conn = connect_db()
-    cur = conn.cursor()
-    races = get_this_week_races()
-    monn_events = 
-    return render_template('schedule.html')
+    return render_template(
+        'schedule.html',
+        races = races,
+        this_month_events = this_month_events,
+        calender_events = calender_events,
+        calender_html = calender_html,
+        year = cal_year,
+        month = cal_month,
+        prev_year = prev_year,
+        prev_month = prev_month,
+        next_year = next_year,
+        next_month = next_month
+    )
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
