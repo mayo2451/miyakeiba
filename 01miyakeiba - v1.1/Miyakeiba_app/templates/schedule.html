@@ -130,24 +130,31 @@
             <div class="event-list">
                 <h2>{{ year }}年{{ month }}月のレース予定</h2>
                 {% if calendar_events %}
-                <table class="schedule_table">
-                    <tbody>
-                        {% for day, races in calendar_events.items() %}
-                            {% for race in races %}
-                                <tr>
-                                    <td class="schedule_date">{{ race['race_date_display'] }}</td>
-                                    <td class="schedule_place">{{ race['race_place'] }}</td>
-                                    <td class="schedule_name">
-                                        <a href="{{ url_for('show_entries', race_id=race['id']) }}">
-                                            {{ race['race_name'] }}
-                                        </a>
-                                    </td>
-                                    <td class="schedule_time">{{ race['start_time'] }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endfor %}
-                    </tbody>
-                </table>
+                    {% for day, races in calendar_events.items() %}
+                        <div class="race-schedule">
+                            <div class="race-block" style="margin-bottom: 1.5rem; border-bottom: 1px solid #ccc; padding-bottom: 0.5rem;">
+                                <!-- 日付（MM/DD（曜日）形式） -->
+                                <div class="race-date" style="font-weight: bold; margin-bottom: 0.5rem;">
+                                    {{ day }}
+                                </div>
+                                {% for race in races %}
+                                    <div class="race-info">
+                                        <div style="display: flex; align-items: center;">
+                                            <a href="{{ url_for('show_entries', race_id=race['id']) }}">
+                                                {{ race['race_name'] }}
+                                            </a>
+                                            {% if race['race_grade'] %}
+                                                <img 
+                                                    src="https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/race/grade/{{ race['race_grade'] }}.jpeg" alt="{{ race['race_grade'] }}" 
+                                                    style="width: 20px; height: auto;" 
+                                                    onerror="this.style.display='none';">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
                 {% else %}
                     <p>予定はありません</p>
                 {% endif %}
