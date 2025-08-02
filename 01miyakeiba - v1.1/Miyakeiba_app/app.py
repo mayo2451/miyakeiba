@@ -1085,16 +1085,16 @@ def schedule():
     cal_month = request.args.get('month', default=month_today, type=int)
     calendar_events = get_events_for_month(cal_year, cal_month)
     cal = HolidayCalendar(firstweekday=0)
-    calendar_html = cal.formatmonth(year,month)
+    calendar_html = cal.formatmonth(cal_year, cal_month)
 
-    prev_month = month - 1
-    prev_year = year
+    prev_month = month_today - 1
+    prev_year = year_today
     if prev_month == 0:
         prev_month = 12
         prev_year -= 1
 
-    next_month = month + 1
-    next_year = year
+    next_month = month_today + 1
+    next_year = year_today
     if next_month == 13:
         next_month = 1
         next_year += 1
@@ -1115,6 +1115,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
