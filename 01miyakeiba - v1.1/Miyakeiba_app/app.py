@@ -1087,7 +1087,7 @@ def schedule():
     cal = HolidayCalendar(firstweekday=0)
     calendar_html = cal.formatmonth(cal_year, cal_month)
     calendar_events_sorted = sorted(calendar_events.items(), key=lambda x: x[0])
-    month_events_sorted = sorted(this_month_events.items(), key=lambda x: x[0])
+    this_month_events_sorted = sorted(this_month_events.items(), key=lambda x: x[0])
 
     prev_month = cal_month - 1
     prev_year = cal_year
@@ -1117,6 +1117,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
