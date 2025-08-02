@@ -1076,10 +1076,10 @@ def filtered_users():
 def schedule():
     JST = pytz.timezone('Asia/Tokyo')
     today = datetime.now(JST).date()
-    year = today.year
-    month = today.month
+    year_today = today.year
+    month_today = today.month
     
-    this_month_events = get_events_for_month(year, month)
+    this_month_events = get_events_for_month(year_today, month_today)
     races = get_this_week_races()
     cal_year = request.args.get('year', default=year_today, type=int)
     cal_month = request.args.get('month', default=month_today, type=int)
@@ -1115,5 +1115,6 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
