@@ -1103,7 +1103,7 @@ def schedule():
         'schedule.html',
         races = races,
         this_month_events = this_month_events,
-        calender_events = calender_events,
+        calendar_events = calendar_events,
         calender_html = calender_html,
         year = cal_year,
         month = cal_month,
@@ -1115,6 +1115,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
