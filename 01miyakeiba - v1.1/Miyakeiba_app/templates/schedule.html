@@ -128,7 +128,7 @@
                 {{ calendar_html|safe }}
             </div>
             <div class="event-list">
-                <h2>{{ year }}年{{ month }}月のレース予定</h2>
+                <h2>{{ year }}年{{ month }}月<br>レース予定</h2>
                 {% if calendar_events %}
                     {% for day, races in calendar_events.items() %}
                         <div class="race-schedule">
