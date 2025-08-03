@@ -11,10 +11,11 @@
         </header>
         <h2>ログイン</h2>
         <form method="POST">
-            ユーザー名: <input type="text" name="username" required><br>
-            パスワード: <input type="password" name="password" required><br>
+            ユーザー名: <input type="text" name="username" required　autocomplete="off"><br>
+            パスワード: <input type="password" name="password" required　autocomplete="off"><br>
             <button type="submit">ログイン</button>
         </form>
         <a href="{{ url_for('register') }}">登録はこちら</a>
     </body>
+
 </html>
