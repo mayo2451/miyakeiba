@@ -18,19 +18,7 @@
                 {% endif %}
             </div>
         </header>
-        <div class="menu_bar">
-            <nav>
-                <ul class="menu">
-                    <li><a href="/">HOME</a></li>
-                    <li><a href="/">全体成績</a></li>
-                    <li><a href="{{url_for('mypage')}}">マイページ</a></li>
-                    {% if session.get('role') == 'admin' %}
-                        <li><a href="{{url_for('insert_race')}}">予定追加</a></li>
-                        <li><a href="{{url_for('entry_form')}}">出馬表作成</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
+        {% include 'menubar.html' %}
         <h2>{{ race['race_name'] }} の結果を入力</h2>
         <form method="post">
         {% for i in range(1, 6) %}
@@ -63,4 +51,5 @@
             });
         });
     </script>
+
 </html>
