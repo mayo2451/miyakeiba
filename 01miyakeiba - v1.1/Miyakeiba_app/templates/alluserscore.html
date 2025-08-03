@@ -21,19 +21,7 @@
                 {% endif %}
             </div>
         </header>
-        <div class="menu_bar">
-            <nav>
-                <ul class="menu">
-                    <li><a href="/">HOME</a></li>
-                    <li><a href="{{url_for('allusers')}}">全体成績</a></li>
-                    <li><a href="{{url_for('mypage')}}">マイページ</a></li>
-                    {% if session.get('role') == 'admin' %}
-                        <li><a href="{{url_for('insert_race')}}">予定追加</a></li>
-                        <li><a href="{{url_for('entry_form')}}">出馬表作成</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
+        {% include 'menubar.html' %}
         <h2>条件付き成績で絞り込み</h2>
         <form method="get" action="{{ url_for('filtered_users') }}">
             <label for="race_type">グレード:</label>
@@ -71,4 +59,5 @@
         {% endif %}
     <script src="{{ url_for('static', filename='js/alluserscore.js') }}"></script>
     </body>
+
 </html>
