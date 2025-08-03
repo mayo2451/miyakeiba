@@ -492,6 +492,7 @@ def delete_race():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        session.clear()
         username = request.form['username']
         password = request.form['password']
 
@@ -1117,6 +1118,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
