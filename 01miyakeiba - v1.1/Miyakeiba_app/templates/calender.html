@@ -18,12 +18,16 @@
         }
         .mon { color: red; }
         .sun { color: blue; }
+        .calendar {
+            align-items: center;
+        }
     </style>
 </head>
 <body>
     <h1>{{ year }}年{{ month }}月のカレンダー</h1>
-    <div>
+    <div class="calendar">
         {{ calendar_html|safe }}
     </div>
 </body>
+
 </html>
