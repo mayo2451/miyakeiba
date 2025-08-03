@@ -905,9 +905,9 @@ def update_scores(conn, race_id):
     cur.execute("SELECT username, first, second, third FROM users")
     for user in cur.fetchall():
         username = user["username"]
-        first = user["first"]
-        second = user["second"]
-        third = user["third"]
+        first = int(user["first"])
+        second = int(user["second"])
+        third = int(user["third"])
 
         # raise_horseから提出回数を取得
         cur.execute("SELECT COUNT(*) FROM raise_horse WHERE username = ?", (username,))
@@ -1118,6 +1118,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
