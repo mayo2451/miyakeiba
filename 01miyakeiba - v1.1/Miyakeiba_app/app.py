@@ -728,10 +728,12 @@ def show_entries(race_id):
             }
             for uname in vote_map.get(horse, [])
         ]
-        
+    
     conn.close()
 
-    return render_template('entries.html', entries=entries, race=race, selected_race_id=race_id, is_closed=is_closed)
+    is_finalized = now >= cutoff_time
+    
+    return render_template('entries.html', entries=entries, race=race, selected_race_id=race_id, is_closed=is_closed, is_finalized=is_finalized)
 
 @app.route('/mypage')
 def mypage():
@@ -1118,6 +1120,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
