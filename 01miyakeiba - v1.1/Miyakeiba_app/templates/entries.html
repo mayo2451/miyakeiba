@@ -42,7 +42,11 @@
                                 <th>みんなの予想</th>
                             </tr>
                             {% for entry in entries %}
-                                <tr class="uma" data-uman="{{ loop.index }}" data-total="{{ entries|length }}">
+                                <tr class="uma" 
+                                    {% if is_finalized %} 
+                                        data-uman="{{ loop.index }}" data-total="{{ entries|length }}"
+                                    {% endif %}
+                                >
                                     <td class="tiny"><input type="radio" name="honmeiba" value="{{ entry['horse_name'] }}" required></td>
                                     <td class="tiny">{{ loop.index }}</td>
                                     <td class="horse-name">{{ entry['horse_name'] }}</td>
@@ -76,5 +80,6 @@
         <script src="{{ url_for('static', filename='js/waku_color.js') }}"></script>
     </body>
 </html>
+
 
 
