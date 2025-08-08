@@ -1,6 +1,11 @@
 document.querySelectorAll(".uma").forEach(row => {
-	const num = parseInt(row.dataset.uman);
-	const total = parseInt(row.dataset.total);
+	const numStr = row.dataset.uman;
+	const totalStr = row.dataset.total;
+
+	if (!numStr || !totalStr) return;
+	
+	const num = parseInt(numStr);
+	const total = parseInt(totalStr);
 	let colorClass = "";
 
 	if (total === 18) {
