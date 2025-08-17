@@ -28,6 +28,7 @@ JST = pytz.timezone('Asia/Tokyo')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'login' 
 login_manager.remember_cookie_duration = timedelta(days=30)
 
 class User(UserMixin):
@@ -1132,6 +1133,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
