@@ -701,7 +701,7 @@ def show_entries(race_id):
                 INSERT INTO raise_horse(race_id, username, honmeiba)
                 VALUES(?,?,?)
                 ON CONFLICT(race_id, username) DO UPDATE SET honmeiba=excluded.honmeiba
-            """, (race_id, session.get('username'), honmeiba))
+            """, (race_id, current_user.username, honmeiba))
             backup_on_post()
             conn.commit()
 
@@ -751,12 +751,9 @@ def show_entries(race_id):
     return render_template('entries.html', entries=entries, race=race, selected_race_id=race_id, is_closed=is_closed, is_finalized=is_finalized)
 
 @app.route('/mypage')
+@login_required
 def mypage():
-    if 'username' not in session:
-        flash('ログインが必要です')
-        return redirect(url_for('login'))
-    
-    username = session['username']
+    username = current_user.username
     conn = connect_db()
     cursor = conn.cursor()
 
@@ -1135,6 +1132,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
