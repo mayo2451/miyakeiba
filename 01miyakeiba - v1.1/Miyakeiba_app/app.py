@@ -23,6 +23,11 @@ BACKUP_INTERVAL = 600
 DB_NAME = "miyakeiba_app.db"
 SKIP_STARTUP_BACKUP = os.getenv("SKIP_STARTUP_BACKUP", "false").lower() == "true"
 app.secret_key = 'your_secret_key'
+app.config.update(
+    SESSION_COOKIE_SECURE=True,   # HTTPS を使う場合
+    SESSION_COOKIE_HTTPONLY=True, # JS からアクセスできないように
+    SESSION_COOKIE_SAMESITE='Lax' # POST リクエストでも送信されるように
+)
 JAPANESE_WEEKDAYS = ["月", "火", "水", "木", "金", "土", "日"]
 JST = pytz.timezone('Asia/Tokyo')
 
@@ -1129,6 +1134,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
