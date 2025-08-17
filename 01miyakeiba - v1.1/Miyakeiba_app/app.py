@@ -42,10 +42,10 @@ def load_user(user_id):
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
-    user = cursor.fetchone()
+    row = cursor.fetchone()
     conn.close()
-    if user:
-        return User(user['id'], user['username'], user['role'])
+    if row:
+        return User(row['id'], row['username'], row['role'])
     return None
     
 
@@ -525,9 +525,10 @@ def login():
             flash("ユーザーが見つかりません")
             return render_template('login.html')
 
-        if check_password_hash(user['password'], password):
+        if user and check_password_hash(user['password'], password):
             # User オブジェクトを作る
-            login_user(User(user['id'], user['username'], user['role']), remember=True)
+            user_obj = User(user['id'], user['username'], user['role'])
+            login_user(user_obj)
             return redirect('/')
         else:
             flash("ユーザー名またはパスワードが違います")
@@ -1133,6 +1134,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
