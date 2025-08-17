@@ -502,6 +502,8 @@ def delete_race():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print("request.method:", request.method)
+    print("request.form:", request.form)
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -521,6 +523,7 @@ def login():
             # User オブジェクトを作る
             user_obj = User(user['id'], user['username'], user['role'])
             login_user(user_obj)
+            print("login_user 実行後:", current_user.is_authenticated)
             return redirect('/')
         else:
             flash("ユーザー名またはパスワードが違います")
@@ -1126,6 +1129,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
