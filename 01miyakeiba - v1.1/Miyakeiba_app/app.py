@@ -526,6 +526,7 @@ def login():
             return render_template('login.html')
 
         if user and check_password_hash(user['password'], password):
+            print("DEBUG User class:", User)
             # User オブジェクトを作る
             user_obj = User(user['id'], user['username'], user['role'])
             login_user(user_obj)
@@ -1134,6 +1135,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
