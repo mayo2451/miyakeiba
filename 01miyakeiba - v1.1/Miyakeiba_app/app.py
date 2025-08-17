@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request,redirect, session, url_for, flash # type: ignore
-from flask_login import LoginManager, login_user, login_required, current_user
+from flask_login import LoginManager, login_user, login_required, current_user, UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash # type: ignore
 import calendar
 from calendar import monthrange
@@ -28,6 +28,25 @@ JST = pytz.timezone('Asia/Tokyo')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.remember_cookie_duration = timedelta(days=30)
+
+class User(UserMixin):
+    def _init_(self, id, username, role):
+        self.id = id
+        self.username = username
+        self.role = role
+
+@login_manager.user_loader
+def load_user(user_id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+    user = cursor.fetchone()
+    conn.close()
+    if user:
+        return User(user['id'], user['username'], user['role'])
+    return None
+    
 
 def get_sheet_client():
     creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
@@ -492,7 +511,6 @@ def delete_race():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session.clear()
         username = request.form['username']
         password = request.form['password']
 
@@ -502,16 +520,13 @@ def login():
         user = cursor.fetchone()
         conn.close()
 
-        if user is not None:
-            print(dict(user))
-        else:
+        if not user:
             flash("ユーザーが見つかりません")
             return render_template('login.html')
 
-        if user and check_password_hash(user['password'], password):
-            session['user_id'] = user['id']
-            session['username'] = user['username']
-            session['role'] = user['role']
+        if check_password_hash(user['password'], password):
+            # User オブジェクトを作る
+            login_user(User(user['id'], user['username'], user['role']), remember=True)
             return redirect('/')
         else:
             flash("ユーザー名またはパスワードが違います")
@@ -521,7 +536,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.clear()
+    logout_user()
     return redirect('/')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -1120,6 +1135,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
