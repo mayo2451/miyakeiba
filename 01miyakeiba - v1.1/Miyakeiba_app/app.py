@@ -174,17 +174,6 @@ def backup_on_post(force=False):
     if force or (time.time() - get_last_backup_time() >= BACKUP_INTERVAL):
         run_backup_async()
 
-class User:
-    def _init_(self, id_, name, password):
-        self.id = id_
-        self.name = name
-        self.password = password
-    def is_authenticated(self): return True
-    def is_active(self): return True
-    def is_anonymous(self): return True
-    def get_id(self): return str(self.id)
-@login_manager.user_loader
-
 def connect_db():
     conn = sqlite3.connect('miyakeiba_app.db')
     conn.row_factory = sqlite3.Row
@@ -1135,6 +1124,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
