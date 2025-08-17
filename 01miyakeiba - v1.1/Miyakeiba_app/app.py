@@ -37,6 +37,9 @@ class User(UserMixin):
         self.username = username
         self.role = role
 
+def get_id(self):
+    return str(self.id)
+
 @login_manager.user_loader
 def load_user(user_id):
     conn = connect_db()
@@ -1124,6 +1127,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
