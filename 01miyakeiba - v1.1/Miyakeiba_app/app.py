@@ -32,7 +32,7 @@ login_manager.login_view = 'login'
 login_manager.remember_cookie_duration = timedelta(days=30)
 
 class User(UserMixin):
-    def _init_(self, id, username, role):
+    def __init__(self, id, username, role):
         self.id = id
         self.username = username
         self.role = role
@@ -1134,6 +1134,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
