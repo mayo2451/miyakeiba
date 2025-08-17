@@ -41,7 +41,7 @@ class User(UserMixin):
 def load_user(user_id):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
+    cursor.execute("SELECT * FROM users WHERE id = ?", (int(user_id),))
     row = cursor.fetchone()
     conn.close()
     if row:
@@ -1124,6 +1124,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
