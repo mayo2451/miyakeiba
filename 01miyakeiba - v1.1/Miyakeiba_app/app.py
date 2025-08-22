@@ -987,6 +987,34 @@ def show_race_result(race_id):
             'score': row['score']
         })
         prev_score = row['score']
+
+    cur.execute("""
+        SELECT rh.username, rh.honmeiba, u.id AS user_id
+        FROM raise_horse rh
+        JOIN users u ON rh.username = u.username
+        WHERE rh.race_id = ?
+    """, (race_id,))
+    votes = cur.fetchall()
+
+    vote_map = {}
+    for row in votes:
+        uname = row['username']
+        horse = row['honmeiba']
+        uid = row['user_id']
+        if horse not in vote_map:
+            vote_map[horse] = []
+        vote_map[horse].append({
+            "username": uname,
+            "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{uid}/face.png"
+        })
+
+    if result.get('first_place'):
+        result['voted_by_first'] = vote_map.get(result['first_place'], [])
+    if result.get('second_place'):
+        result['voted_by_second'] = vote_map.get(result['second_place'], [])
+    if result.get('third_place'):
+        result['voted_by_third'] = vote_map.get(result['third_place'], [])
+        
     conn.close()
 
     return render_template('race_result.html', race_id=race_id, horses=horses, race=race, result=result, scores=ranked_scores)
@@ -1134,6 +1162,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
