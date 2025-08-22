@@ -28,7 +28,7 @@
                 <td>{{ result.odds_first }}</td>
                 <td></td>
                 <td>
-                    <div>
+                    <div style="display: flex; gap: 5px; align-items: center;">
                         {% for voter in result.voted_by_first %}
                             <img src="{{ voter.image_url }}" class="face" alt="{{ voter.username }}" onerror="this.style.display='none';">
                         {% endfor %}
@@ -41,7 +41,7 @@
                 <td>{{ result.odds_second }}</td>
                 <td></td>
                 <td>
-                    <div>
+                    <div style="display: flex; gap: 5px; align-items: center;">
                         {% for voter in result.voted_by_second %}
                             <img src="{{ voter.image_url }}" class="face" alt="{{ voter.username }}" onerror="this.style.display='none';">
                         {% endfor %}
@@ -54,7 +54,7 @@
                 <td>{{ result.odds_third }}</td>
                 <td></td>
                 <td>
-                    <div>
+                    <div style="display: flex; gap: 5px; align-items: center;">
                         {% for voter in result.voted_by_third %}
                             <img src="{{ voter.image_url }}" class="face" alt="{{ voter.username }}" onerror="this.style.display='none';">
                         {% endfor %}
@@ -99,6 +99,7 @@
     </body>
 
 </html>
+
 
 
 
