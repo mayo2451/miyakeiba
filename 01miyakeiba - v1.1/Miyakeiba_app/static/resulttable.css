@@ -29,3 +29,12 @@
 .result-table-container .odds.center {
     text-align: center;
 }
+
+.face {
+    width: auto; 
+    height: 30px; 
+    margin-right:5px;
+}
+.tiny{
+    width: 3%;
+}
