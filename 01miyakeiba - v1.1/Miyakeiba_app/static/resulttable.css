@@ -1,0 +1,31 @@
+.result-table-container {
+    display: flex;
+    justify-content: center;
+}
+
+.result-table-container table {
+    width: 70%; /* 任意で調整してください */
+    border-collapse: collapse;
+}
+
+/* 全てのセル（th, td）を中央揃えに */
+.result-table-container th{
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+/* 馬名が記載されたセルを左揃えに */
+.result-table-container .horse-name {
+    text-align: left;
+}
+
+/* オッズが記載されたセルを右揃えに */
+.result-table-container .odds {
+    text-align: right;
+}
+
+/* 「-」のオッズを中央揃えに */
+.result-table-container .odds.center {
+    text-align: center;
+}
