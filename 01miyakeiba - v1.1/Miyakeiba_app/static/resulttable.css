@@ -8,7 +8,7 @@
 }
 
 /* 馬名が記載されたセルを左揃えに */
-.result-table-container .horse-name {
+.result-table-container td.horse-name {
     text-align: left;
 }
 
