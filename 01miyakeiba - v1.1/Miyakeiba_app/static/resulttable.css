@@ -13,7 +13,7 @@
 }
 
 /* オッズが記載されたセルを右揃えに */
-.result-table-container .odds {
+.result-table-container td.odds {
     text-align: right;
 }
 
