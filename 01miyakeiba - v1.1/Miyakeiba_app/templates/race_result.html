@@ -66,26 +66,14 @@
                 <td>{{ result.fourth_place }}</td>
                 <td>—</td>
                 <td></td>
-                <td>
-                    <div>
-                        {% for voter in result.voted_by_first %}
-                            <img src="{{ voter.image_url }}" class="face" alt="{{ voter.username }}" onerror="this.style.display='none';">
-                        {% endfor %}
-                    </div>
-                </td>
+                <td></td>
             </tr>
             <tr>
                 <td>5着</td>
                 <td>{{ result.fifth_place }}</td>
                 <td>—</td>
                 <td></td>
-                <td>
-                    <div>
-                        {% for voter in result.voted_by_first %}
-                            <img src="{{ voter.image_url }}" class="face" alt="{{ voter.username }}" onerror="this.style.display='none';">
-                        {% endfor %}
-                    </div>
-                </td>
+                <td></td>
             </tr>
         </table>
 
@@ -111,6 +99,7 @@
     </body>
 
 </html>
+
 
 
 
