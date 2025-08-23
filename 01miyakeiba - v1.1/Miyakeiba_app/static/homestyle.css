@@ -1,3 +1,7 @@
+body {
+    max-width: 960px;
+    margin: 0 auto;
+}
 .menu{
     text-align: center;
 }
@@ -197,6 +201,7 @@ a {
 .first-block {
     width: 60%;
 }
+
 
 
 
