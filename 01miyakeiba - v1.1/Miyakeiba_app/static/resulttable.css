@@ -1,11 +1,7 @@
 .result-table-container {
     display: flex;
     justify-content: center;
-}
-
-.result-table-container table {
     width: 70%; /* 任意で調整してください */
-    border-collapse: collapse;
 }
 
 /* 馬名が記載されたセルを左揃えに */
