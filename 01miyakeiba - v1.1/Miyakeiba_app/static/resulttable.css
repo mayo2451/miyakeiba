@@ -1,7 +1,10 @@
 .result-table-container {
-    display: flex;
-    justify-content: center;
+   　margin: 0 auto;
     width: 70%; /* 任意で調整してください */
+}
+
+.result-table-container table {
+    width: 100%; /* 親要素の幅いっぱいに広げる */
 }
 
 /* 馬名が記載されたセルを左揃えに */
