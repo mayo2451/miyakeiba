@@ -1,31 +1,29 @@
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大ヴァロ予想王</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='resulttable.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='resulttable.css') }}">
-  </head>
-  <body>
-    <div class="tabs-container">
-      <div class="button-container">
-        <button class="toggle-button active" data-target="entries">出馬表</button>
-        <button class="toggle-button" data-target="result">結果</button>
-        <button class="toggle-button" data-target="video">レース映像</button>
-      </div>
-      
-      <div class="tab-content-container">
-        <div id="entries" class="tab-content active">
-          {% include 'entries.html' %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>大ヴァロ予想王</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='homestyle.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='resulttable.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='entryhorsetable.css') }}">
+    </head>
+    <body>
+        <div class="tabs-container">
+            <div class="button-container">
+                <button class="toggle-button active" data-target="entries">出馬表</button>
+                <button class="toggle-button" data-target="result">結果</button>
+                <button class="toggle-button" data-target="video">レース映像</button>
+            </div>
+            <div class="tab-content-container">
+                <div id="entries" class="tab-content active">
+                    {% include 'entries.html' %}
+                </div>
+                <div id="result" class="tab-content">
+                    {% include 'race_result.html' %}
+                </div>
+                <div id="video" class="tab-content">
+                </div>
+            </div>
         </div>
-        <div id="result" class="tab-content">
-          {% include 'race_result.html' %}
-        </div>
-        <div id="video" class="tab-content">
-        </div>
-      </div>
-    </div>
-  </body>
-
+    </body>
 </html>
