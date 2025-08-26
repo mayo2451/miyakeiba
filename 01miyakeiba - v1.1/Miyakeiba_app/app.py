@@ -15,6 +15,8 @@ import threading
 from datetime import datetime, date, timedelta
 import pytz
 
+logging.basicConfig(level=logging.INFO)
+
 app = Flask(__name__)
 
 SHEET_NAME = "miyakeiba_backup"
@@ -667,90 +669,90 @@ def fetch_entries_from_sheet(race_id):
         print(f"❌ スプレッドシート取得エラー: {e}")
         return []
 
-@app.route('/entries/<int:race_id>', methods=['GET', 'POST'])
-def show_entries(race_id):
-    conn = connect_db()
-    cursor = conn.cursor()
+#@app.route('/entries/<int:race_id>', methods=['GET', 'POST'])
+#def show_entries(race_id):
+#    conn = connect_db()
+#    cursor = conn.cursor()
 
     # レース情報取得
-    cursor.execute("SELECT id, race_date, race_place, race_name, start_time FROM race_schedule WHERE id = ?", (race_id,))
-    race = cursor.fetchone()
+#    cursor.execute("SELECT id, race_date, race_place, race_name, start_time FROM race_schedule WHERE id = ?", (race_id,))
+#    race = cursor.fetchone()
 
-    if not race:
-        conn.close()
-        flash("指定されたレースが見つかりません")
-        return redirect('/')
+#    if not race:
+#        conn.close()
+#        flash("指定されたレースが見つかりません")
+#        return redirect('/')
 
-    race = dict(race)
-    now = datetime.now(JST)
+#    race = dict(race)
+#    now = datetime.now(JST)
 
-    try:
-        race_datetime_str = f"{race['race_date']} {race['start_time']}"  # "YYYY-MM-DD HH:MM"
-        race_datetime = JST.localize(datetime.strptime(race_datetime_str, "%Y-%m-%d %H:%M"))
-        voting_deadline = race_datetime - timedelta(minutes=1)
-        cutoff_time = get_friday_midnight(race['race_date'])
-    except ValueError:
-        flash("レースの日時情報に誤りがあります。")
-        return redirect('/', current_path=request.path)
+#    try:
+#        race_datetime_str = f"{race['race_date']} {race['start_time']}"  # "YYYY-MM-DD HH:MM"
+#        race_datetime = JST.localize(datetime.strptime(race_datetime_str, "%Y-%m-%d %H:%M"))
+#        voting_deadline = race_datetime - timedelta(minutes=1)
+#        cutoff_time = get_friday_midnight(race['race_date'])
+#    except ValueError:
+#        flash("レースの日時情報に誤りがあります。")
+#        return redirect('/', current_path=request.path)
 
-    is_closed = now >= voting_deadline
+#    is_closed = now >= voting_deadline
 
     # POST処理（本命馬登録）
-    if request.method == 'POST':
-        honmeiba = request.form.get('honmeiba')
-        if honmeiba:
-            cursor.execute("""
-                INSERT INTO raise_horse(race_id, username, honmeiba)
-                VALUES(?,?,?)
-                ON CONFLICT(race_id, username) DO UPDATE SET honmeiba=excluded.honmeiba
-            """, (race_id, current_user.username, honmeiba))
-            backup_on_post()
-            conn.commit()
+#    if request.method == 'POST':
+#        honmeiba = request.form.get('honmeiba')
+#        if honmeiba:
+#            cursor.execute("""
+#                INSERT INTO raise_horse(race_id, username, honmeiba)
+#                VALUES(?,?,?)
+#                ON CONFLICT(race_id, username) DO UPDATE SET honmeiba=excluded.honmeiba
+#            """, (race_id, current_user.username, honmeiba))
+#            backup_on_post()
+#            conn.commit()
 
     # 出馬表取得
-    if now < cutoff_time:
-        entries = fetch_entries_from_sheet(race_id)
-        print("📄 出馬表（確定前）: Google Sheets から取得")
-    else:
-        cursor.execute("SELECT horse_name FROM race_entries WHERE race_id = ?", (race_id,))
-        rows = cursor.fetchall()
-        entries = [{"horse_name":row["horse_name"], "jockey": ""} for row in rows]
-        print("📄 出馬表（確定後）: データベースから取得")
+#    if now < cutoff_time:
+#        entries = fetch_entries_from_sheet(race_id)
+#        print("📄 出馬表（確定前）: Google Sheets から取得")
+#    else:
+#       cursor.execute("SELECT horse_name FROM race_entries WHERE race_id = ?", (race_id,))
+#        rows = cursor.fetchall()
+#        entries = [{"horse_name":row["horse_name"], "jockey": ""} for row in rows]
+#        print("📄 出馬表（確定後）: データベースから取得")
 
-    cursor.execute("""
-        SELECT rh.username, rh.honmeiba, u.id AS user_id
-        FROM raise_horse rh
-        JOIN users u ON rh.username = u.username
-        WHERE rh.race_id = ?
-    """, (race_id,))
-    votes = cursor.fetchall()
+#    cursor.execute("""
+#        SELECT rh.username, rh.honmeiba, u.id AS user_id
+#        FROM raise_horse rh
+#        JOIN users u ON rh.username = u.username
+#        WHERE rh.race_id = ?
+#    """, (race_id,))
+#    votes = cursor.fetchall()
 
-    vote_map = {}
-    user_map = {}
-    for row in votes:
-        uname = row['username']
-        horse = row['honmeiba']
-        uid = row['user_id']
-        user_map[uname] = uid
-        if horse not in vote_map:
-            vote_map[horse] = []
-        vote_map[horse].append(uname)
+#    vote_map = {}
+#    user_map = {}
+#    for row in votes:
+#        uname = row['username']
+#        horse = row['honmeiba']
+#        uid = row['user_id']
+#        user_map[uname] = uid
+#        if horse not in vote_map:
+#            vote_map[horse] = []
+#        vote_map[horse].append(uname)
 
-    for entry in entries:
-        horse = entry["horse_name"]
-        entry["voted_by"] = [
-            {
-                "username": uname,
-                "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{ user_map.get(uname) }/face.png"
-            }
-            for uname in vote_map.get(horse, [])
-        ]
+#    for entry in entries:
+#        horse = entry["horse_name"]
+#        entry["voted_by"] = [
+#            {
+#                "username": uname,
+#                "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{ user_map.get(uname) }/face.png"
+#            }
+#            for uname in vote_map.get(horse, [])
+#        ]
+#    
+#    conn.close()
+
+#    is_finalized = now >= cutoff_time
     
-    conn.close()
-
-    is_finalized = now >= cutoff_time
-    
-    return render_template('entries.html', entries=entries, race=race, selected_race_id=race_id, is_closed=is_closed, is_finalized=is_finalized)
+#    return render_template('entries.html', entries=entries, race=race, selected_race_id=race_id, is_closed=is_closed, is_finalized=is_finalized)
 
 @app.route('/mypage')
 @login_required
@@ -946,28 +948,158 @@ def update_scores(conn, race_id):
     conn.commit()
     flash("得点とユーザー情報を更新しました")
 
-@app.route('/race_result/<int:race_id>', methods=['GET', 'POST'])
-def show_race_result(race_id):
-    conn = connect_db()
-    cur = conn.cursor()
+#@app.route('/race_result/<int:race_id>', methods=['GET', 'POST'])
+#def show_race_result(race_id):
+#    conn = connect_db()
+#    cur = conn.cursor()
 
     # GET時はフォーム表示のために馬一覧を渡す
+#    cur.execute("SELECT horse_name FROM race_entries WHERE race_id = ?", (race_id,))
+#    horses = [row['horse_name'] for row in cur.fetchall()]
+#    cur.execute("SELECT * FROM race_result WHERE race_id = ?", (race_id,))
+#    result_row = cur.fetchone()
+#    result = dict(result_row) if result_row else {
+#        'first_place': '',
+#        'second_place': '',
+#        'third_place': '',
+#        'fourth_place': '',
+#        'fifth_place': '',
+#        'odds_first': '',
+#        'odds_second': '',
+#        'odds_third': ''
+#    }
+#    cur.execute("SELECT race_name FROM race_schedule WHERE id = ?", (race_id,))
+#    race = cur.fetchone()
+#    cur.execute("""SELECT username, honmeiba, score FROM raise_horse WHERE race_id = ?""", (race_id,))
+#    scores = cur.fetchall()
+#    sorted_scores = sorted(scores, key=lambda x: x['score'], reverse=True)
+#    ranked_scores = []
+#    prev_score = None
+#    rank = 0
+#    count = 0
+
+#    for row in sorted_scores:
+#        count += 1
+#        if row['score'] != prev_score:
+#            rank = count
+#        ranked_scores.append({
+#            'rank': rank,
+#            'username': row['username'],
+#            'honmeiba': row['honmeiba'],
+#            'score': row['score']
+#        })
+#        prev_score = row['score']
+
+#    cur.execute("""
+#        SELECT rh.username, rh.honmeiba, u.id AS user_id
+#        FROM raise_horse rh
+#        JOIN users u ON rh.username = u.username
+#        WHERE rh.race_id = ?
+#    """, (race_id,))
+#    votes = cur.fetchall()
+
+#    vote_map = {}
+#    for row in votes:
+#        uname = row['username']
+#        horse = row['honmeiba']
+#        uid = row['user_id']
+#        if horse not in vote_map:
+#            vote_map[horse] = []
+#        vote_map[horse].append({
+#            "username": uname,
+#            "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{uid}/face.png"
+#        })
+
+#    if result.get('first_place'):
+#        result['voted_by_first'] = vote_map.get(result['first_place'], [])
+#    if result.get('second_place'):
+#        result['voted_by_second'] = vote_map.get(result['second_place'], [])
+#    if result.get('third_place'):
+#        result['voted_by_third'] = vote_map.get(result['third_place'], [])
+        
+#    conn.close()
+
+#    return render_template('race_result.html', race_id=race_id, horses=horses, race=race, result=result, scores=ranked_scores)
+
+@app.route('/race/<int:race_id>', methods=['GET', 'POST'])
+def show_race_page(race_id):
+    conn = connet_db()
+    cur = conn.cursor()
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, race_date, race_place, race_name, start_time FROM race_schedule WHERE id = ?", (race_id,))
+    race = cursor.fetchone()
+    if not race:
+        conn.close()
+        flash("指定されたレースが見つかりません")
+        return redirect('/')
+    race = dict(race)
+    now = datetime.now(JST)
+    try:
+        race_datetime_str = f"{race['race_date']} {race['start_time']}"
+        race_datetime = JST.localize(datetime.strptime(race_datetime_str, "%Y-%m-%d %H:%M"))
+        voting_deadline = race_datetime - timedelta(minutes=1)
+        cutoff_time = get_friday_midnight(race['race_date'])
+    except ValueError:
+        flash("レースの日時情報に誤りがあります")
+        return redirect('/', current_path=request.path)
+    is_closed = now >= voting_deadline
+    if request.method == 'POST':
+        honmeiba = request.form.get('honmeinba')
+        if honmeiba:
+            cursor.execute("""
+                INSERT INTO raise_horse(race_id, username, honmeiba)
+                VALUES(?,?,?)
+                ON CONFLICT(race_id, username) DO UPDATE SET honmeiba=excluded.honmeiba
+            """, (race_id, current_user.username, honmeiba))
+            backup_on_post()
+            conn.commit()
+    if now < cutoff_time:
+        entries = fetch_entries_from_sheet(race_id)
+        print("📄 出馬表（確定前）: Google Sheets から取得")
+    else:
+        cursor.execute("SELECT horse_name FROM race_entries WHERE race_id = ?", (race_id,))
+        rows = cursor.fetchall()
+        enteries = [{"horse_name":row["horse_name"], "jockey": ""} for row in rows]
+        print("📄 出馬表（確定後）: データベースから取得")
+    cursor.execute("""
+        SELECT rh.username, rh.honmeiba, u.id AS user_id
+        FROM raise_horse rh
+        JOIN users u ON rh.username = u.username
+        WHERE rh.race_id = ?
+    """, (race_id,))
+    votes = cursor.fetchall()
+    vote_map = {}
+    user_map = {}
+    for row in votes:
+        uname = row['username']
+        horse = row['honmeiba']
+        uid = row['user_id']
+        user_map[uname] = uid
+        if horse not in vot_map:
+            vote_map[horse] = []
+        vote_map[horse].append(uname)
+    for entry in entries:
+        horse = entries["horse_name"]
+        entry["voted_by"] = [
+            {
+                "username": uname,
+                "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{ user_map.get(uname) }/face.png"
+            }
+            for uname in vote_map.get(horse, [])
+        ]
+    is_finalized = now >= cutoff_time
+
     cur.execute("SELECT horse_name FROM race_entries WHERE race_id = ?", (race_id,))
     horses = [row['horse_name'] for row in cur.fetchall()]
     cur.execute("SELECT * FROM race_result WHERE race_id = ?", (race_id,))
     result_row = cur.fetchone()
     result = dict(result_row) if result_row else {
-        'first_place': '',
-        'second_place': '',
-        'third_place': '',
-        'fourth_place': '',
-        'fifth_place': '',
-        'odds_first': '',
-        'odds_second': '',
-        'odds_third': ''
+        'first_place': '', 'second_place': '', 'third_place': '', 'fourth_place': '', 'fifth_place': '',
+        'odds_first': '', 'odds_second': '', 'odds_third': ''
     }
     cur.execute("SELECT race_name FROM race_schedule WHERE id = ?", (race_id,))
-    race = cur.fetchone()
+    race_info = cur.fetchone()
     cur.execute("""SELECT username, honmeiba, score FROM raise_horse WHERE race_id = ?""", (race_id,))
     scores = cur.fetchall()
     sorted_scores = sorted(scores, key=lambda x: x['score'], reverse=True)
@@ -975,49 +1107,90 @@ def show_race_result(race_id):
     prev_score = None
     rank = 0
     count = 0
-
     for row in sorted_scores:
         count += 1
-        if row['score'] != prev_score:
+        if row['score'] != prec_score:
             rank = count
         ranked_scores.append({
             'rank': rank,
             'username': row['username'],
-            'honmeiba': row['honmeiba'],
-            'score': row['score']
+            'honemiba': row['honemiba'],
+            'score' : row['score']
         })
         prev_score = row['score']
-
     cur.execute("""
         SELECT rh.username, rh.honmeiba, u.id AS user_id
         FROM raise_horse rh
         JOIN users u ON rh.username = u.username
         WHERE rh.race_id = ?
     """, (race_id,))
-    votes = cur.fetchall()
-
-    vote_map = {}
-    for row in votes:
+    votes_result = cur.fetchall()
+    vote_map_result = {}
+    for row in votes_result:
         uname = row['username']
         horse = row['honmeiba']
         uid = row['user_id']
-        if horse not in vote_map:
-            vote_map[horse] = []
-        vote_map[horse].append({
+        if horse not in vote_map_result:
+            vote_map_result[horse] = []
+        vote_map_result[horse].append({
             "username": uname,
             "image_url": f"https://raw.githubusercontent.com/mayo2451/miyakeiba/main/01miyakeiba%20-%20v1.1/Miyakeiba_app/image/user/{uid}/face.png"
         })
-
     if result.get('first_place'):
-        result['voted_by_first'] = vote_map.get(result['first_place'], [])
+        result['voted_by_first'] = vote_map_result.get(result['first_place'], [])
     if result.get('second_place'):
-        result['voted_by_second'] = vote_map.get(result['second_place'], [])
+        result['voted_by_second'] = vote_map_result.get(result['second_place'], [])
     if result.get('third_place'):
-        result['voted_by_third'] = vote_map.get(result['third_place'], [])
-        
+        result['voted_by_third'] = vote_map_result.get(result['third_place'], [])
+
+    def get_video_url(race_id):
+        try:
+            sh = get_sheet_client()
+            worksheet_name = 'race_video'
+            try:
+                worksheet = sh.worksheet(worksheet_name)
+            except WorksheetNotFound:
+                logging.error(f"シート名 '{worksheet_name}' が見つかりません。シート名を確認してください。")
+                return None
+
+            data = worksheet.get_all_records()
+
+            for row in data:
+                try:
+                    if int(row.get('id')) == race_id:
+                        video_url = row.get('url')
+                        if video_url:
+                            logging.info(f"レースID {race_id} の動画URLが見つかりました: {video_url}")
+                            return video_url
+                except (ValueError, TypeError):
+                    continue
+
+            logging.warning(f"レースID {race_id} に対応する動画URLがスプレッドシートに見つかりませんでした。")
+            return None
+
+        except SpreadsheetNotFound:
+            logging.error(f"スプレッドシート名 '{SHEET_NAME}' が見つかりません。名前が正しいか確認してください。")
+            return None
+        except Exception as e:
+            logging.error(f"Google Sheetsへのアクセス中にエラーが発生しました: {e}")
+            return None
+
+    video_url = get_video_url(rece_id)
+
     conn.close()
 
-    return render_template('race_result.html', race_id=race_id, horses=horses, race=race, result=result, scores=ranked_scores)
+    return render_template('race.html',
+                           race_id=race_id,
+                           entries=entries,
+                           race=race,
+                           selected_race_id=race_id,
+                           is_closed=is_closed,
+                           is_finalized=is_finalized,
+                           horse=horse,
+                           result=result,
+                           scores=ranked_scores,
+                           video_url=videourl
+                          )
 
 @app.route('/allusers')
 def allusers():
@@ -1162,6 +1335,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
