@@ -1147,7 +1147,7 @@ def show_race_page(race_id):
         ranked_scores.append({
             'rank': rank,
             'username': row['username'],
-            'honemiba': row['honemiba'],
+            'honemiba': row['honmeiba'],
             'score' : row['score']
         })
         prev_score = row['score']
@@ -1336,6 +1336,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
