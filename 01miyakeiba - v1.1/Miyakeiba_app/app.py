@@ -1142,7 +1142,7 @@ def show_race_page(race_id):
     count = 0
     for row in sorted_scores:
         count += 1
-        if row['score'] != prec_score:
+        if row['score'] != prev_score:
             rank = count
         ranked_scores.append({
             'rank': rank,
@@ -1336,6 +1336,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
