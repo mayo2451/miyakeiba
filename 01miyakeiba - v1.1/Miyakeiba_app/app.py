@@ -1020,6 +1020,37 @@ def update_scores(conn, race_id):
 #    conn.close()
 
 #    return render_template('race_result.html', race_id=race_id, horses=horses, race=race, result=result, scores=ranked_scores)
+def get_video_url(race_id):
+    try:
+        sh = get_sheet_client()
+        worksheet_name = 'race_video'
+        try:
+            worksheet = sh.worksheet(worksheet_name)
+        except WorksheetNotFound:
+            logging.error(f"シート名 '{worksheet_name}' が見つかりません。シート名を確認してください。")
+            return None
+
+        data = worksheet.get_all_records()
+
+        for row in data:
+            try:
+                if int(row.get('id')) == race_id:
+                    video_url = row.get('url')
+                    if video_url:
+                        logging.info(f"レースID {race_id} の動画URLが見つかりました: {video_url}")
+                        return video_url
+            except (ValueError, TypeError):
+                continue
+
+        logging.warning(f"レースID {race_id} に対応する動画URLがスプレッドシートに見つかりませんでした。")
+        return None
+
+    except SpreadsheetNotFound:
+        logging.error(f"スプレッドシート名 '{SHEET_NAME}' が見つかりません。名前が正しいか確認してください。")
+        return None
+    except Exception as e:
+        logging.error(f"Google Sheetsへのアクセス中にエラーが発生しました: {e}")
+        return None
 
 @app.route('/race/<int:race_id>', methods=['GET', 'POST'])
 def show_race_page(race_id):
@@ -1142,38 +1173,6 @@ def show_race_page(race_id):
         result['voted_by_second'] = vote_map_result.get(result['second_place'], [])
     if result.get('third_place'):
         result['voted_by_third'] = vote_map_result.get(result['third_place'], [])
-
-    def get_video_url(race_id):
-        try:
-            sh = get_sheet_client()
-            worksheet_name = 'race_video'
-            try:
-                worksheet = sh.worksheet(worksheet_name)
-            except WorksheetNotFound:
-                logging.error(f"シート名 '{worksheet_name}' が見つかりません。シート名を確認してください。")
-                return None
-
-            data = worksheet.get_all_records()
-
-            for row in data:
-                try:
-                    if int(row.get('id')) == race_id:
-                        video_url = row.get('url')
-                        if video_url:
-                            logging.info(f"レースID {race_id} の動画URLが見つかりました: {video_url}")
-                            return video_url
-                except (ValueError, TypeError):
-                    continue
-
-            logging.warning(f"レースID {race_id} に対応する動画URLがスプレッドシートに見つかりませんでした。")
-            return None
-
-        except SpreadsheetNotFound:
-            logging.error(f"スプレッドシート名 '{SHEET_NAME}' が見つかりません。名前が正しいか確認してください。")
-            return None
-        except Exception as e:
-            logging.error(f"Google Sheetsへのアクセス中にエラーが発生しました: {e}")
-            return None
 
     video_url = get_video_url(rece_id)
 
@@ -1335,6 +1334,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
