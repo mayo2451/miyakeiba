@@ -1190,7 +1190,7 @@ def show_race_page(race_id):
                            horse=horse,
                            result=result,
                            scores=ranked_scores,
-                           video_url=videourl
+                           video_url=video_url
                           )
 
 @app.route('/allusers')
@@ -1336,6 +1336,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
