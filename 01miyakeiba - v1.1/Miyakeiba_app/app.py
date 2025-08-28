@@ -1057,6 +1057,7 @@ def get_video_url(race_id):
 def show_race_page(race_id):
     conn = connect_db()
     cur = conn.cursor()
+    entries = []
 
     cursor = conn.cursor()
     cursor.execute("SELECT id, race_date, race_place, race_name, start_time FROM race_schedule WHERE id = ?", (race_id,))
@@ -1335,6 +1336,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
