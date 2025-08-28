@@ -1176,7 +1176,7 @@ def show_race_page(race_id):
     if result.get('third_place'):
         result['voted_by_third'] = vote_map_result.get(result['third_place'], [])
 
-    video_url = get_video_url(rece_id)
+    video_url = get_video_url(race_id)
 
     conn.close()
 
@@ -1336,6 +1336,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
