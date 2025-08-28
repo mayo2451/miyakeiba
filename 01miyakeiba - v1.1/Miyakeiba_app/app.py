@@ -1055,7 +1055,7 @@ def get_video_url(race_id):
 
 @app.route('/race/<int:race_id>', methods=['GET', 'POST'])
 def show_race_page(race_id):
-    conn = connet_db()
+    conn = connect_db()
     cur = conn.cursor()
 
     cursor = conn.cursor()
@@ -1335,6 +1335,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
