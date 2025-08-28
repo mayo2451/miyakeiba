@@ -1108,7 +1108,7 @@ def show_race_page(race_id):
         horse = row['honmeiba']
         uid = row['user_id']
         user_map[uname] = uid
-        if horse not in vot_map:
+        if horse not in vote_map:
             vote_map[horse] = []
         vote_map[horse].append(uname)
     for entry in entries:
@@ -1335,6 +1335,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
