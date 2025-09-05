@@ -12,31 +12,24 @@
         {% include 'menubar.html' %}
         <div class="tabs-container">
             <div class="button-container">
-                <button class="toggle-button active" data-target="entries">出馬表</button>
-                <button class="toggle-button" data-target="result">結果</button>
-                <button class="toggle-button" data-target="video">レース映像</button>
+                <a href="{{ url_for('show_race_page', race_id=race_id, view='entries') }}"class="btn {% if view == 'entries' %}btn-primary{% else %}btn-outline-primary{% endif %}me-2">
+                    出馬表
+                </a>
+                <a href="{{ url_for('show_race_page', race_id=race_id, view='result') }}"class="btn {% if view == 'result' %}btn-primary{% else %}btn-outline-primary{% endif %}me-2">
+                    レース結果
+                </a>
+                <a href="{{ url_for('show_race_page', race_id=race_id, view='video') }}"class="btn {% if view == 'video' %}btn-primary{% else %}btn-outline-primary{% endif %}me-2">
+                    映像
+                </a>
             </div>
             <div class="tab-content-container">
-                <div id="entries" class="tab-content active">
+                {% if view == 'entries' %}
                     {% include 'entries.html' %}
-                </div>
-                <div id="result" class="tab-content">
-                    {% include 'race_result.html' %}
-                </div>
-                <div id="video" class="tab-content">
-                    {% if video_url %}
-                        <iframe
-                            width="560"
-                            height="315"
-                            src="{{ video_url }}"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen
-                        >
-                    {% else %}
-                        <p>レース映像はまだありません</p>
-                    {% endif %}
-                </div>
+                {% elif view == 'entries' %}
+                    {% include 'entries.html' %}
+                {% elif view == 'entries' %}
+                    {% include 'entries.html' %}
+                {% endif %}
             </div>
         </div>
         <script>
