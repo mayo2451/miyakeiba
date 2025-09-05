@@ -1104,6 +1104,7 @@ def show_race_page(race_id):
     votes = cursor.fetchall()
     vote_map = {}
     user_map = {}
+    horse = None
     for row in votes:
         uname = row['username']
         horse = row['honmeiba']
@@ -1336,6 +1337,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
