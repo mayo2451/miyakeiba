@@ -1181,6 +1181,8 @@ def show_race_page(race_id):
 
     conn.close()
 
+    view_mode = request.args.get('view', 'entries')
+
     return render_template('race.html',
                            race_id=race_id,
                            entries=entries,
@@ -1191,7 +1193,8 @@ def show_race_page(race_id):
                            horse=horse,
                            result=result,
                            scores=ranked_scores,
-                           video_url=video_url
+                           video_url=video_url,
+                           view=view_mode
                           )
 
 @app.route('/allusers')
@@ -1337,6 +1340,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
