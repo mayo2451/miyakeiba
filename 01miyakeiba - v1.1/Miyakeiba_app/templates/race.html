@@ -38,4 +38,27 @@
             </div>
         </div>
     </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.toggle-button');
+            const contents = document.querySelectorAll('.tab-content');
+        
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-target');
+        
+                    // すべてのボタンからactiveクラスを削除
+                    buttons.forEach(item => item.classList.remove('active'));
+                    // クリックされたボタンにactiveクラスを追加
+                    button.classList.add('active');
+        
+                    // すべてのコンテンツを非表示にする
+                    contents.forEach(content => content.classList.remove('active'));
+        
+                    // 選択されたコンテンツを表示する
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
+    </script>
 </html>
