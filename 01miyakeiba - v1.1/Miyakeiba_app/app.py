@@ -1114,7 +1114,7 @@ def show_race_page(race_id):
             vote_map[horse] = []
         vote_map[horse].append(uname)
     for entry in entries:
-        horse = entries["horse_name"]
+        horse = entry["horse_name"]
         entry["voted_by"] = [
             {
                 "username": uname,
@@ -1337,6 +1337,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
