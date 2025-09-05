@@ -48,7 +48,7 @@
                 <button type="submit">本命馬を登録</button>
             {% endif %}
         </form>
-        <form action="{{ url_for('show_race_result', race_id=race['id']) }}" method="get" style="margin-top: 10px;">
+        <form action="{{ url_for('show_race_page', race_id=race['id']) }}" method="get" style="margin-top: 10px;">
             <button type="submit">🔍 レース結果を見る</button>
         </form>
     {% endif %}
@@ -59,6 +59,7 @@
     {% endif %}
     <script src="{{ url_for('static', filename='js/waku_color.js') }}"></script>
 </body>
+
 
 
 
