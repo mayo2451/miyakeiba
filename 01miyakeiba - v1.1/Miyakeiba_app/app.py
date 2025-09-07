@@ -1078,7 +1078,7 @@ def show_race_page(race_id):
         return redirect('/', current_path=request.path)
     is_closed = now >= voting_deadline
     if request.method == 'POST':
-        honmeiba = request.form.get('honmeinba')
+        honmeiba = request.form.get('honmeiba')
         if honmeiba:
             cursor.execute("""
                 INSERT INTO raise_horse(race_id, username, honmeiba)
@@ -1093,7 +1093,7 @@ def show_race_page(race_id):
     else:
         cursor.execute("SELECT horse_name FROM race_entries WHERE race_id = ?", (race_id,))
         rows = cursor.fetchall()
-        enteries = [{"horse_name":row["horse_name"], "jockey": ""} for row in rows]
+        entries = [{"horse_name":row["horse_name"], "jockey": ""} for row in rows]
         print("📄 出馬表（確定後）: データベースから取得")
     cursor.execute("""
         SELECT rh.username, rh.honmeiba, u.id AS user_id
@@ -1340,6 +1340,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
