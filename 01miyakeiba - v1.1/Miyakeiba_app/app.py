@@ -1304,17 +1304,34 @@ def schedule():
     year_today = today.year
     month_today = today.month
     
-    this_month_events = get_events_for_month(year_today, month_today)
+    # get_events_for_monthはリストを返すため、辞書に変換
+    this_month_events_list = get_events_for_month(year_today, month_today)
+    this_month_events_dict = {}
+    for event in this_month_events_list:
+        date_key = event['race_date_display']
+        if date_key not in this_month_events_dict:
+            this_month_events_dict[date_key] = []
+        this_month_events_dict[date_key].append(event)
+
     races = get_this_week_races()
     cal_year = request.args.get('year', default=year_today, type=int)
     cal_month = request.args.get('month', default=month_today, type=int)
-    calendar_events = get_events_for_month(cal_year, cal_month)
+    
+    # get_events_for_monthはリストを返すため、辞書に変換
+    calendar_events_list = get_events_for_month(cal_year, cal_month)
+    calendar_events_dict = {}
+    for event in calendar_events_list:
+        date_key = event['race_date_display']
+        if date_key not in calendar_events_dict:
+            calendar_events_dict[date_key] = []
+        calendar_events_dict[date_key].append(event)
+
     cal = HolidayCalendar(firstweekday=0)
     calendar_html = cal.formatmonth(cal_year, cal_month)
     
-    # 修正：get_events_for_month関数はすでにソートされたリストを返すため、.items()は不要です。
-    calendar_events_sorted = calendar_events
-    this_month_events_sorted = this_month_events
+    # 辞書のキー（日付）でソート
+    this_month_events_sorted = sorted(this_month_events_dict.items(), key=lambda x: x[0])
+    calendar_events_sorted = sorted(calendar_events_dict.items(), key=lambda x: x[0])
 
     prev_month = cal_month - 1
     prev_year = cal_year
@@ -1344,6 +1361,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
