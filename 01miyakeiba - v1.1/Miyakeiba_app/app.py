@@ -291,9 +291,9 @@ def get_events_for_month(year, month):
         display_date = date_obj.strftime(f"%m/%d({weekday_jpn})")
 
         if display_date not in events:
-            events[display_date] = []
+            events = []
 
-        events[display_date].append({
+        events.append({
             'id': row['id'],
             'race_date': row['race_date'],               # 元のYYYY-MM-DD
             'race_date_display': display_date,           # 表示用：MM/DD
@@ -1341,6 +1341,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
