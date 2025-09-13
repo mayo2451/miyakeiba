@@ -273,14 +273,15 @@ def get_events_for_month(year, month):
     query = """
         SELECT id, race_date, race_place, race_ground, race_distance, race_number, race_grade, race_name, start_time
         FROM race_schedule
-        WHERE DATE(race_date) >= ? AND DATE(race_date) < ?
+        WHERE race_date BETWEEN ? AND ?
+        ORDER BY race_date ASC, start_time ASC
     """
 
     cursor.execute(query, (first_day_str, last_day_str))
     rows = cursor.fetchall()
     conn.close()
 
-    events = {}
+    events = []
     for row in rows:
         date_str = row['race_date']
 
@@ -1340,6 +1341,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
