@@ -51,7 +51,11 @@ td.tiny {
     text-align: center;
     width: 8%; 
 }
+td.left {
+    text-align: left;
+}
 .menu a.active {
     color: rgb(49, 49, 49);
     font-weight: bold;
+
 }
