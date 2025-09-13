@@ -1311,8 +1311,10 @@ def schedule():
     calendar_events = get_events_for_month(cal_year, cal_month)
     cal = HolidayCalendar(firstweekday=0)
     calendar_html = cal.formatmonth(cal_year, cal_month)
-    calendar_events_sorted = sorted(calendar_events.items(), key=lambda x: x[0])
-    this_month_events_sorted = sorted(this_month_events.items(), key=lambda x: x[0])
+    
+    # 修正：get_events_for_month関数はすでにソートされたリストを返すため、.items()は不要です。
+    calendar_events_sorted = calendar_events
+    this_month_events_sorted = this_month_events
 
     prev_month = cal_month - 1
     prev_year = cal_year
@@ -1342,6 +1344,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
