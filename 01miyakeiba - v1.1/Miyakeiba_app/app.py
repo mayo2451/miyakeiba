@@ -1149,7 +1149,7 @@ def show_race_page(race_id):
     }
     if is_finalized and result.get('first_place'):
         cur.execute("SELECT username, honmeiba FROM raise_horse WHERE race_id = ?", (race_id,))
-        user_predictions = cur.ferchall()
+        user_predictions = cur.fetchall()
 
         for prediction in user_predictions:
             username = prediction['username']
@@ -1414,6 +1414,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
