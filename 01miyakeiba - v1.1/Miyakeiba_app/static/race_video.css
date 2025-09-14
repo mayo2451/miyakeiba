@@ -1,7 +1,7 @@
 .video-container {
     position: relative;
     padding-bottom: 56.25%; /* 16:9比率 */
-    height: 0;
+    height: auto;
     overflow: hidden;
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
