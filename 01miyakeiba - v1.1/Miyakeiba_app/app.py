@@ -16,6 +16,7 @@ from datetime import datetime, date, timedelta
 import pytz
 import logging
 import re
+from werkzeug.exceptions import abort
 
 logging.basicConfig(level=logging.INFO)
 
@@ -1146,6 +1147,40 @@ def show_race_page(race_id):
         'first_place': '', 'second_place': '', 'third_place': '', 'fourth_place': '', 'fifth_place': '',
         'odds_first': '', 'odds_second': '', 'odds_third': ''
     }
+    if is_finalized and result.get('first_place'):
+        cur.execute("SELECT username, honmeiba FROM raise_horse WHERE race_id = ?", (race_id))
+        user_predictions = cur.ferchall()
+
+        for prediction in user_predictions:
+            username = prediction['username']
+            predicted_horse = prediction['honmeiba']
+            score = 0
+
+            if predicted_horse == result['first_place']:
+                try:
+                    odds = float(result['odds_first'])
+                    score = odds * 10
+                except (ValueError, TypeError):
+                    logging.error(f"オッズ(1着)の形式が不正です: {result['odds_first']}")
+            elif predicted_horse == result['second_place']:
+                try:
+                    odds = float(result['odds_second'])
+                    score = round(odds * 3)
+                except (ValueError, TypeError):
+                    logging.error(f"オッズ(2着)の形式が不正です: {result['odds_second']}")
+            elif predicted_horse == result['third_place']:
+                try:
+                    odds = float(result['odds_third'])
+                    score = round(odds * 1)
+                except (ValueError, TypeError):
+                    logging.error(f"オッズ(3着)の形式が不正です: {result['odds_third']}")
+
+            cur.execute("""
+                UPDATE raise_horse
+                SET score = ?
+                WHERE race_id = ? AND username = ?
+            """, (score, race_id, username))
+        conn.commit()
     cur.execute("SELECT race_name FROM race_schedule WHERE id = ?", (race_id,))
     race_info = cur.fetchone()
     cur.execute("""SELECT username, honmeiba, score FROM raise_horse WHERE race_id = ?""", (race_id,))
@@ -1379,6 +1414,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
