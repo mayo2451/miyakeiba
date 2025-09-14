@@ -850,7 +850,7 @@ def result_input(race_id):
         conn.commit()
         conn.close()
         flash("レース結果を登録しました")
-        return redirect(url_for('show_entries', race_id=race_id))
+        return redirect(url_for('show_race_page', race_id=race_id))
 
     # GETの場合はレース名を取得してフォーム表示
     cursor.execute("SELECT race_name FROM race_schedule WHERE id = ?", (race_id,))
@@ -1361,6 +1361,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
