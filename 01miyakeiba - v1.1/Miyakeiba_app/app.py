@@ -1192,9 +1192,11 @@ def show_race_page(race_id):
         result['voted_by_third'] = vote_map_result.get(result['third_place'], [])
 
     video_url = get_video_url(race_id)
+    logging.info(f"取得した動画URL: {video_url}")  # ★追加★
     video_id = None
     if video_url:
         video_id = extract_youtube_id(video_url)
+    logging.info(f"抽出した動画ID: {video_id}")  # ★追加★
 
     conn.close()
 
@@ -1376,6 +1378,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
