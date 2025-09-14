@@ -1191,7 +1191,8 @@ def show_race_page(race_id):
     if result.get('third_place'):
         result['voted_by_third'] = vote_map_result.get(result['third_place'], [])
 
-    video_url = get_video_url(race_id)
+    #video_url = get_video_url(race_id)
+    video_url = "https://www.youtube.com/watch?v=R9R63qB3j8k" # ★テスト用★
     logging.info(f"取得した動画URL: {video_url}")  # ★追加★
     video_id = None
     if video_url:
@@ -1378,6 +1379,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
