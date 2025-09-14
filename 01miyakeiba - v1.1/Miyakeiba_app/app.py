@@ -1148,7 +1148,7 @@ def show_race_page(race_id):
         'odds_first': '', 'odds_second': '', 'odds_third': ''
     }
     if is_finalized and result.get('first_place'):
-        cur.execute("SELECT username, honmeiba FROM raise_horse WHERE race_id = ?", (race_id))
+        cur.execute("SELECT username, honmeiba FROM raise_horse WHERE race_id = ?", (race_id,))
         user_predictions = cur.ferchall()
 
         for prediction in user_predictions:
@@ -1414,6 +1414,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
