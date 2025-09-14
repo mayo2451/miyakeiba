@@ -12,7 +12,13 @@
             <td>1着</td>
             <td class="horse-name">{{ result.first_place }}</td>
             <td class="odds">{{ result.odds_first }}</td>
-            <td></td>
+            <td>
+                {% for row in scores %}
+                    {% if row.honmeiba == result.first_place %}
+                        {{ row.score }}
+                    {% endif %}
+                {% endfor %}
+            </td>
             <td>
                 <div style="display: flex; gap: 5px; align-items: center;">
                     {% for voter in result.voted_by_first %}
@@ -25,7 +31,13 @@
             <td>2着</td>
             <td class="horse-name">{{ result.second_place }}</td>
             <td class="odds">{{ result.odds_second }}</td>
-            <td></td>
+            <td>
+                {% for row in scores %}
+                    {% if row.honmeiba == result.second_place %}
+                        {{ row.score }}
+                    {% endif %}
+                {% endfor %}
+            </td>
             <td>
                 <div style="display: flex; gap: 5px; align-items: center;">
                     {% for voter in result.voted_by_second %}
@@ -38,7 +50,13 @@
             <td>3着</td>
             <td class="horse-name">{{ result.third_place }}</td>
             <td class="odds">{{ result.odds_third }}</td>
-            <td></td>
+            <td>
+                {% for row in scores %}
+                    {% if row.honmeiba == result.third_place %}
+                        {{ row.score }}
+                    {% endif %}
+                {% endfor %}
+            </td>
             <td>
                 <div style="display: flex; gap: 5px; align-items: center;">
                     {% for voter in result.voted_by_third %}
@@ -81,6 +99,7 @@
     </tr>
     {% endfor %}
 </table>
+
 
 
 
