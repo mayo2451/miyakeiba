@@ -11,7 +11,7 @@
     <body>
         <h2>大ヴァロ予想王</h2>
         {% include 'menubar.html' %}
-        <h2>{{ race['race_name'] }}の出馬表</h2>
+        <h2>{{ race['race_name'] }}</h2>
         <div class="tabs-container">
             <div class="button-container">
                 <a href="{{ url_for('show_race_page', race_id=race_id, view='entries') }}"class="btn {% if view == 'entries' %}btn-primary{% else %}btn-outline-primary{% endif %}me-2">
