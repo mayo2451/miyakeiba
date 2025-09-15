@@ -1185,7 +1185,7 @@ def show_race_page(race_id):
             elif predicted_horse == result['third_place']:
                 score = third_place_score
 
-            cur.excute("""
+            cur.execute("""
                 UPDATE raise_horse
                 SET score = ?
                 WHERE race_id = ? AND username = ?
@@ -1428,6 +1428,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
