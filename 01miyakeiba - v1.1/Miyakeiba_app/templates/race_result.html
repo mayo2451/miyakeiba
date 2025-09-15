@@ -13,7 +13,7 @@
             <td class="horse-name">{{ result.first_place }}</td>
             <td class="odds">{{ result.odds_first }}</td>
             <td>
-                {% for row in scores %}
+                {% for row in ranked_scores %}
                     {% if row.honmeiba == result.first_place %}
                         {{ row.score }}
                     {% endif %}
@@ -32,7 +32,7 @@
             <td class="horse-name">{{ result.second_place }}</td>
             <td class="odds">{{ result.odds_second }}</td>
             <td>
-                {% for row in scores %}
+                {% for row in ranked_scores %}
                     {% if row.honmeiba == result.second_place %}
                         {{ row.score }}
                     {% endif %}
@@ -51,7 +51,7 @@
             <td class="horse-name">{{ result.third_place }}</td>
             <td class="odds">{{ result.odds_third }}</td>
             <td>
-                {% for row in scores %}
+                {% for row in ranked_scores %}
                     {% if row.honmeiba == result.third_place %}
                         {{ row.score }}
                     {% endif %}
@@ -99,6 +99,7 @@
     </tr>
     {% endfor %}
 </table>
+
 
 
 
