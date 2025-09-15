@@ -1152,7 +1152,7 @@ def show_race_page(race_id):
     third_place_score = 0
     if result.get('first_place') and result.get('odds_first'):
         try:
-            first_place_score = float(result['odds_first']) * 10
+            first_place_score = round(float(result['odds_first']) * 10)
         except (ValueError, TypeError):
             logging.error(f"オッズ(1着)の形式が不正です: {result['odds_first']}")
             first_place_score = 0
@@ -1428,6 +1428,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
