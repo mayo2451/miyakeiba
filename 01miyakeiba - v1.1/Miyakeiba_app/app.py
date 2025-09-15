@@ -1181,6 +1181,24 @@ def show_race_page(race_id):
                 WHERE race_id = ? AND username = ?
             """, (score, race_id, username))
         conn.commit()
+    first_place_score = 0
+    second_place_score = 0
+    third_place_score = 0
+    if result.get('first_place') and result.get('odds_first'):
+        try:
+            frist_place_score = float(result['odds_first']) * 10
+        except (ValueError, TypeError):
+            pass
+    if result.get('second_place') and result.get('odds_second'):
+        try:
+            second_place_score = round(float(result['odds_second']) * 3)
+        except (ValueError, TypeError):
+            pass
+    if result.get('third_place') and result.get('odds_third'):
+        try:
+            third_place_score = round(float(result['odds_third']) * 1)
+        except (ValueError, TypeError):
+            pass
     cur.execute("SELECT race_name FROM race_schedule WHERE id = ?", (race_id,))
     race_info = cur.fetchone()
     cur.execute("""SELECT username, honmeiba, score FROM raise_horse WHERE race_id = ?""", (race_id,))
@@ -1247,6 +1265,9 @@ def show_race_page(race_id):
                            is_finalized=is_finalized,
                            horse=horse,
                            result=result,
+                           first_place_score=first_place_score,
+                           second_place_score=second_place_score,
+                           third_place_score=third_place_score,
                            scores=ranked_scores,
                            video_id=video_id,
                            view=view_mode
@@ -1414,6 +1435,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
