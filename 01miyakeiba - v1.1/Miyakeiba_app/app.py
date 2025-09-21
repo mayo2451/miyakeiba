@@ -403,6 +403,7 @@ def home():
             SUM(CASE WHEN rh.honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third
         FROM raise_horse rh
         JOIN race_schedule rs ON rh.race_id = rs.id
+        WHERE rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38)
         JOIN users u ON rh.username = u.username
         GROUP BY rh.username
         ORDER BY 
@@ -1430,6 +1431,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
