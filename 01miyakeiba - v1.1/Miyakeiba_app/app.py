@@ -382,7 +382,7 @@ def home():
         FROM raise_horse rh
         JOIN race_schedule rs ON rh.race_id = rs.id
         JOIN users u ON rh.username = u.username
-        WHERE rs.race_date BETWEEN ? AND ?
+        WHERE rs.race_date BETWEEN ? AND ?　AND rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38)
         GROUP BY rh.username
         ORDER BY 
             total_score DESC,
@@ -1291,6 +1291,7 @@ def allusers():
             ROUND(AVG(CASE WHEN honmeiba_rank BETWEEN 1 AND 3 THEN 1.00 ELSE 0 END), 4) AS placing_bets_rate
         FROM raise_horse rh
         JOIN race_schedule rs ON rh.race_id = rs.id
+        WHERE rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38)
         GROUP BY username
         ORDER BY total_score DESC
     """)
@@ -1346,6 +1347,7 @@ def filtered_users():
             ROUND(AVG(CASE WHEN honmeiba_rank BETWEEN 1 AND 3 THEN 1.00 ELSE 0 END), 4) AS placing_bets_rate
         FROM raise_horse rh
         JOIN race_schedule rs ON rh.race_id = rs.id
+        WHERE rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38)
         WHERE 1=1
     """
     params = []
@@ -1428,6 +1430,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
