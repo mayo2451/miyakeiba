@@ -24,7 +24,7 @@ app = Flask(__name__)
 
 SHEET_NAME = "miyakeiba_backup"
 TABLES = ['race_entries', 'race_result', 'race_schedule', 'raise_horse', 'sqlite_sequence', 'users']
-BACKUP_INTERVAL = 600
+BACKUP_INTERVAL = 60
 DB_NAME = "miyakeiba_app.db"
 SKIP_STARTUP_BACKUP = os.getenv("SKIP_STARTUP_BACKUP", "false").lower() == "true"
 app.secret_key = 'your_secret_key'
@@ -1431,6 +1431,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
