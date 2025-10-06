@@ -413,7 +413,7 @@ def home():
             third DESC
         LIMIT 3
     """
-    cur.execute(query, (start_date, end_date))
+    cur.execute(query, (start_date, end_date, start_date))
     users = cur.fetchall()
     query_total = """
         SELECT
@@ -1453,6 +1453,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
