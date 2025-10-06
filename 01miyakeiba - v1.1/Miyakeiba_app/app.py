@@ -375,66 +375,37 @@ def home():
         SELECT
             u.id AS user_id,
             rh.username,
-            -- total_scoreの計算: 通常スコア + 特別加算スコア
-            SUM(
-                CASE 
-                    /* 1. 通常の集計対象のスコア */
-                    WHEN rs.race_date BETWEEN ? AND ? 
-                    AND rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38) 
-                    THEN rh.score
-                    
-                    /* 2. 特別加算のスコア（レースID 2 の得点を2025年10月の集計期間でのみ加算） */
-                    WHEN ? = '2025-10-01' AND ? = '2025-10-31' /* 集計期間が2025年10月全体の場合 */
-                    AND rh.race_id = 2 
-                    THEN rh.score
-                    
-                    /* 3. それ以外のレコードのスコアは無視（0とする） */
-                    ELSE 0 
-                END
-            ) AS total_score,
-            
-            -- first (1着) のカウント: 通常レース + 特別加算レースの1着
-            SUM(
-                CASE 
-                    WHEN (rs.race_date BETWEEN ? AND ? 
-                          AND rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38))
-                    OR   (? = '2025-10-01' AND ? = '2025-10-31' AND rh.race_id = 2) /* 特別加算条件 */
-                    THEN CASE WHEN rh.honmeiba_rank = 1 THEN 1 ELSE 0 END
-                    ELSE 0 
-                END
-            ) AS first,
-            
-            -- second (2着) のカウント: 通常レース + 特別加算レースの2着
-            SUM(
-                CASE 
-                    WHEN (rs.race_date BETWEEN ? AND ? 
-                          AND rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38))
-                    OR   (? = '2025-10-01' AND ? = '2025-10-31' AND rh.race_id = 2) /* 特別加算条件 */
-                    THEN CASE WHEN rh.honmeiba_rank = 2 THEN 1 ELSE 0 END
-                    ELSE 0 
-                END
-            ) AS second,
-                     
-            -- third (3着) のカウント: 通常レース + 特別加算レースの3着
-            SUM(
-                CASE 
-                    WHEN (rs.race_date BETWEEN ? AND ? 
-                          AND rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38))
-                    OR   (? = '2025-10-01' AND ? = '2025-10-31' AND rh.race_id = 2) /* 特別加算条件 */
-                    THEN CASE WHEN rh.honmeiba_rank = 3 THEN 1 ELSE 0 END
-                    ELSE 0 
-                END
-            ) AS third
-                     
+            -- 期間が2025年10月かどうかを判定するフラグ (1:10月、0:それ以外)
+            -- このフラグはWHERE句の後に適用されるため、ここでは純粋に2025年10月かどうかを判断する
+            SUM(rh.score) AS total_score,
+            SUM(CASE WHEN rh.honmeiba_rank = 1 THEN 1 ELSE 0 END) AS first,
+            SUM(CASE WHEN rh.honmeiba_rank = 2 THEN 1 ELSE 0 END) AS second,
+            SUM(CASE WHEN rh.honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third
         FROM raise_horse rh
         JOIN race_schedule rs ON rh.race_id = rs.id
         JOIN users u ON rh.username = u.username
         WHERE 
-            /* 必須：集計に必要なすべてのレコードを選択する */
-            (rs.race_date BETWEEN ? AND ?) /* 通常期間のレコード */
-            OR (rh.race_id = 2)             /* 例外のレースID 2 のレコード */
-        
+            /* 以下のどちらかの条件を満たすレコードを全て集計に含める */
+            (
+                /* 1. 通常の集計対象期間内のレコード（除外リスト適用） */
+                rs.race_date BETWEEN ? AND ? 
+                AND rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38)
+            )
+            OR
+            (
+                /* 2. 例外として追加したい、レースID 2 */
+                rh.race_id = 2 
+            )
+            
         GROUP BY rh.username
+        -- final_score, first, second, third の計算は、通常の計算に任せる
+        -- ただし、以下のフィルターを追加する
+        HAVING
+            -- ユーザーが指定した期間が2025年10月の場合、レースID 2 のスコアを含める
+            (
+                STRFTIME('%Y-%m', ?) = '2025-10'
+                OR rh.race_id != 2 /* 2025年10月でない場合、レースID 2 を集計から除外 */
+            )
         ORDER BY 
             total_score DESC,
             first DESC,
@@ -1482,6 +1453,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
