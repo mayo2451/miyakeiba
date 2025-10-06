@@ -371,49 +371,63 @@ def home():
 
     conn = connect_db()
     cur = conn.cursor()
-    query = """
-        SELECT
-            u.id AS user_id,
-            rh.username,
-            -- 期間が2025年10月かどうかを判定するフラグ (1:10月、0:それ以外)
-            -- このフラグはWHERE句の後に適用されるため、ここでは純粋に2025年10月かどうかを判断する
-            SUM(rh.score) AS total_score,
-            SUM(CASE WHEN rh.honmeiba_rank = 1 THEN 1 ELSE 0 END) AS first,
-            SUM(CASE WHEN rh.honmeiba_rank = 2 THEN 1 ELSE 0 END) AS second,
-            SUM(CASE WHEN rh.honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third
-        FROM raise_horse rh
-        JOIN race_schedule rs ON rh.race_id = rs.id
-        JOIN users u ON rh.username = u.username
-        WHERE 
-            /* 以下のどちらかの条件を満たすレコードを全て集計に含める */
-            (
-                /* 1. 通常の集計対象期間内のレコード（除外リスト適用） */
-                rs.race_date BETWEEN ? AND ? 
-                AND rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38)
-            )
-            OR
-            (
-                /* 2. 例外として追加したい、レースID 2 */
-                rh.race_id = 2 
-            )
-            
-        GROUP BY rh.username
-        -- final_score, first, second, third の計算は、通常の計算に任せる
-        -- ただし、以下のフィルターを追加する
-        HAVING
-            -- ユーザーが指定した期間が2025年10月の場合、レースID 2 のスコアを含める
-            (
-                STRFTIME('%Y-%m', ?) = '2025-10'
-                OR rh.race_id != 2 /* 2025年10月でない場合、レースID 2 を集計から除外 */
-            )
-        ORDER BY 
-            total_score DESC,
-            first DESC,
-            second DESC,
-            third DESC
-        LIMIT 3
-    """
-    cur.execute(query, (start_date, end_date, start_date))
+    if year == 2025 and month == 10:
+        query = f"""
+            SELECT
+                u.id AS user_id,
+                rh.username,
+                SUM(rh.score) AS total_score,
+                SUM(CASE WHEN rh.honmeiba_rank = 1 THEN 1 ELSE 0 END) AS first,
+                SUM(CASE WHEN rh.honmeiba_rank = 2 THEN 1 ELSE 0 END) AS second,
+                SUM(CASE WHEN rh.honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third
+            FROM raise_horse rh
+            JOIN race_schedule rs ON rh.race_id = rs.id
+            JOIN users u ON rh.username = u.username
+            WHERE 
+                /* 以下のいずれかを満たすレコードを集計対象とする */
+                (
+                    /* 1. 通常の集計対象期間内のレコード（除外リスト適用） */
+                    rs.race_date BETWEEN ? AND ? 
+                    AND rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38)
+                )
+                OR
+                (
+                    /* 2. 例外として、期間に関係なくレースID 2 を加算 */
+                    rh.race_id = 2 
+                )
+            GROUP BY rh.username
+            ORDER BY 
+                total_score DESC,
+                first DESC,
+                second DESC,
+                third DESC
+            LIMIT 3
+        """
+        # プレースホルダはWHERE句の BETWEEN ? AND ? で使われる2個のみ
+        cur.execute(query, (start_date, end_date))
+    else:
+        # 2025年10月以外の月は、通常の集計ロジック（レースID 2 は加算しない）
+        query = f"""
+            SELECT
+                u.id AS user_id,
+                rh.username,
+                SUM(rh.score) AS total_score,
+                SUM(CASE WHEN rh.honmeiba_rank = 1 THEN 1 ELSE 0 END) AS first,
+                SUM(CASE WHEN rh.honmeiba_rank = 2 THEN 1 ELSE 0 END) AS second,
+                SUM(CASE WHEN rh.honmeiba_rank = 3 THEN 1 ELSE 0 END) AS third
+            FROM raise_horse rh
+            JOIN race_schedule rs ON rh.race_id = rs.id
+            JOIN users u ON rh.username = u.username
+            WHERE rs.race_date BETWEEN ? AND ? AND rh.race_id NOT IN (24,25,26,27,28,29,30,31,32,33,34,35,36,37,38)
+            GROUP BY rh.username
+            ORDER BY 
+                total_score DESC,
+                first DESC,
+                second DESC,
+                third DESC
+            LIMIT 3
+        """
+        cur.execute(query, (start_date, end_date))
     users = cur.fetchall()
     query_total = """
         SELECT
@@ -1453,6 +1467,7 @@ def schedule():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
 
 
 
